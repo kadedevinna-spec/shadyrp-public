@@ -345,7 +345,12 @@ Core.Callback = {
             end
         end)
 
-        return unpackCallbackResults(Citizen.Await(p))
+        local r1, r2, r3 = unpackCallbackResults(Citizen.Await(p))
+        local cbName = tostring(name or "")
+        if cbName == "mosquito-mining:server:GetPickaxeCountOfType" or cbName == "mosquito-mining:server:getPickaxeCountOfType" then
+            return tonumber(r1) or 0
+        end
+        return r1, r2, r3
     end
 }
 
