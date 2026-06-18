@@ -1,0 +1,50 @@
+
+-- HERE'S THE LIST OF ITEMS NEEDED BY DEFAULT FOR THE SCRIPT. CHECK THE COMMENTED INSTRUCTIONS ! 
+------------ 
+-- VORP --
+------------ 
+-- COPY THIS IN A .sql FILE TO IMPORT IT INTO YOUR DATABASE
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("kit_horse_brush"               ,"Horsebrush"           , 10, 1, 'item_standard', 1, '{}', 'Horsebrush') 		ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("consumable_carrot" 	        ,"Carrot"               , 10, 1, 'item_standard', 1, '{}', 'Carrot') 	 		ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("consumable_sugarcube" 			,"Sugar Cube"           , 10, 1, 'item_standard', 1, '{}', 'Sugar Cube') 		ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("consumable_haycube" 	        ,"Hay cube"             , 10, 1, 'item_standard', 1, '{}', 'Hay cube') 	 		ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("consumable_apple" 	       		,"Apple"                , 10, 1, 'item_standard', 1, '{}', 'Apple') 			ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("kit_horse_reviver"    		    ,"Horse Reviver"        , 10, 1, 'item_standard', 1, '{}', 'Horse Reviver') 	ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("consumable_horse_ointment"     ,"Horse Ointment"       , 10, 1, 'item_standard', 1, '{}', 'Horse Ointment') 	ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("kit_hoof_knife"     			,"Hoof Knife"       	, 10, 1, 'item_standard', 1, '{}', 'Hoof Knife') 		ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `metadata`, `desc`)  VALUES ("kit_lunging_rope"     			,"Lunging Rope"       	, 10, 1, 'item_standard', 1, '{}', 'Lunging rope') 		ON DUPLICATE KEY UPDATE  `item` = VALUES(`item`), `label`= VALUES(`label`),`limit`= VALUES(`limit`), `can_remove`= VALUES(`can_remove`), `type`= VALUES(`type`), `usable`= VALUES(`usable`), `metadata`= VALUES(`metadata`), `desc`= VALUES(`desc`);  
+ 
+Check the registered usable items exports in SERVER/REGISTERED_ITEMS.lua
+ 
+---------------------
+-- REDEMRP REBOOT --
+---------------------
+-- ADD THIS TO YOUR REDEMRP INVENTORY CONFIG FILE
+["kit_horse_brush"]               =  {label = "Horsebrush"           , description = "Horsebrush"     , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "kit_horse_brush.png"		     ,type = "item_standard"},                  
+["consumable_carrot"] 	          =  {label = "Carrot"               , description = "Carrot"         , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "consumable_carrot.png"       	 ,type = "item_standard"},                  
+["consumable_sugarcube"] 		  =  {label = "Sugar Cube"           , description = "Sugar Cube"     , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "consumable_sugarcube.png"        ,type = "item_standard"},                  
+["consumable_haycube"] 	          =  {label = "Hay cube"             , description = "Hay cube"       , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "consumable_haycube.png"		   	 ,type = "item_standard"},                  
+["consumable_apple"] 	          =  {label = "Apple"                , description = "Apple"          , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "consumable_apple.png"            ,type = "item_standard"},                  
+["kit_horse_reviver"]    		  =  {label = "Horse Reviver"        , description = "Horse Reviver"  , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "kit_horse_reviver.png"           ,type = "item_standard"},                  
+["consumable_horse_ointment"]     =  {label = "Horse Ointment"       , description = "Horse Ointment" , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "consumable_horse_ointment.png"   ,type = "item_standard"},                  
+["kit_hoof_knife"]     			  =  {label = "Hoof Knife"      	 , description = "Hoof Knife"	  , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "kit_hoof_knife.png"  			 ,type = "item_standard"},                  
+["kit_lunging_rope"]     		  =  {label = "Lunging Rope"      	 , description = "Lunging Rope"	  , weight = 0.1, canBeDropped = true, canBeUsed = true, limit = 200, imgsrc = "kit_lunging_rope.png"  			 ,type = "item_standard"},                  
+
+Check the registered usable items exports in SERVER/REGISTERED_ITEMS.lua
+ 
+
+---------------------
+-- RSG --
+---------------------
+-- ADD THIS INTO YOUR RSG CORE ITEMS.LUA 
+kit_horse_brush          	      = {name = 'kit_horse_brush' 		    	,label = 'Horsebrush'      , weight = 1,   type = 'item', image = 'kit_horse_brush.png'		            , unique = true, useable = true, shouldClose = true, description = 'Horsebrush'     },              
+consumable_carrot 	          	  = {name = 'consumable_carrot' 		    ,label = 'Carrot'          , weight = 1,   type = 'item', image = 'consumable_carrot.png'		        , unique = true, useable = true, shouldClose = true, description = 'Carrot'         },              
+consumable_sugarcube  	 	      = {name = 'consumable_sugarcube' 		    ,label = 'Sugar Cube'      , weight = 1,   type = 'item', image = 'consumable_sugarcube.png'		    , unique = true, useable = true, shouldClose = true, description = 'Sugar Cube'     },              
+consumable_haycube  	          = {name = 'consumable_haycube' 		    ,label = 'Hay cube'        , weight = 1,   type = 'item', image = 'consumable_haycube.png'		        , unique = true, useable = true, shouldClose = true, description = 'Hay cube'       },              
+consumable_apple  	    	      = {name = 'consumable_apple' 		    	,label = 'Apple'           , weight = 1,   type = 'item', image = 'consumable_apple.png'		        , unique = true, useable = true, shouldClose = true, description = 'Apple'          },              
+kit_horse_reviver     	 	      = {name = 'kit_horse_reviver' 		    ,label = 'Horse Reviver'   , weight = 1,   type = 'item', image = 'kit_horse_reviver.png'		        , unique = true, useable = true, shouldClose = true, description = 'Horse Reviver'  },              
+consumable_horse_ointment  	      = {name = 'consumable_horse_ointment'     ,label = 'Horse Ointment'  , weight = 1,   type = 'item', image = 'consumable_horse_ointment.png'	    , unique = true, useable = true, shouldClose = true, description = 'Horse Ointment' }, 
+kit_hoof_knife  	     		  = {name = 'kit_hoof_knife'     			,label = 'Hoof Knife'  	   , weight = 1,   type = 'item', image = 'kit_hoof_knife.png'	  			    , unique = true, useable = true, shouldClose = true, description = 'Hoof Knife'	    }, 
+kit_lunging_rope  	     		  = {name = 'kit_lunging_rope'     			,label = 'Hoof Knife'  	   , weight = 1,   type = 'item', image = 'kit_lunging_rope.png'	  			, unique = true, useable = true, shouldClose = true, description = 'Lunging Rope'	}, 
+	
+Check the registered usable items exports in SERVER/REGISTERED_ITEMS.lua

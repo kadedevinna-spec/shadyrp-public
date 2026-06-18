@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Screen</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/images_slider.css">
+    <link rel="stylesheet" href="styles/music_controls.css">
+    <link rel="stylesheet" href="styles/team_cards.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="black-overlay"></div>
+    <div id="complete-overlay"></div>
+
+    <video id="video" autoplay muted loop style="display: none;">
+        Your browser does not support the video tag.
+    </video>
+
+    <div id="loading-screen">
+        <div id="server-name"></div>
+        <img id="server-logo" src="" alt="Server Logo">
+    </div>
+
+    <div id="server-description"></div>>
+    <div id="server-warning"></div>
+
+    <div id="image-slider">
+        <img id="image-current" class="slider-image active" src="" alt="Loading Screen">
+        <img id="image-next" class="slider-image" src="" alt="Loading Screen">
+        <img id="transition-overlay" class="transition-overlay" src="" alt="Transition">
+    </div>
+
+    <img id="border-image" class="border-image" src="assets/images/border_1.png" alt="Border">
+    <div id="dynamite-container">
+        <div id="loading-text">Loading...</div>
+        <div id="fuse-wrapper">
+            <canvas id="fuse-canvas"></canvas>
+            <img id="dynamite-image" src="assets/images/dynamite.png" alt="Dynamite">
+        </div>
+    </div>
+
+    <div id="complete-button-container">
+        <button id="complete-button"></button>
+    </div>
+
+    <div id="user-info-card">
+        <div id="user-avatar">
+            <img src="assets/images/default_avatar.jpg" alt="Avatar">
+        </div>
+        <div id="user-details">
+            <span id="user-name">Outsider</span>
+            <span id="user-role">FOUNDER</span>
+        </div>
+        <div id="player-count">
+            <i class="fa-solid fa-users"></i>
+            <span id="player-count-text">0/48</span>
+        </div>
+    </div>
+
+
+    <div id="social-buttons">
+        <a id="btn-discord" class="social-btn" href="#" target="_blank">
+            <i class="fa-brands fa-discord"></i>
+        </a>
+        <a id="btn-youtube" class="social-btn" href="#" target="_blank">
+            <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a id="btn-website" class="social-btn" href="#" target="_blank">
+            <i class="fa-solid fa-globe"></i>
+        </a>
+    </div>
+
+
+    <div id="info-buttons">
+        <button id="btn-team" class="info-btn"></button>
+        <button id="btn-hints" class="info-btn"></button>
+        <button id="btn-news" class="info-btn"></button>
+        <button id="btn-rules" class="info-btn"></button>
+    </div>
+
+
+    <div id="team-cards-container" class="cards-container">
+        <div id="team-cards-wrapper" class="cards-wrapper">
+
+        </div>
+    </div>
+
+    <div id="hints-cards-container" class="cards-container">
+        <div id="hints-cards-wrapper" class="cards-wrapper">
+
+        </div>
+    </div>
+
+    <div id="news-cards-container" class="cards-container">
+        <div id="news-cards-wrapper" class="cards-wrapper">
+
+        </div>
+    </div>
+
+    <div id="rules-cards-container" class="cards-container">
+        <div id="rules-cards-wrapper" class="cards-wrapper">
+
+        </div>
+    </div>
+
+    <button id="btn-toggle-controls"><i class="fa-solid fa-music"></i></button>
+
+    <div id="music-controls">
+        <div id="music-info">
+            <span id="music-title">No Track</span>
+        </div>
+        <div id="music-buttons">
+            <button id="btn-previous"></button>
+            <button id="btn-play-pause"></button>
+            <button id="btn-next"></button>
+            <button id="btn-favorite"></button>
+            <button id="btn-mute"></button>
+            <input type="range" id="volume-slider" min="0" max="100" value="100">
+        </div>
+    </div>
+
+    <script type="module" src="scripts/script_main.js"></script>
+</body>
+
+</html>

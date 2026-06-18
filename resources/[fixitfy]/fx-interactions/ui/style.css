@@ -1,0 +1,263 @@
+@font-face {
+  font-family: abula;
+  src: url("/ui/fonts/abula.ttf") format("truetype");
+}
+@font-face {
+  font-family: crock;
+  src: url("/ui/fonts/crock.ttf") format("truetype");
+}
+
+  
+body {
+  font-family: "crock";
+  font-weight: 400;
+  font-size: 1.0vh;
+  transition: all 500ms ease-in-out;
+  color: white;
+  overflow: hidden;
+  user-select: none;
+}
+
+.menu {
+  position: absolute;
+  top: 65%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row;   
+  align-items: top;  
+  justify-content: center; 
+  font-family: "abula";
+  font-weight: 400;
+  width: 16%;
+  /* background: url(/ui/assets/img/bg.png) center / 100% 100% no-repeat; */
+  /* background-color: rgba(22, 22, 25, 0.6); */
+  padding: 30px 0px;
+  height: 25%;  
+  max-height: 80vh; 
+  overflow: hidden; 
+  gap: 5px; 
+}
+
+.description-box {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: auto;
+  height: 2.5%;
+  top: 56.3%;
+  left: 67.5%;
+  padding: 0px 10px;
+  background-color: red;
+  background: url(/ui/assets/img/button-black.png) center / 100% 100% no-repeat;
+}
+
+
+.button-favorites,
+.button-animations {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 8%;
+  top:5%;
+  color: white;
+  user-select: none;
+  cursor: pointer;
+  font-size: 1.1vh;
+  background: url(/ui/assets/img/button-black.png) center / 100% 100% no-repeat;
+  transition: all ease 0.3s;
+}
+
+.button-favorites:hover,
+.button-animations:hover {
+  color: black;
+  background: url(/ui/assets/img/button-white.png) center / 100% 100% no-repeat;
+  transition: all ease 0.3s;
+}
+
+#border-bottom1 {
+  position: absolute;
+  width: 40%;
+  height: 0.5%;
+  top: 18%;
+  left: 30%;
+  background-color: white;
+}
+#border-bottom2 {
+  position: absolute;
+  width: 10%;
+  height: 0.5%;
+  top: 18%;
+  left: 86%;
+  background-color: white;
+}
+
+.button-favorites {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10%;
+  height: 7%;
+  color: white;
+  user-select: none;
+  cursor: pointer;
+  font-size: 1.0vh;
+  right: 4%;
+  top: 11.2%;
+  background: url(/ui/assets/img/button-black.png) center / 100% 100% no-repeat;
+  transition: all ease 0.3s;
+}
+
+.favorites-select {
+  position: absolute;
+  display: flex;
+  flex-direction: column;   
+  align-items: center; 
+  justify-content: flex-start; 
+  font-family: "crock";
+  width: 12%;
+  height: 75%;
+  top: 19%;
+  right: 3%;
+  padding: 10px 0px;
+  /* background-color: rgba(13, 15, 15, 0.804); */
+  overflow-y: auto;
+  overflow-x: auto;
+  gap: 2px; 
+  padding: 5px 0px;
+  overflow: hidden;
+}
+
+.favorites-selectbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  height: 12%;
+  background-color: bisque;
+  padding: 5px 15px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.2vh;
+  font-weight: 600;
+  background: url(/ui/assets/img/button-black.png) center / 100% 100% no-repeat;
+}
+
+.delete-favorite{
+  position: absolute;
+  width: 70%;
+}
+.favorites-selectbox.filled {
+  color: red !important;
+}
+
+
+.favorites-selectbox:hover {
+  transform: scale(0.95);
+  color: rgb(248, 196, 100);
+}
+.animation-box:hover {
+  transform: scale(0.95);
+  /* font-size: 1.2vh; */
+  color: rgb(0, 0, 0);
+  font-weight: 900;
+  background: url(/ui/assets/img/button-white.png) center / 100% 100% no-repeat;
+  /* transition: all ease 0.3s; */
+    /* filter: drop-shadow(0px 0px 0.50rem rgba(244, 244, 244, 0.438)); */
+}
+
+.animation-container {
+  position: absolute;
+  direction: rtl; 
+  display: flex;
+  flex-direction: column;   
+  align-items: center;  
+  justify-content: flex-start; 
+  font-family: "crock";
+  width: 70%;
+  height: 74%;
+  top: 19%;
+  padding: 10px 0px;
+  /* background-color: rgba(13, 15, 15, 0.804); */
+  overflow-y: auto;
+  overflow-x: auto;
+  gap: 2px; 
+  padding: 5px 0px;
+}
+
+.animation-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75%;
+  height: 12%;
+  background-color: bisque;
+  padding: 6px 10px;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 1px;
+  background: url(/ui/assets/img/button-black.png) center / 100% 100% no-repeat;
+  filter: drop-shadow(0px 0px 1px rgba(255,255,255,0.6));
+}
+
+.anim-icon {
+  position: absolute;
+  font-size: 1.5vh;
+  right: 5px;
+}
+
+.anim-icon.dragging {
+  position: absolute;
+  font-size: 2.0vh;
+  right: 17px;
+  color: rgb(248, 196, 100);
+  transform: scale(1.0);
+}
+
+.chair-select {
+  position: absolute;
+  width: 0.40%;
+  height: 0.70%;
+  background-color: rgba(0, 0, 0, 1.0);
+  border:1px solid white;
+  border-radius: 50%;
+  -webkit-box-shadow: 0px 0px 5px 26px #FFFFFF; 
+  box-shadow: 0px 0px 15px 6px #FFFFFF;
+}
+
+.animation-container::-webkit-scrollbar-track {
+  background: url(/ui/assets/img/button-black.png) center / 100% 100% no-repeat;
+  margin: 30px 0;   
+}
+
+.animation-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.animation-container::-webkit-scrollbar-thumb {
+  background: url(/ui/assets/img/button-white.png) center / 100% 100% no-repeat;
+}
+
+@media only screen and (max-width: 1920px) {
+  .button-animations {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 12%;
+    top: 0%;
+    color: white;
+    font-size: 1.1vh;
+  }
+  
+  #border-bottom1 {
+   top: 57px;
+  }
+}

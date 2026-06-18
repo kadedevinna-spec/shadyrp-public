@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="menu.css">
+    <title>Bird Management Menu - UI/NUI Dodibans Scripts</title>
+</head>
+<body>
+    <div id="menu-container">
+        <h1>Bird Management</h1>
+
+        <!-- Tabs for Navigation (rendered dynamically from config) -->
+        <div class="tabs" id="menu-tabs">
+            <!-- Tabs will be rendered here by JavaScript -->
+        </div>
+
+        <!-- Tab Content -->
+        <div id="home" class="tab-content active">
+            <div class="home-header">
+                <h2>Welcome to Bird Management</h2>
+                <p>Manage your birds, purchase new ones, and track their progress.</p>
+            </div>
+            
+            <div class="stats-container">
+                <!-- Main Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-card stat-birds">
+                        <div class="stat-icon">
+                            <img src="images/animal1.png" alt="Birds">
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Birds</span>
+                            <span class="stat-value" id="total-birds">00</span>
+                        </div>
+                        <div class="stat-decoration"></div>
+                    </div>
+                    
+                    <div class="stat-card stat-level">
+                        <div class="stat-icon">
+                            <img src="images/animal2.png" alt="Level">
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Trainer Level</span>
+                            <span class="stat-value" id="your-level">00</span>
+                        </div>
+                        <div class="stat-decoration"></div>
+                    </div>
+                </div>
+                
+                <!-- Featured Bird Card -->
+                <div class="featured-bird-card">
+                    <div class="featured-header">
+                        <span class="featured-badge">TOP BIRD</span>
+                        <span class="featured-title">Highest Level</span>
+                    </div>
+                    <div class="featured-content">
+                        <div class="featured-icon">
+                            <img src="images/animal1.png" alt="Best Bird" id="best-bird-img">
+                        </div>
+                        <div class="featured-info">
+                            <span class="featured-name" id="highest-level-bird">None</span>
+                            <div class="featured-stats">
+                                <span class="featured-level" id="best-bird-level"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featured-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="shop" class="tab-content">
+            <h2>Bird Shop</h2>
+            <div class="shop-categories">
+                <button class="category-btn" onclick="loadShop('Scavenger')">Scavenger</button>
+                <button class="category-btn" onclick="loadShop('Fishing')">Fishing</button>
+                <button class="category-btn" onclick="loadShop('Hunting')">Hunting</button>
+                <button class="category-btn" onclick="loadShop('Companion')">Companion</button>
+                <!-- Add more categories here -->
+            </div>
+            <div class="bird-list" id="shop-list">
+                <!-- Bird items will be dynamically loaded here -->
+            </div>
+        </div>
+        
+        <div id="inventory" class="tab-content">
+            <h2>Your Birds</h2>
+            <div class="bird-list">
+                <!-- Player-owned birds will be dynamically loaded here -->
+            </div>
+        </div>
+        
+
+        <!-- Modal for Bird Management -->
+    <div id="bird-management-modal" class="modal" data-bird-id="">
+        <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        <h2 id="bird-name">Bird Name</h2>
+        <div id="bird-details">
+            <!-- Bird details will be inserted here dynamically -->
+        </div>
+        <button class="action-btn" onclick="changeBirdName()">Change Name</button>
+      <!--  <button class="action-btn" onclick="trainBird()">Train Bird</button> -->
+      <!--  <button class="action-btn" onclick="viewXP()">View XP</button> -->
+        <button class="action-btn" onclick="callBird()">Call Bird</button>
+        <button class="action-btn sell-btn" onclick="openSellModal()">Sell Bird</button>
+    </div>
+</div>
+
+<!-- Modal para venda de pássaro -->
+<div id="sell-bird-modal" class="modal" data-bird-id="">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeSellModal()">&times;</button>
+        <h2>Sell Bird</h2>
+        <div id="sell-bird-details">
+            <!-- Detalhes do pássaro serão inseridos aqui -->
+        </div>
+        <div class="sell-options">
+            <button class="action-btn" onclick="sellBirdToSystem()">Sell ​​to the System</button>
+            <div class="player-sell-section">
+                <h3>Sell to Player</h3>
+                <input type="number" id="target-player-id" placeholder="Player ID">
+                <input type="number" id="bird-sell-price" placeholder="Price">
+                <button class="action-btn" onclick="offerBirdToPlayer()">Send offer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para receber oferta de pássaro -->
+<div id="bird-offer-modal" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeOfferModal()">&times;</button>
+        <h2>Bird Offer</h2>
+        <div id="offer-bird-details">
+            <!-- Detalhes da oferta serão inseridos aqui -->
+        </div>
+        <div class="offer-options">
+            <button class="action-btn accept-btn" onclick="acceptBirdOffer()">Accept</button>
+            <button class="action-btn decline-btn" onclick="declineBirdOffer()">Decline</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para mudar nome do pássaro -->
+<div id="change-name-modal" class="modal" data-bird-id="">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeChangeNameModal()">&times;</button>
+        <h2>Change Bird Name</h2>
+        <div id="change-name-details">
+            <!-- Detalhes do pássaro serão inseridos aqui -->
+        </div>
+        <div class="name-change-section">
+            <input type="text" id="new-bird-name" placeholder="New name">
+            <button class="action-btn" onclick="confirmNameChange()">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmação para venda -->
+<div id="confirm-sell-modal" class="modal">
+    <div class="modal-content">
+        <h2>Confirm Sell</h2>
+        <p>Are you sure you want to sell this bird to the system?</p>
+        <div class="confirm-buttons">
+            <button class="action-btn accept-btn" onclick="confirmSellToSystem()">Yes</button>
+            <button class="action-btn decline-btn" onclick="closeConfirmSellModal()">No</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para seleção de outfit do pássaro -->
+<div id="outfit-selection-modal" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeOutfitModal()">&times;</button>
+        <h2>Escolher Variante do Pássaro</h2>
+        <div id="bird-preview">
+            <!-- Imagem do pássaro será exibida aqui -->
+        </div>
+        <div id="outfit-options">
+            <!-- Opções de outfit serão inseridas aqui -->
+        </div>
+        <button class="action-btn" onclick="confirmBirdPurchase()">Confirmar Compra</button>
+    </div>
+</div>
+
+<!-- Player de audio invisivel para sons de papagaio -->
+<audio id="bird-sound-player" style="display: none;"></audio>
+
+<!-- Notifications Container -->
+<div id="notifications-container" class="notifications-container" style="position:fixed !important;top:20px !important;right:20px !important;width:350px !important;display:flex !important;flex-direction:column !important;gap:12px !important;z-index:999999 !important;visibility:visible !important;opacity:1 !important;"></div>
+
+<!-- Purchase Success Overlay -->
+<div id="purchase-success-overlay" class="purchase-success-overlay">
+    <div class="purchase-success-particles" id="success-particles"></div>
+    <div class="purchase-success-content">
+        <div class="purchase-success-icon">
+            <img id="success-bird-img" src="images/animal1.png" alt="Bird">
+        </div>
+        <div class="purchase-success-title">Bird Acquired!</div>
+        <div class="purchase-success-name" id="success-bird-name">Bird Name</div>
+        <div class="purchase-success-variant" id="success-bird-variant">Variant</div>
+    </div>
+</div>
+
+    <script src="menu.js"></script>
+</body>
+</html>

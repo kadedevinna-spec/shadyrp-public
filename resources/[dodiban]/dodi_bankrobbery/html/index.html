@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dial Minigame</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="minigame-container" id="minigameContainer">
+        <div class="dark-overlay"></div>
+        <div class="image-container">
+            <div class="background-image"></div>
+            <div class="door-hinge" id="doorHinge"></div>
+            <canvas id="cuttingCanvas">Canvas is not supported in your browser.</canvas>
+            <div class="cutting-progress" id="cuttingProgress">
+                <div class="progress-header">
+                    <div class="progress-icon">
+                        <img id="progressIcon" src="" alt="Progress Icon">
+                    </div>
+                    <div class="progress-info">
+                        <div class="progress-title">Cutting...</div>
+                        <div class="progress-subtitle">Follow the cutting line at steady speed</div>
+                    </div>
+                    <div class="progress-percentage" id="progressText">0%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Robbery Progress Bar (Independent) -->
+    <div class="robbery-container" id="robberyContainer">
+        <div class="robbery-content">
+            <div class="robbery-header">
+                <div class="robbery-icon">
+                    <img id="robberyIcon" src="images/robbery.png" alt="Robbery Icon">
+                </div>
+                <div class="robbery-text">
+                    <h2 id="robberyTitle">Robbing...</h2>
+                    <p id="robberySubtitle">Stay still</p>
+                </div>
+                <div class="robbery-percentage" id="robberyPercentage">0%</div>
+            </div>
+            <div class="robbery-progress-bar">
+                <div class="robbery-progress-fill" id="robberyProgressFill"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="sabotageContainer" class="hidden">
+        <div class="sabotage-ui">
+            <div class="wire-box">
+                <img src="images/wire_box.png" alt="Wire Box" id="wireBoxImage">
+                <div class="fuses-container">
+                    <svg width="0" height="0">
+                        <defs>
+                            <linearGradient id="wireGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#2a2a2a"/>
+                                <stop offset="25%" style="stop-color:#4a4a4a"/>
+                                <stop offset="50%" style="stop-color:#666"/>
+                                <stop offset="75%" style="stop-color:#4a4a4a"/>
+                                <stop offset="100%" style="stop-color:#2a2a2a"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <img src="images/fuse_place.png" alt="Fuse Place 1" class="fuse-place" id="fusePlace1">
+                    <img src="images/fuse_place.png" alt="Fuse Place 2" class="fuse-place" id="fusePlace2">
+                    <img src="images/fuse_place.png" alt="Fuse Place 3" class="fuse-place" id="fusePlace3">
+                    <img src="images/fuse_place.png" alt="Fuse Place 4" class="fuse-place" id="fusePlace4">
+                    <img src="images/fuse_place.png" alt="Fuse Place 5" class="fuse-place" id="fusePlace5">
+                    <img src="images/fuse_place.png" alt="Fuse Place 6" class="fuse-place" id="fusePlace6">
+                    <svg class="wire-svg" id="wire1">
+                        <path d="M 0 0 Q 15 50 5 100 Q -5 150 10 200 Q 20 250 0 300" stroke="#333" stroke-width="8" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="wire-svg" id="wire2">
+                        <path d="M 0 0 Q -10 40 8 90 Q 18 140 -5 190 Q -15 240 5 300" stroke="#333" stroke-width="8" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="wire-svg" id="wire3">
+                        <path d="M 0 0 Q 20 60 -8 120 Q -18 170 12 220 Q 25 270 0 300" stroke="#333" stroke-width="8" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <img src="images/fuse.png" alt="Fuse 1" class="fuse" id="fuse1">
+                    <img src="images/fuse.png" alt="Fuse 2" class="fuse" id="fuse2">
+                    <img src="images/fuse.png" alt="Fuse 3" class="fuse" id="fuse3">
+                    <img src="images/lever.png" alt="Lever" class="lever" id="lever">
+                </div>
+            </div>
+            <div class="close-button" onclick="closeSabotage()">×</div>
+        </div>
+        
+        <!-- Minigame de cortar fio -->
+        <div id="wireMinigame" class="wire-minigame hidden">
+            <div class="wire-progress-bar">
+                <div class="hit-zone" id="hitZone"></div>
+                <div class="progress-indicator" id="progressIndicator"></div>
+            </div>
+            <div class="minigame-instruction">Press <span class="key-highlight">E</span></div>
+        </div>
+    </div>
+
+
+    <!-- Container principal do minigame -->
+    <div id="dial-container" class="dial-container" style="display: none;">
+        <!-- Viewer 3D para o dial -->
+        <div id="dial-3d-viewer" class="dial-3d-viewer">
+            <div id="model-container" class="model-container"></div>
+        </div>
+        
+        <!-- Interface do minigame -->
+        <div id="dial-interface" class="dial-interface">
+            <div class="dial-header">
+                <h2>SAFE</h2>
+                <p>Turn the dial to find the combination</p>
+            </div>
+            
+            <!-- Mostra os números da combinação -->
+            <div class="combination-display">
+                <div class="combination-numbers">
+                    <span id="digit1" class="digit">-</span>
+                    <span id="digit2" class="digit">-</span>
+                    <span id="digit3" class="digit">-</span>
+                </div>
+                <div class="combination-status">
+                    <span id="status-text">Find the first number</span>
+                </div>
+            </div>
+            
+            <!-- Progresso -->
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            
+            <!-- Instruções -->
+            <div class="instructions">
+                <p>• Move the mouse to rotate the dial</p>
+                <p>• Listen to the click when you are in the right number</p>
+                <p>• Click to confirm each number</p>
+                <p>• Press Esc to leave</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sistema de áudio para geradores -->
+    <audio id="generator-audio" loop preload="auto">
+        <source src="audio/generator_loop.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script type="module" src="scripts.js"></script>
+</body>
+</html>

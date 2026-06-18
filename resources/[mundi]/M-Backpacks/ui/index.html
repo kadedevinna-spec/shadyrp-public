@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Backpacks</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="backpack-container" class="hidden">
+        <div class="backpack-overlay"></div>
+        
+        <!-- Drag and Drop Zone -->
+        <div id="drop-zone" class="drop-zone">
+            <div class="drop-zone-content">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <h3>Drop Item Here</h3>
+                <p>Release to add to backpack</p>
+            </div>
+        </div>
+        
+        <div class="backpack-window">
+            <!-- Header -->
+            <div class="backpack-header">
+                <div class="header-left">
+                    <h2 id="backpack-title">Backpack</h2>
+                    <span id="backpack-tier" class="tier-badge">Tier 1</span>
+                </div>
+                <button class="close-btn" onclick="closeBackpack()">×</button>
+            </div>
+            
+            <!-- Info Bar -->
+            <div class="info-bar">
+                <div class="info-item">
+                    <span class="info-label">Slots:</span>
+                    <span class="info-value" id="slots-usage">0/25</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Weight:</span>
+                    <span class="info-value" id="weight-usage">0/100 kg</span>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="backpack-content">
+                <!-- Instructions -->
+                <div class="instructions">
+                    <p><strong>📦 How to use:</strong> Drag items from your inventory onto this window to store them</p>
+                    <p><strong>📤 Retrieve items:</strong> Click any item below to move it back to your inventory</p>
+                </div>
+                
+                <!-- Backpack Items Grid -->
+                <div class="backpack-items">
+                    <h3>Backpack Contents</h3>
+                    <div id="items-grid" class="items-grid">
+                        <!-- Items will be populated here -->
+                        <div class="empty-message">
+                            <p>Backpack is empty</p>
+                            <small>Drag items from your inventory to fill it</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="backpack-footer">
+                <span class="footer-text">Press ESC to close | Drag items to add | Click items to retrieve</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

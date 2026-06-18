@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fixitfy Advanced Doorlock</title>
+        <link rel="stylesheet" href="./style.css">
+        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    </head>
+<body>
+
+    <!-- ─── Scan Mode Overlay ─── -->
+    <div id="scan-overlay">
+        <!-- Markers are added dynamically by JS -->
+    </div>
+
+    <!-- ─── Door Management Menu ─── -->
+    <div class="container" id="main-container">
+        <div class="menu animate__animated animate__fadeIn">
+
+            <!-- Title -->
+            <div class="menu-title" id="menu-title">CREATE DOORLOCK</div>
+
+            <!-- Scrollable Body -->
+            <div class="menu-body">
+                <!-- Apply Previous Settings -->
+                <div class="form-section no-border" id="section-apply-previous" style="display:none">
+                    <div class="apply-prev-btn" id="btn-apply-previous">↩ APPLY PREVIOUS SETTINGS</div>
+                </div>
+                <!-- Door Name -->
+                <div class="form-section">
+                    <div class="section-label">
+                        <img src="./assets/img/lock.png" class="label-icon" alt="">
+                        DOOR NAME
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" class="fx-input" id="door-name" placeholder="Enter door name..." autocomplete="off">
+                    </div>
+                    <div class="name-error" id="door-name-error" style="display:none">⚠ This name is already in use</div>
+                </div>
+
+                <!-- Permissions -->
+                <div class="form-section">
+                    <div class="section-label">
+                        <img src="./assets/img/job.png" class="label-icon" alt="">
+                        PERMISSIONS
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="perm-tabs">
+                        <div class="perm-tab active" data-tab="job">JOB</div>
+                        <div class="perm-tab" data-tab="charid">CHAR ID</div>
+                        <div class="perm-tab" data-tab="group">GROUP</div>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="perm-tab-body">
+
+                        <!-- Job -->
+                        <div class="perm-content active" id="tab-job">
+                            <div class="perm-add-row">
+                                <div class="input-wrapper flex-1">
+                                    <input type="text" class="fx-input" id="add-job" placeholder="Job name..." autocomplete="off">
+                                </div>
+                                <div class="add-btn" id="btn-add-job">+</div>
+                            </div>
+                            <div class="perm-list" id="list-job">
+                                <div class="perm-empty">No jobs added</div>
+                            </div>
+                        </div>
+
+                        <!-- Char ID -->
+                        <div class="perm-content" id="tab-charid">
+                            <!-- Direct add by Char ID -->
+                            <div class="perm-add-row">
+                                <div class="input-wrapper flex-1">
+                                    <input type="text" class="fx-input" id="add-charid" placeholder="Character ID..." autocomplete="off">
+                                </div>
+                                <div class="add-btn" id="btn-add-charid">+</div>
+                            </div>
+                            <!-- Lookup Char ID from Server ID -->
+                            <div class="perm-add-row" style="margin-top:5px">
+                                <div class="input-wrapper flex-1">
+                                    <input type="number" class="fx-input" id="lookup-server-id" placeholder="Server ID to look up char ID..." autocomplete="off" min="1">
+                                </div>
+                                <div class="add-btn" id="btn-lookup-charid" title="Look up Char ID by Server ID">↗</div>
+                            </div>
+                            <div id="charid-lookup-status" style="font-size:10px; color:#888; padding:2px 4px; margin-bottom:2px; display:none;"></div>
+                            <div class="perm-list" id="list-charid">
+                                <div class="perm-empty">No IDs added</div>
+                            </div>
+                        </div>
+
+                        <!-- Group -->
+                        <div class="perm-content" id="tab-group">
+                            <div class="perm-add-row">
+                                <div class="input-wrapper flex-1">
+                                    <input type="text" class="fx-input" id="add-group" placeholder="Group name..." autocomplete="off">
+                                </div>
+                                <div class="add-btn" id="btn-add-group">+</div>
+                            </div>
+                            <div class="perm-list" id="list-group">
+                                <div class="perm-empty">No groups added</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Settings Toggles -->
+                <div class="form-section">
+                    <div class="section-label">SETTINGS</div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-label">LOCKED</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-locked">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div id="desc-locked" style="font-size:10px;color:#888;padding:0 2px 6px;line-height:1.3;opacity:0.8;display:none;"></div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-label">HIDDEN LOCK</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-hideLock">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div id="desc-hidden-lock" style="font-size:10px;color:#888;padding:0 2px 6px;line-height:1.3;opacity:0.8;display:none;"></div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-label">LOCKPICKABLE</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-lockpick">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div id="desc-lockpickable" style="font-size:10px;color:#888;padding:0 2px 6px;line-height:1.3;opacity:0.8;display:none;"></div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-label">ALERT LAW</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-alert">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div id="desc-alert-law" style="font-size:10px;color:#888;padding:0 2px 6px;line-height:1.3;opacity:0.8;display:none;"></div>
+
+                    <div class="toggle-row">
+                        <div class="toggle-label">DOOR KEY</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-metalKey">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div id="desc-door-key" style="font-size:10px;color:#888;padding:0 2px 6px;line-height:1.3;opacity:0.8;display:none;"></div>
+
+                    <!-- Shown only when DOOR KEY is on -->
+                    <div id="section-metalkey-count" style="display:none;">
+                        <div class="toggle-row no-border" style="margin-bottom:0;">
+                            <div class="toggle-label">CREATE KEYS <span id="metalkey-max-label" style="font-size:10px;opacity:0.55;margin-left:4px;"></span></div>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <div class="input-wrapper" style="width:60px;">
+                                    <input type="number" class="fx-input" id="metalkey-count"
+                                        value="1" min="1" max="3" autocomplete="off"
+                                        style="text-align:center;padding:6px 4px;">
+                                </div>
+                                <div class="add-btn" id="btn-create-keys" style="min-width:58px;font-size:10px;letter-spacing:0.5px;">CREATE</div>
+                            </div>
+                        </div>
+                        <div id="metalkey-create-hint" style="font-size:10px;color:#aaa;padding:2px 4px 4px;font-style:italic;display:none;"></div>
+                    </div>
+                </div>
+
+                <!-- Door Heading -->
+                <div class="form-section" id="section-heading">
+                    <div class="section-label">
+                        <img src="./assets/img/lock.png" class="label-icon" alt="">
+                        DOOR 1
+                    </div>
+                    <div class="heading-row">
+                        <div class="input-wrapper flex-1">
+                            <input type="number" class="fx-input" id="door-heading" placeholder="0.00" step="any" autocomplete="off">
+                        </div>
+                        <div class="add-btn" id="btn-scan-heading" title="Read current door heading">↺</div>
+                    </div>
+                </div>
+
+                <!-- Door 2 Heading (double door — shown when doors[] has 2 entities) -->
+                <div class="form-section no-border" id="section-heading-2" style="display:none">
+                    <div class="section-label">
+                        <img src="./assets/img/lock.png" class="label-icon" alt="">
+                        DOOR 2 HEADING
+                    </div>
+                    <div class="heading-row">
+                        <div class="input-wrapper flex-1">
+                            <input type="number" class="fx-input" id="door-heading-2" placeholder="0.00" step="any" autocomplete="off">
+                        </div>
+                        <div class="add-btn" id="btn-scan-heading-2" title="Read door 2 heading">↺</div>
+                    </div>
+                </div>
+
+                <!-- Double Door -->
+                <div class="form-section" id="section-double-door">
+                    <div class="section-label">
+                        <img src="./assets/img/lock.png" class="label-icon" alt="">
+                        DOOR 2
+                    </div>
+                    <div class="paired-door-row">
+                        <div class="paired-door-name" id="paired-door-name">None (single door)</div>
+                        <div class="add-btn" id="btn-select-paired" title="Select paired door">+</div>
+                        <div class="add-btn" id="btn-clear-paired" title="Clear paired door" style="display:none">×</div>
+                    </div>
+                    <!-- Paired door heading (visible when a paired door is selected) -->
+                    <div id="section-paired-heading" style="display:none">
+                        <div class="paired-heading-label">DOOR 2 HEADING</div>
+                        <div class="heading-row">
+                            <div class="input-wrapper flex-1">
+                                <input type="number" class="fx-input" id="paired-door-heading" placeholder="0.00" step="any" autocomplete="off">
+                            </div>
+                            <div class="add-btn" id="btn-scan-paired-heading" title="Read paired door heading">↺</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Door: Model Display (hidden in normal mode) -->
+                <div class="form-section" id="section-custom-model" style="display:none">
+                    <div class="section-label">
+                        <img src="./assets/img/lock.png" class="label-icon" alt="">
+                        MODEL
+                    </div>
+                    <div class="custom-model-display" id="custom-model-display">—</div>
+                </div>
+
+                <!-- Custom Door: Close/Open Heading (hidden in normal mode) -->
+                <div class="form-section no-border" id="section-custom-headings" style="display:none">
+                    <div class="section-label">
+                        <img src="./assets/img/lock.png" class="label-icon" alt="">
+                        CLOSE / OPEN HEADING
+                    </div>
+                    <div class="paired-heading-label">CLOSE HEADING</div>
+                    <div class="heading-row">
+                        <div class="input-wrapper flex-1">
+                            <input type="number" class="fx-input" id="custom-close-heading" placeholder="0.00" step="0.1" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="paired-heading-label">OPEN HEADING</div>
+                    <div class="heading-row">
+                        <div class="input-wrapper flex-1">
+                            <input type="number" class="fx-input" id="custom-open-heading" placeholder="-90.00" step="0.1" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Icon Offset -->
+                <div class="form-section no-border" id="section-icon-offset">
+                    <div class="section-label">
+                        <img src="./assets/img/lock.png" class="label-icon" alt="">
+                        ICON OFFSET
+                    </div>
+                    <div class="offset-labels">
+                        <span>X</span><span>Y</span><span>Z</span>
+                    </div>
+                    <div class="heading-row">
+                        <div class="input-wrapper flex-1">
+                            <input type="number" class="fx-input" id="icon-offset-x" placeholder="0.00" step="0.05" autocomplete="off">
+                        </div>
+                        <div class="input-wrapper flex-1">
+                            <input type="number" class="fx-input" id="icon-offset-y" placeholder="0.00" step="0.05" autocomplete="off">
+                        </div>
+                        <div class="input-wrapper flex-1">
+                            <input type="number" class="fx-input" id="icon-offset-z" placeholder="0.00" step="0.05" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="menu-footer">
+                <div class="fx-btn btn-cancel" id="btn-cancel">
+                    <img src="./assets/img/cancel.png" class="btn-icon" alt="">
+                    CANCEL
+                </div>
+                <div class="fx-btn btn-delete" id="btn-delete" style="display:none;">
+                    <img src="./assets/img/cancel.png" class="btn-icon" alt="">
+                    DELETE
+                </div>
+                <div class="fx-btn btn-save" id="btn-save">
+                    <img src="./assets/img/okey.png" class="btn-icon" alt="">
+                    SAVE
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ─── Convert Menu Overlay ─── -->
+    <div class="convert-overlay" id="convert-overlay">
+
+        <div class="convert-panel animate__animated animate__fadeIn">
+
+            <!-- Title -->
+            <div class="convert-header">
+                <div class="convert-header-text" id="convert-title-text">CONVERT DOORLOCK</div>
+            </div>
+
+            <!-- Supported Scripts Tags -->
+             
+            <div class="convert-scripts-label">
+                <img src="./assets/img/job.png" class="label-icon" alt="">
+                <span id="convert-scripts-label">SUPPORTED SCRIPTS</span>
+            </div>
+            <div class="convert-scripts-row">
+                <div class="convert-script-tag">🤝 doorlocks/void_doorlocks</div>
+                <div class="convert-script-tag">🤝 gs_doorlock</div>
+                <div class="convert-script-tag">🤝 rsg-doorlock</div>
+                <div class="convert-script-tag">🤝 vorp_doorlocks</div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="convert-body">
+                <div class="section-label">
+                    <img src="./assets/img/lock.png" class="label-icon" alt="">
+                    <span id="convert-paste-label">PASTE LUA TABLE HERE</span>
+                </div>
+                <textarea class="convert-textarea" id="convert-textarea"
+                    placeholder="Config.DoorList = { ... }  or  Config.Doors = { ... }  or  Doors = { ... }"></textarea>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="convert-progress-wrap" id="convert-progress-wrap">
+                <div class="convert-progress-text" id="convert-progress-text"></div>
+                <div class="convert-bar-track">
+                    <div class="convert-bar-fill" id="convert-bar-fill"></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="convert-footer">
+                <div class="fx-btn btn-cancel" id="btn-convert-cancel">
+                    <img src="./assets/img/cancel.png" class="btn-icon" alt="">
+                    <span id="convert-btn-close-text">CLOSE</span>
+                </div>
+                <div class="fx-btn btn-save convert-btn-start" id="btn-convert-start">
+                    <img src="./assets/img/okey.png" class="btn-icon" alt="">
+                    <span id="convert-btn-convert-text">CONVERT</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ─── Custom Door Input Overlay ─── -->
+    <div class="custom-door-overlay" id="custom-door-overlay" style="display:none">
+        <div class="custom-door-panel animate__animated animate__fadeIn">
+            <div class="convert-header">
+                <div class="convert-header-text">CUSTOM DOOR</div>
+            </div>
+            <div class="custom-door-body">
+                <div class="section-label">
+                    <img src="./assets/img/lock.png" class="label-icon" alt="">
+                    MODEL NAME
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="fx-input" id="custom-door-model-input"
+                        placeholder="p_door13x..." autocomplete="off">
+                </div>
+                <div class="name-error" id="custom-door-model-error" style="display:none">⚠ Model not found or invalid</div>
+            </div>
+            <div class="custom-door-footer">
+                <div class="fx-btn btn-cancel" id="btn-custom-door-cancel">
+                    <img src="./assets/img/cancel.png" class="btn-icon" alt="">
+                    CANCEL
+                </div>
+                <div class="fx-btn btn-save" id="btn-custom-door-spawn">
+                    <img src="./assets/img/okey.png" class="btn-icon" alt="">
+                    SPAWN
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── Lockpick Progress Bar ─── -->
+    <div class="fx-progress" id="fx-progress" style="display:none;">
+        <div class="fx-progress-inner">
+            <img src="" id="progressbar-img" class="fx-progress-img">
+            <div id="progressbar-text" class="fx-progress-text">...</div>
+            <div id="progress-bar" class="fx-progress-bar">
+                <div id="progress-fill" class="fx-progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="./main.js" type="text/javascript"></script>
+</html>

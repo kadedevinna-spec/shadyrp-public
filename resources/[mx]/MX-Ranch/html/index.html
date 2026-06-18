@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MX Ranch</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="collect-minigame.css" />
+</head>
+<body>
+  <div id="collectMinigameRoot" class="cmg-root hidden" aria-hidden="true"></div>
+  <div id="overlay" class="overlay hidden"></div>
+  <div id="sellYardOverlay" class="overlay overlay--sell-yard hidden" aria-hidden="true"></div>
+  <div id="walkHud" class="wr-walk-hud hidden" aria-live="polite" aria-hidden="true">
+    <div class="wr-walk-hud__inner">
+      <p id="walkHudLine" class="wr-walk-hud__line"></p>
+      <p id="walkHudHint" class="wr-walk-hud__hint"></p>
+    </div>
+  </div>
+  <div id="animalWorldHud" class="world-animal-hud hidden" aria-hidden="true">
+    <div id="animalWorldCards" class="world-animal-cards"></div>
+  </div>
+  <div id="adminRanchesRoot" class="mx-admin-root hidden" aria-hidden="true">
+    <div class="mx-admin-backdrop" aria-hidden="true"></div>
+    <div class="adm-app mx-admin-adm-app" role="dialog" aria-labelledby="mxAdminRanchesTitle">
+      <div class="adm-main">
+        <header class="adm-header">
+          <div class="adm-store-banner">
+            <div class="adm-store-banner__avatar-wrap">
+              <img id="adminRanchesBannerImage" class="adm-store-banner__avatar" src="img/menu_button_1.png" alt="" />
+            </div>
+            <div class="mx-admin-banner__copy">
+              <h1 id="mxAdminRanchesTitle" class="adm-store-banner__title">Admin · Ranches</h1>
+              <p id="mxAdminRanchesTag" class="mx-admin-banner__tag">Teleport, edit, delete</p>
+            </div>
+          </div>
+          <div class="adm-header__spacer" aria-hidden="true"></div>
+          <div class="actions">
+            <button type="button" id="adminRanchesBtnClose" class="close" title="Close" aria-label="Close">X</button>
+          </div>
+        </header>
+        <main class="content">
+          <section class="adm-section adm-section--shop mx-admin-main-col" aria-label="Ranch list">
+            <div class="mx-admin-toolbar">
+              <input type="search" id="adminRanchesSearch" class="mx-admin-search" placeholder="Search..." autocomplete="off" />
+            </div>
+            <div class="mx-admin-meta-line">
+              <span id="adminRanchesCountMeta">—</span>
+            </div>
+            <div class="mx-admin-table-frame">
+              <div class="mx-admin-table-inner mx-scroll-minimal">
+                <table class="mx-admin-table" aria-label="Ranches">
+                  <thead>
+                    <tr>
+                      <th scope="col" data-admin-th="colId">ID</th>
+                      <th scope="col" data-admin-th="colName">Name</th>
+                      <th scope="col" data-admin-th="colJob">Job</th>
+                      <th scope="col" data-admin-th="colPrice">Price</th>
+                      <th scope="col" data-admin-th="colRadius">Radius</th>
+                      <th scope="col" data-admin-th="colOwned">Owned</th>
+                      <th scope="col" data-admin-th="colOwner">Owner</th>
+                      <th scope="col" data-admin-th="colCoords">Coords</th>
+                      <th scope="col" data-admin-th="colActions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminRanchesTbody"></tbody>
+                </table>
+                <div id="adminRanchesEmptyState" class="mx-admin-empty hidden">No ranches found.</div>
+              </div>
+            </div>
+          </section>
+          <aside class="adm-cart mx-admin-tools mx-scroll-minimal" aria-label="Admin tools">
+            <h3 id="adminRanchesToolsTitle" class="adm-cart__title">Tools</h3>
+            <div class="mx-admin-tools-body">
+              <p id="adminRanchesToolsHint1" class="mx-admin-tools-hint">Search the list. Use row actions to go, edit, or delete.</p>
+              <p id="adminRanchesToolsHint2" class="mx-admin-tools-hint">Esc to close.</p>
+            </div>
+            <div class="mx-admin-tools-footer">
+              <button type="button" class="mx-admin-btn mx-admin-btn--primary" id="adminRanchesRefresh">Refresh list</button>
+              <button type="button" class="mx-admin-btn mx-admin-btn--ghost" id="adminRanchesPlaceNew">Create ranch here</button>
+            </div>
+          </aside>
+        </main>
+      </div>
+    </div>
+
+    <div id="adminRanchesDeleteBackdrop" class="mx-admin-mini-backdrop hidden" aria-hidden="true"></div>
+    <div id="adminRanchesDeleteModal" class="mx-admin-mini-modal hidden" role="alertdialog" aria-labelledby="adminRanchesDeleteHeading">
+      <h2 id="adminRanchesDeleteHeading" class="mx-admin-mini-modal__title">Delete this ranch?</h2>
+      <p id="adminRanchesDeleteText" class="mx-admin-mini-modal__text"></p>
+      <div class="mx-admin-mini-modal__actions">
+        <button type="button" class="mx-admin-btn mx-admin-btn--ghost" id="adminRanchesDeleteCancel">Cancel</button>
+        <button type="button" class="mx-admin-mini-danger" id="adminRanchesDeleteConfirm">Delete</button>
+      </div>
+    </div>
+
+    <div id="adminRanchesEditBackdrop" class="mx-admin-mini-backdrop hidden" aria-hidden="true"></div>
+    <div id="adminRanchesEditModal" class="mx-admin-mini-modal mx-admin-mini-modal--wide hidden" role="dialog" aria-labelledby="adminRanchesEditHeading">
+      <h2 id="adminRanchesEditHeading" class="mx-admin-mini-modal__title">Edit ranch</h2>
+      <p id="adminRanchesEditHint" class="mx-admin-mini-modal__text"></p>
+      <div class="mx-admin-edit-form">
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesEditLabelName" for="adminRanchesEditName">Name</label>
+          <input type="text" id="adminRanchesEditName" class="mx-admin-edit-input" maxlength="40" autocomplete="off" />
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesEditLabelJob" for="adminRanchesEditJob">Job</label>
+          <input type="text" id="adminRanchesEditJob" class="mx-admin-edit-input" maxlength="32" autocomplete="off" />
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesEditLabelPrice" for="adminRanchesEditPrice">Price</label>
+          <input type="number" id="adminRanchesEditPrice" class="mx-admin-edit-input" min="0" step="1" />
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesEditLabelRadius" for="adminRanchesEditRadius">Radius (m)</label>
+          <input type="number" id="adminRanchesEditRadius" class="mx-admin-edit-input" min="10" max="500" step="1" />
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesEditLabelOwner" for="adminRanchesEditOwnerCharId">Owner Char ID</label>
+          <input type="text" id="adminRanchesEditOwnerCharId" class="mx-admin-edit-input" maxlength="64" autocomplete="off" />
+          <p id="adminRanchesEditOwnerHint" class="mx-admin-edit-field-hint"></p>
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesEditLabelOwnerId" for="adminRanchesEditOwnerServerId">Player server ID</label>
+          <input type="number" id="adminRanchesEditOwnerServerId" class="mx-admin-edit-input" min="1" step="1" placeholder="Ex.: 12" />
+          <p id="adminRanchesEditOwnerIdHint" class="mx-admin-edit-field-hint"></p>
+        </div>
+        <label class="mx-admin-edit-check">
+          <input type="checkbox" id="adminRanchesEditNoOwner" />
+          <span id="adminRanchesEditNoOwnerLabel">Ranch for sale (no owner)</span>
+        </label>
+        <label class="mx-admin-edit-check">
+          <input type="checkbox" id="adminRanchesEditUsePosition" />
+          <span id="adminRanchesEditUsePositionLabel">Move NPC and zone to my current position</span>
+        </label>
+        <p id="adminRanchesEditError" class="mx-admin-edit-error hidden" role="alert"></p>
+      </div>
+      <div class="mx-admin-mini-modal__actions">
+        <button type="button" class="mx-admin-btn mx-admin-btn--ghost" id="adminRanchesEditCancel">Cancel</button>
+        <button type="button" class="mx-admin-btn mx-admin-btn--primary" id="adminRanchesEditSave">Save</button>
+      </div>
+    </div>
+
+    <div id="adminRanchesPlaceBackdrop" class="mx-admin-mini-backdrop hidden" aria-hidden="true"></div>
+    <div id="adminRanchesPlaceModal" class="mx-admin-mini-modal mx-admin-mini-modal--wide hidden" role="dialog" aria-labelledby="adminRanchesPlaceHeading">
+      <h2 id="adminRanchesPlaceHeading" class="mx-admin-mini-modal__title">Create ranch</h2>
+      <p id="adminRanchesPlaceHint" class="mx-admin-mini-modal__text">The ranch will be created at your current position (NPC + zone).</p>
+      <div class="mx-admin-edit-form">
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesPlaceLabelName" for="adminRanchesPlaceName">Name</label>
+          <input type="text" id="adminRanchesPlaceName" class="mx-admin-edit-input" maxlength="40" autocomplete="off" />
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesPlaceLabelJob" for="adminRanchesPlaceJob">Job</label>
+          <input type="text" id="adminRanchesPlaceJob" class="mx-admin-edit-input" maxlength="32" autocomplete="off" />
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesPlaceLabelPrice" for="adminRanchesPlacePrice">Price</label>
+          <input type="number" id="adminRanchesPlacePrice" class="mx-admin-edit-input" min="0" step="1" value="0" />
+        </div>
+        <div class="mx-admin-edit-field">
+          <label id="adminRanchesPlaceLabelRadius" for="adminRanchesPlaceRadius">Radius (m)</label>
+          <input type="number" id="adminRanchesPlaceRadius" class="mx-admin-edit-input" min="10" max="500" step="1" value="100" />
+        </div>
+        <p id="adminRanchesPlaceError" class="mx-admin-edit-error hidden" role="alert"></p>
+      </div>
+      <div class="mx-admin-mini-modal__actions">
+        <button type="button" class="mx-admin-btn mx-admin-btn--ghost" id="adminRanchesPlaceCancel">Cancel</button>
+        <button type="button" class="mx-admin-btn mx-admin-btn--primary" id="adminRanchesPlaceSave">Create ranch</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="collect-minigame.js"></script>
+  <script src="script.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

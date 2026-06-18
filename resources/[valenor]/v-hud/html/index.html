@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hud</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="cinematic-bar cinematic-bar-top"></div>
+    <div class="cinematic-bar cinematic-bar-bottom"></div>
+
+    <!-- Vignette Effects (z-index: 1, below HUD) -->
+    <div class="bladder-vignette"></div>
+    <div class="hot-vignette"></div>
+    <div class="cold-vignette"></div>
+    <div class="poison-vignette"></div>
+
+    <div style="display: none;" class="hud-main-container">
+        <div class="compass">
+            <!-- Center highlighting overlay (always stays in center) -->
+            <div class="compass-overlay-selector"></div>
+
+            <!-- The sliding strip container -->
+            <div class="compass-strip-container">
+                <div id="compass-strip" class="compass-strip">
+                    <!-- JS will populate this with: Text -> Line -> Text -> Line ... -->
+                </div>
+            </div>
+
+            <!-- Gradient fades for edges -->
+            <div class="compass-vignette-left"></div>
+            <div class="compass-vignette-right"></div>
+        </div>
+        <div class="details-group">
+            <div class="time">
+                <div class="icon-bg">
+                    <div class="time-icon"></div>
+                </div>
+                <div class="details-title">Time:</div>
+                <div class="details-text">12:00</div>
+            </div>
+            <div class="date">
+                <div class="icon-bg">
+                    <div class="date-icon"></div>
+                </div>
+                <div class="details-title">Date:</div>
+                <div class="details-text">12 April</div>
+            </div>
+            <div class="weather-group">
+                <div class="weather">
+                    <div class="icon-bg">
+                        <div class="weather-icon"></div>
+                    </div>
+                    <div class="details-title">Weather:</div>
+                    <div class="details-text">Sunny</div>
+                </div>
+                <div class="weather-celsius">
+                    <div class="celius-text">12</div>
+                    <div class="celsius-title">’C</div>
+                </div>
+            </div>
+            <div class="time">
+                <div class="icon-bg">
+                    <div class="id-icon"></div>
+                </div>
+                <div class="details-title">ID:</div>
+                <div class="details-text">00001</div>
+            </div>
+            <div class="money">
+                <div class="icon-bg">
+                    <div class="money-icon"></div>
+                </div>
+                <div class="details-title">Balance:</div>
+                <div class="details-text">$5,400.00</div>
+            </div>
+        </div>
+        <div class="weapon-hud-group">
+            <div class="weapon-icon-bg"><img id="weapon-icon-img" src="./img/weapons/weapon_blank.png"
+                    alt="weapon-icon"></div>
+            <div class="weapon-details">
+                <div class="weapon-name">Winchester Carbine</div>
+                <div class="ammo-group">
+                    <div class="max-ammo">100</div>
+                    <div class="max-ammo-text">/</div>
+                    <div class="current-ammo">20</div>
+                </div>
+            </div>
+            <div class="ammo-type"><img src="img/ammo_type.png" alt="weapon-icon"></div>
+        </div>
+        <div class="weapon-hud-group-secondary">
+            <div class="weapon-icon-bg"><img id="weapon-icon-img-secondary" src="./img/weapons/weapon_blank.png"
+                    alt="weapon-icon"></div>
+            <div class="weapon-details">
+                <div class="weapon-name-secondary">Winchester Carbine</div>
+                <div class="ammo-group">
+                    <div class="max-ammo-secondary">100</div>
+                    <div class="max-ammo-text">/</div>
+                    <div class="current-ammo-secondary">20</div>
+                </div>
+            </div>
+            <div class="ammo-type"><img src="img/ammo_type.png" alt="weapon-icon"></div>
+        </div>
+        <div class="horse-hud-group">
+            <div class="horse-hud">
+                <img src="img/horse_icon.png" alt="horse-icon">
+                <div class="horse-speed-details">
+                    <div class="speed">
+                        <div class="default-speed">0</div>
+                        <div class="current-speed">70</div>
+                    </div>
+                    <div class="speed-text">/MPH</div>
+                </div>
+            </div>
+            <div class="horse-stamina">
+                <div class="stamina-line-bg">
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+        <div class="hud-group">
+            <div class="health">
+                <div class="health-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="stamina">
+                <div class="stamina-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="water">
+                <div class="water-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 95;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="hunger">
+                <div class="hunger-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="brain">
+                <div class="brain-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="bath">
+                <div class="bath-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="toilet">
+                <div class="toilet-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="temparature-group">
+                <div class="temparature">
+                    <div class="temparature-icon"></div>
+                    <div class="stroke">
+                        <div class="circle-group">
+                            <div class="circle" style="--p: 65;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="horse-health">
+                <div class="horse-health-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="horse-durabilty">
+                <div class="horse-durabilty-icon"></div>
+                <div class="stroke">
+                    <div class="circle-group">
+                        <div class="circle" style="--p: 65;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="voice">
+            <div class="voice-icon-group">
+                <div class="voice-icon"></div>
+            </div>
+            <div class="sounds">
+                <!-- Dynamic waveform bars will be generated here by JavaScript -->
+            </div>
+        </div>
+        <div class="hud-menu-container">
+            <div class="hud-top-group">
+                <div class="settings-img"></div>
+                <div class="hud-settings-content">
+                    <div class="hud-settings-text">HUD SETTINGS</div>
+                    <div class="hud-settings-desc">Change settings by your liking.</div>
+                </div>
+
+                <div class="settings-close"></div>
+            </div>
+            <div class="hud-middle-group">
+                <div class="category">
+                    <div class="category-item active" data-category="general">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_283)">
+                                    <path
+                                        d="M3.86 0.5H1.46C0.929807 0.5 0.5 0.929807 0.5 1.46V4.82C0.5 5.35019 0.929807 5.78 1.46 5.78H3.86C4.39019 5.78 4.82 5.35019 4.82 4.82V1.46C4.82 0.929807 4.39019 0.5 3.86 0.5Z"
+                                        fill="#0B0B0B" />
+                                    <path
+                                        d="M9.14 0.5H6.74C6.20981 0.5 5.78 0.929807 5.78 1.46V2.9C5.78 3.43019 6.20981 3.86 6.74 3.86H9.14C9.67019 3.86 10.1 3.43019 10.1 2.9V1.46C10.1 0.929807 9.67019 0.5 9.14 0.5Z"
+                                        fill="#0B0B0B" />
+                                    <path
+                                        d="M3.86 6.74H1.46C0.929807 6.74 0.5 7.16981 0.5 7.7V9.14C0.5 9.67019 0.929807 10.1 1.46 10.1H3.86C4.39019 10.1 4.82 9.67019 4.82 9.14V7.7C4.82 7.16981 4.39019 6.74 3.86 6.74Z"
+                                        fill="#0B0B0B" />
+                                    <path
+                                        d="M9.14 4.82H6.74C6.20981 4.82 5.78 5.24981 5.78 5.78V9.14C5.78 9.67019 6.20981 10.1 6.74 10.1H9.14C9.67019 10.1 10.1 9.67019 10.1 9.14V5.78C10.1 5.24981 9.67019 4.82 9.14 4.82Z"
+                                        fill="#0B0B0B" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_283" x="0" y="0" width="10.6016" height="10.6001"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="6268" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_283">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+
+                        </div>
+                        <div class="category-name">General</div>
+                    </div>
+
+                    <div class="category-divide">
+                        <div class="divide-name" data-locale-key="div_display">Display</div>
+                    </div>
+
+                    <div class="category-item" data-category="voice">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1304)">
+                                    <path
+                                        d="M4.47266 7.44736C5.42126 7.44736 6.18692 6.67156 6.18692 5.71054V2.23684C6.18692 1.27579 5.42126 0.5 4.47266 0.5C3.52406 0.5 2.75837 1.27579 2.75837 2.23684V5.71054C2.75837 6.67156 3.52406 7.44736 4.47266 7.44736Z"
+                                        fill="white" fill-opacity="0.65" />
+                                    <path
+                                        d="M7.46253 6.19428C7.50567 5.92953 7.71871 5.71054 7.98696 5.71054C8.2552 5.71054 8.47594 5.9291 8.44116 6.19508C8.25016 7.65579 7.2105 8.86791 5.87385 9.38113C5.41221 9.55838 5.04406 9.96661 5.04406 10.4611V10.9286C5.04406 11.2442 4.78823 11.5 4.47266 11.5C4.15708 11.5 3.90126 11.2442 3.90126 10.9286V10.4611C3.90126 9.96661 3.5331 9.55838 3.07147 9.38113C1.73483 8.86791 0.695163 7.65579 0.504154 6.19509C0.469372 5.92911 0.690118 5.71054 0.95837 5.71054C1.22662 5.71054 1.43967 5.92953 1.48281 6.1943C1.72306 7.66895 3.04646 8.66316 4.47266 8.66316C5.89885 8.66316 7.22228 7.66894 7.46253 6.19428Z"
+                                        fill="white" fill-opacity="0.65" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1304" x="0" y="0" width="8.94531" height="12"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1304">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Voice</div>
+                    </div>
+
+                    <div class="category-item" data-category="weapon">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="7" viewBox="0 0 13 7"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1299)">
+                                    <path
+                                        d="M2.99511 0.840017C2.94163 0.81881 2.88712 0.799997 2.83176 0.783642C2.79083 0.771924 2.7488 0.760698 2.70516 0.751589C2.66118 0.742375 2.61682 0.734884 2.57219 0.729137C2.52771 0.723746 2.48296 0.720615 2.43813 0.719758H2.37263C2.35108 0.719758 2.32979 0.722097 2.30905 0.723943C2.26943 0.727636 2.23009 0.733729 2.1913 0.742185C2.15705 0.749494 2.12336 0.75891 2.09042 0.770373C2.05974 0.780023 2.03318 0.792529 2.0097 0.802179C1.98623 0.811829 1.96713 0.823301 1.95137 0.831918L1.90327 0.860869L1.95857 0.849913C1.97626 0.847058 1.99781 0.844694 2.02186 0.841568C2.04591 0.838441 2.07354 0.837654 2.10479 0.838712C2.13632 0.838831 2.16781 0.84092 2.19904 0.844965C2.23336 0.849223 2.26734 0.85558 2.30078 0.863995C2.3179 0.868426 2.33532 0.872611 2.35272 0.878618C2.37015 0.8846 2.38729 0.889819 2.40469 0.896589C2.43932 0.909653 2.47319 0.924461 2.50614 0.940951C2.53901 0.957913 2.57136 0.975662 2.60177 0.994938C2.63217 1.01426 2.65708 1.03068 2.68194 1.04895C2.76964 0.959338 2.87634 0.888151 2.99511 0.840017ZM10.4886 1.81349C10.4886 1.86191 10.4682 1.90836 10.4319 1.9426C10.3956 1.97684 10.3464 1.99608 10.2951 1.99608H7.5733V1.57873H10.4886V1.81349ZM2.21814 2.10275C1.15423 2.76817 0.203937 4.88599 0.308703 6.30005H2.87931C2.87931 6.30005 2.41217 4.54272 3.05344 3.96417C3.06341 3.9553 3.0739 3.94693 3.0847 3.93807C3.37077 3.45839 3.3763 3.01337 3.09435 2.64245C2.84365 2.31195 2.44729 2.13978 2.21814 2.10275ZM1.87815 5.48748C1.87815 5.54939 1.8587 5.60991 1.82226 5.66139C1.78582 5.71287 1.73401 5.753 1.6734 5.77669C1.61279 5.80039 1.5461 5.80659 1.48176 5.79451C1.41741 5.78244 1.35831 5.75263 1.31192 5.70885C1.26553 5.66508 1.23393 5.6093 1.22113 5.54858C1.20833 5.48786 1.2149 5.42492 1.24 5.36773C1.26511 5.31053 1.30762 5.26164 1.36217 5.22724C1.41672 5.19285 1.48085 5.17449 1.54645 5.17449C1.63442 5.17449 1.71879 5.20747 1.781 5.26617C1.8432 5.32487 1.87815 5.40446 1.87815 5.48748ZM12.2049 0.303443C12.2159 0.300059 12.2276 0.29919 12.239 0.300905C12.2505 0.302621 12.2613 0.306873 12.2707 0.313313C12.28 0.319752 12.2876 0.328195 12.2929 0.337948C12.2981 0.347701 12.3008 0.358486 12.3008 0.369419V1.16138H7.57413V0.537166H11.4375L12.2049 0.303443ZM2.86215 1.8946H2.858C3.09147 2.02198 3.29432 2.19377 3.45367 2.39908C3.82737 2.89001 3.78701 3.39421 3.6386 3.79201C3.779 3.79748 3.90119 3.83374 3.95757 3.90078C4.0936 4.06452 4.26732 4.19693 4.46557 4.28798C4.66382 4.37904 4.88141 4.42636 5.1019 4.42637C5.70808 4.42637 6.28134 4.06589 6.36678 3.40465C6.4778 3.38418 6.58072 3.33527 6.66424 3.26326C6.74775 3.19125 6.80865 3.09894 6.84026 2.99643L7.13131 2.05319V0.357701H3.74196V0.535861H3.45367V1.17206C2.735 1.17337 2.86105 1.8946 2.86105 1.8946H2.86215ZM6.26227 0.946441C6.26227 1.00178 6.23897 1.05485 6.1975 1.09398C6.15604 1.13311 6.0998 1.1551 6.04116 1.1551H4.59166C4.53343 1.15451 4.4778 1.13226 4.43685 1.09319C4.3959 1.05412 4.37292 1.00138 4.37292 0.946428C4.37292 0.891474 4.3959 0.838737 4.43685 0.799668C4.4778 0.760599 4.53343 0.738351 4.59166 0.737754H6.04116C6.0998 0.73776 6.15604 0.75975 6.19751 0.798886C6.23898 0.838021 6.26227 0.891098 6.26227 0.946441ZM6.26227 1.54638C6.26227 1.60172 6.23897 1.65479 6.1975 1.69392C6.15604 1.73305 6.0998 1.75504 6.04116 1.75504H4.59166C4.53343 1.75445 4.4778 1.7322 4.43685 1.69313C4.3959 1.65406 4.37292 1.60132 4.37292 1.54637C4.37292 1.49142 4.3959 1.43868 4.43685 1.39961C4.4778 1.36054 4.53343 1.33829 4.59166 1.33769H6.04116C6.0998 1.3377 6.15604 1.35969 6.19751 1.39883C6.23898 1.43796 6.26227 1.49104 6.26227 1.54638ZM6.04116 2.34196H4.59166C4.56242 2.34226 4.53341 2.33709 4.5063 2.32673C4.47919 2.31638 4.45453 2.30106 4.43374 2.28165C4.41295 2.26224 4.39645 2.23914 4.38518 2.21367C4.37392 2.18821 4.36812 2.16088 4.36812 2.13329C4.36812 2.10569 4.37392 2.07837 4.38518 2.0529C4.39645 2.02744 4.41295 2.00433 4.43374 1.98492C4.45453 1.96552 4.47919 1.95019 4.5063 1.93984C4.53341 1.92949 4.56242 1.92431 4.59166 1.92461H6.04116C6.09939 1.92521 6.15502 1.94746 6.19597 1.98653C6.23693 2.0256 6.2599 2.07833 6.2599 2.13329C6.2599 2.18824 6.23693 2.24098 6.19597 2.28005C6.15502 2.31912 6.09939 2.34137 6.04116 2.34196ZM4.187 3.41142C4.187 3.06371 4.40811 3.03425 4.72875 3.04338C4.73566 3.07494 4.74341 3.10753 4.7528 3.14094C4.76412 3.17979 4.77628 3.21918 4.79149 3.25911C4.8067 3.29899 4.82358 3.33734 4.8421 3.37727C4.86096 3.4157 4.88199 3.45314 4.9051 3.48943C4.91616 3.5074 4.92805 3.52464 4.94047 3.5416C4.95291 3.55854 4.96536 3.57446 4.97809 3.5901C5.00248 3.61985 5.02889 3.64809 5.05713 3.67463C5.08193 3.69815 5.10833 3.72011 5.13618 3.74036C5.16106 3.75967 5.1865 3.77426 5.2075 3.78783C5.2285 3.80139 5.24924 3.81077 5.26525 3.8186L5.31696 3.84182L5.2777 3.80349C5.26583 3.79096 5.252 3.77505 5.23653 3.7573C5.2193 3.73739 5.20394 3.7161 5.19062 3.69366C5.17398 3.66853 5.15913 3.64239 5.14614 3.6154C5.1317 3.58568 5.11933 3.55509 5.1091 3.52385C5.10385 3.50768 5.09858 3.4915 5.09472 3.47456C5.09086 3.45758 5.08614 3.44091 5.08312 3.42237C5.07645 3.38786 5.07175 3.35303 5.06903 3.31804C5.06642 3.28332 5.06558 3.24851 5.06652 3.21371C5.06762 3.17979 5.06984 3.1451 5.07315 3.11224C5.07537 3.09266 5.07785 3.07391 5.08064 3.05537H5.11103C5.62129 3.05537 6.03479 2.9372 6.03479 3.41169C6.03472 3.64293 5.93731 3.86467 5.76399 4.02813C5.59068 4.19159 5.35565 4.28338 5.11061 4.28332C4.86557 4.28325 4.6306 4.19132 4.45739 4.02776C4.28417 3.86421 4.1869 3.64241 4.18698 3.41117L4.187 3.41142Z"
+                                        fill="white" fill-opacity="0.65" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1299" x="0.000781238" y="4.88162e-05" width="12.6"
+                                        height="6.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="0.60000002384185791" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1299">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Weapon</div>
+                    </div>
+
+                    <div class="category-item" data-category="time">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1294)">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M5.30078 10.3C8.06223 10.3 10.3008 8.06149 10.3008 5.30005C10.3008 2.53863 8.06223 0.300049 5.30078 0.300049C2.53936 0.300049 0.300781 2.53863 0.300781 5.30005C0.300781 8.06149 2.53936 10.3 5.30078 10.3ZM5.85634 2.24449C5.85634 1.93767 5.60761 1.68894 5.30078 1.68894C4.99395 1.68894 4.74523 1.93767 4.74523 2.24449V5.16116C4.74523 5.54472 5.05611 5.8556 5.43967 5.8556H7.24523C7.55206 5.8556 7.80078 5.60688 7.80078 5.30005C7.80078 4.99322 7.55206 4.74449 7.24523 4.74449H5.85634V2.24449Z"
+                                        fill="white" fill-opacity="0.65" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1294" x="0.000781238" y="4.88162e-05" width="10.6"
+                                        height="10.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.66666668653488159 0.66666668653488159" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="0.60000002384185791" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1294">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Time</div>
+                    </div>
+
+                    <div class="category-item" data-category="date">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="12" viewBox="0 0 11 12"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1289)">
+                                    <path
+                                        d="M9.91354 4.32558H0.665246C0.460235 4.32558 0.300781 4.48941 0.300781 4.70005V10.2C0.300781 10.8086 0.779141 11.3 1.3714 11.3H9.20739C9.79964 11.3 10.278 10.8086 10.278 10.2V4.70005C10.278 4.48941 10.1185 4.32558 9.91354 4.32558ZM3.51263 9.45111C3.51263 9.66175 3.35317 9.82558 3.14816 9.82558H2.44201C2.237 9.82558 2.07755 9.66175 2.07755 9.45111V8.72558C2.07755 8.51494 2.237 8.35111 2.44201 8.35111H3.14816C3.35317 8.35111 3.51263 8.51494 3.51263 8.72558V9.45111ZM5.99554 9.45111C5.99554 9.66175 5.83609 9.82558 5.63108 9.82558H4.92493C4.71992 9.82558 4.56046 9.66175 4.56046 9.45111V8.72558C4.56046 8.51494 4.71992 8.35111 4.92493 8.35111H5.63108C5.83609 8.35111 5.99554 8.51494 5.99554 8.72558V9.45111ZM5.99554 6.90005C5.99554 7.11069 5.83609 7.27452 5.63108 7.27452H4.92493C4.71992 7.27452 4.56046 7.11069 4.56046 6.90005V6.17452C4.56046 5.96388 4.71992 5.80005 4.92493 5.80005H5.63108C5.83609 5.80005 5.99554 5.96388 5.99554 6.17452V6.90005ZM8.50124 6.90005C8.50124 7.11069 8.34178 7.27452 8.13677 7.27452H7.43062C7.22561 7.27452 7.06616 7.11069 7.06616 6.90005V6.17452C7.06616 5.96388 7.22561 5.80005 7.43062 5.80005H8.13677C8.34178 5.80005 8.50124 5.96388 8.50124 6.17452V6.90005ZM9.20739 1.40005H8.31901V1.02558C8.31901 0.627708 8.0001 0.300049 7.61285 0.300049C7.22561 0.300049 6.9067 0.627708 6.9067 1.02558V1.40005H3.69486V1.02558C3.69486 0.627708 3.37595 0.300049 2.98871 0.300049C2.60146 0.300049 2.28256 0.627708 2.28256 1.02558V1.40005H1.3714C0.779141 1.40005 0.300781 1.89154 0.300781 2.50005V2.87452C0.300781 3.08516 0.460235 3.24899 0.665246 3.24899H9.93632C10.1413 3.24899 10.3008 3.08516 10.3008 2.87452V2.50005C10.278 1.89154 9.79964 1.40005 9.20739 1.40005Z"
+                                        fill="white" fill-opacity="0.65" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1289" x="0.000781238" y="4.88162e-05" width="10.6"
+                                        height="11.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.66666668653488159 0.66666668653488159" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="0.60000002384185791" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1289">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Date</div>
+                    </div>
+
+                    <div class="category-item" data-category="weather">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="10" viewBox="0 0 13 10"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1283)">
+                                    <path
+                                        d="M1.63243 5.11486C1.74378 5.00433 1.86436 4.90284 1.99304 4.81118C1.61161 4.4435 1.37544 3.93454 1.37544 3.37178C1.37544 2.25106 2.31216 1.34233 3.46765 1.34233C4.26026 1.34233 4.94958 1.76978 5.30465 2.4C5.57927 2.21819 5.88136 2.07326 6.20343 1.97141L6.219 1.92971C6.23048 1.89857 6.22732 1.86435 6.21028 1.83571C6.19333 1.80727 6.16422 1.78747 6.13082 1.78151L5.34211 1.64428C5.29465 1.63583 5.2575 1.59988 5.24887 1.55376L5.10731 0.78861C5.10126 0.756327 5.08097 0.727864 5.05153 0.71154C5.02209 0.695013 4.98673 0.691943 4.95473 0.703083L4.20059 0.966029C4.1553 0.981806 4.10459 0.968711 4.07348 0.932973L3.55573 0.339834C3.53384 0.314462 3.50154 0.300049 3.46765 0.300049C3.43376 0.300049 3.40158 0.314462 3.37967 0.339834L2.86182 0.932973C2.83071 0.968734 2.78007 0.981806 2.73481 0.966233L1.98075 0.703265C1.94876 0.692125 1.9134 0.695194 1.88396 0.71154C1.85454 0.728068 1.83413 0.756327 1.82808 0.78861L1.68643 1.55376C1.6779 1.59988 1.64075 1.63583 1.59329 1.64428L0.804569 1.78133C0.771194 1.78747 0.742062 1.80706 0.725023 1.83553C0.708077 1.86417 0.704913 1.89836 0.716398 1.92951L0.987475 2.66103C1.00362 2.70505 0.990147 2.75424 0.953397 2.78441L0.341703 3.28645C0.315734 3.30778 0.300781 3.33913 0.300781 3.3718C0.300781 3.40485 0.315734 3.436 0.341703 3.45732L0.953374 3.95953C0.990124 3.98972 1.0036 4.03892 0.987358 4.08293L0.716374 4.81425C0.70489 4.84539 0.708054 4.87959 0.724999 4.90823C0.742038 4.93667 0.771171 4.95629 0.804546 4.96243L1.59326 5.09965C1.60754 5.10218 1.62043 5.10775 1.63243 5.11486Z"
+                                        fill="white" fill-opacity="0.65" />
+                                    <path
+                                        d="M10.2658 5.3528C10.265 5.3528 10.2642 5.353 10.2634 5.353C10.2646 5.32013 10.2658 5.28726 10.2658 5.25422C10.2658 3.67355 8.94496 2.39236 7.31563 2.39236C5.78953 2.39236 4.53366 3.51671 4.3811 4.95825C4.16712 4.89404 3.93984 4.85944 3.70413 4.85944C2.43999 4.85944 1.41519 5.8535 1.41519 7.07977C1.41519 8.30599 2.43999 9.30005 3.70413 9.30005H10.2658C11.3897 9.30005 12.3008 8.41652 12.3008 7.32655C12.3008 6.23635 11.3897 5.3528 10.2658 5.3528Z"
+                                        fill="white" fill-opacity="0.65" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1283" x="0.000781238" y="4.88162e-05" width="12.6"
+                                        height="9.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.66666668653488159 0.66666668653488159" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="0.60000002384185791" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1283">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Weather</div>
+                    </div>
+
+                    <div class="category-item" data-category="playerid">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="11" viewBox="0 0 9 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1277)">
+                                    <path
+                                        d="M4.30078 4.51058C5.56315 4.51058 6.5865 3.56802 6.5865 2.40531C6.5865 1.24261 5.56315 0.300049 4.30078 0.300049C3.03842 0.300049 2.01507 1.24261 2.01507 2.40531C2.01507 3.56802 3.03842 4.51058 4.30078 4.51058Z"
+                                        fill="white" fill-opacity="0.65" />
+                                    <path
+                                        d="M4.30078 10.3C6.50992 10.3 8.30078 9.35749 8.30078 8.19479C8.30078 7.03208 6.50992 6.08952 4.30078 6.08952C2.09164 6.08952 0.300781 7.03208 0.300781 8.19479C0.300781 9.35749 2.09164 10.3 4.30078 10.3Z"
+                                        fill="white" fill-opacity="0.65" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1277" x="0.000781238" y="4.88162e-05" width="8.6"
+                                        height="10.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.66666668653488159 0.66666668653488159" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="0.60000002384185791" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1277">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Player ID</div>
+                    </div>
+
+                    <div class="category-item" data-category="money">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1271)">
+                                    <path
+                                        d="M6.55078 4.30005L6.53328 4.23055C6.46684 3.96482 6.31349 3.72891 6.09761 3.56032C5.88173 3.39173 5.61569 3.30012 5.34178 3.30005H5.08078C4.86692 3.30011 4.65975 3.37464 4.49485 3.51084C4.32996 3.64703 4.21764 3.83639 4.17718 4.04639C4.13672 4.2564 4.17064 4.47393 4.27312 4.66165C4.3756 4.84936 4.54025 4.99553 4.73878 5.07505L5.86278 5.52505C6.06131 5.60457 6.22596 5.75074 6.32844 5.93845C6.43092 6.12616 6.46485 6.3437 6.42438 6.5537C6.38392 6.76371 6.2716 6.95307 6.10671 7.08926C5.94182 7.22546 5.73465 7.29999 5.52078 7.30005H5.26028C4.98628 7.30009 4.72013 7.20853 4.50415 7.03993C4.28817 6.87133 4.13475 6.63536 4.06828 6.36955L4.05078 6.30005M5.30078 2.30005V3.30005M5.30078 7.30005V8.30005M9.80078 5.30005C9.80078 5.891 9.68439 6.47616 9.45824 7.02212C9.23209 7.56809 8.90063 8.06417 8.48276 8.48203C8.0649 8.89989 7.56882 9.23136 7.02286 9.45751C6.47689 9.68365 5.89173 9.80005 5.30078 9.80005C4.70983 9.80005 4.12467 9.68365 3.57871 9.45751C3.03274 9.23136 2.53666 8.89989 2.1188 8.48203C1.70094 8.06417 1.36947 7.56809 1.14332 7.02212C0.917177 6.47616 0.800781 5.891 0.800781 5.30005C0.800781 4.10657 1.27489 2.96198 2.1188 2.11807C2.96271 1.27415 4.10731 0.800049 5.30078 0.800049C6.49426 0.800049 7.63885 1.27415 8.48276 2.11807C9.32668 2.96198 9.80078 4.10657 9.80078 5.30005Z"
+                                        stroke="white" stroke-opacity="0.65" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1271" x="0.000781238" y="4.88162e-05" width="10.6"
+                                        height="10.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.66666668653488159 0.66666668653488159" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="0.60000002384185791" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1271">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Money</div>
+                    </div>
+
+                    <div class="category-divide">
+                        <div class="divide-name" data-locale-key="div_player_meta">Player Metabolism</div>
+                    </div>
+
+                    <div class="category-item" data-category="health">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_684)">
+                                    <path
+                                        d="M1.27665 5.15598L5.5 9.5L9.72337 5.15598C10.2206 4.64449 10.5 3.95077 10.5 3.22741V3.10508C10.5 1.66634 9.36606 0.5 7.96731 0.5C7.19787 0.5 6.47021 0.859736 5.98957 1.4777L5.5 2.10714L5.01043 1.4777C4.52979 0.859736 3.80211 0.5 3.03271 0.5C1.63394 0.5 0.5 1.66634 0.5 3.10508V3.22741C0.5 3.95077 0.779369 4.64449 1.27665 5.15598Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_684" x="0" y="0" width="11" height="10"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_684">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Health</div>
+                    </div>
+
+                    <div class="category-item" data-category="stamina">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="7" height="11" viewBox="0 0 7 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_687)">
+                                    <path
+                                        d="M6.48798 5.36893C6.46927 5.30107 6.43646 5.23792 6.39169 5.18363C6.34692 5.12934 6.2912 5.08512 6.22818 5.05387L4.53449 4.2137L4.98914 1.0681C5.00409 0.959081 4.9827 0.848172 4.92829 0.752559C4.87387 0.656945 4.78947 0.581966 4.68816 0.539239C4.58686 0.496512 4.4743 0.488423 4.36793 0.516227C4.26157 0.54403 4.16733 0.606173 4.09983 0.693026L0.602535 5.19389C0.555918 5.255 0.524004 5.32604 0.509273 5.4015C0.494543 5.47696 0.497393 5.5548 0.517601 5.62898C0.537446 5.70387 0.574404 5.77312 0.625559 5.83126C0.676714 5.88941 0.740667 5.93487 0.812373 5.96404L2.94572 6.81921L2.49107 9.92981C2.47562 10.0415 2.4983 10.1551 2.55543 10.2522C2.61256 10.3493 2.7008 10.4243 2.80583 10.4649C2.86438 10.4892 2.92732 10.5011 2.99069 10.4999C3.07298 10.4995 3.15389 10.4787 3.22623 10.4395C3.29857 10.4002 3.36011 10.3437 3.40537 10.2749L6.40305 5.77401C6.44527 5.71647 6.4747 5.65055 6.48935 5.58067C6.504 5.5108 6.50353 5.4386 6.48798 5.36893Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_687" x="0" y="0" width="7" height="11"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_687">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Stamina</div>
+                    </div>
+
+                    <div class="category-item" data-category="water">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="11" viewBox="0 0 9 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_690)">
+                                    <path
+                                        d="M4.07143 10.5C3.12423 10.5 2.21582 10.1237 1.54605 9.45395C0.876275 8.78418 0.5 7.87577 0.5 6.92857C0.5 4.54762 4.07143 0.5 4.07143 0.5C4.07143 0.5 7.64286 4.54762 7.64286 6.92857C7.64286 7.87577 7.26658 8.78418 6.59681 9.45395C5.92704 10.1237 5.01863 10.5 4.07143 10.5Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_690" x="0" y="0" width="8.14453" height="11"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_690">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Water</div>
+                    </div>
+
+                    <div class="category-item" data-category="hungry">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_693)">
+                                    <path
+                                        d="M5.53583 0.500014C5.00656 0.497859 4.57438 0.921527 4.73627 1.42543C4.85679 1.80058 5.07684 2.23448 5.47729 2.61669C5.88145 3.00244 6.05953 3.64661 6.14493 4.19875C6.1622 4.31042 6.19546 4.42435 6.2507 4.53649C6.42246 4.8852 6.52507 5.34619 6.39896 5.71388C6.38471 5.75543 6.3712 5.79871 6.35872 5.84363C6.24809 6.24209 6.06957 6.60823 5.66699 6.70281C5.30124 6.78874 4.7036 7.30684 4.33039 7.3502C4.18784 7.36676 4.03212 7.40466 3.87002 7.47615C3.52502 7.62831 3.12698 7.70483 2.76056 7.61586C1.93344 7.41502 0.526674 7.43514 0.500374 9.88274C0.497614 10.1396 0.722083 10.3379 0.97821 10.3181C1.24818 10.2972 1.44305 10.0462 1.44653 9.77549C1.45341 9.23948 1.6159 8.48163 2.49943 8.58853C2.70321 8.61319 2.8755 8.73884 3.019 8.88563C3.70076 9.583 5.97457 11.5124 8.92931 9.82365C11.3226 8.45326 11.7164 5.77096 11.4101 4.29612C11.1635 3.09019 10.2805 0.649174 7.16278 1.74745C6.98122 1.81141 6.77877 1.83667 6.62209 1.72484C6.45612 1.60637 6.25337 1.38276 6.14416 0.967914C6.06881 0.68167 5.9014 0.501703 5.6054 0.500318C5.58258 0.500211 5.55935 0.50011 5.53583 0.500014Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_693" x="0" y="0" width="12" height="10.9983"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_693">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Hungry</div>
+                    </div>
+
+                    <div class="category-item" data-category="stress">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_695)">
+                                    <path
+                                        d="M10.3546 6.34353C10.2619 6.18736 10.1307 6.05998 9.9748 5.97544C9.94185 5.95724 9.90584 5.9408 9.86742 5.92584H9.86195C9.81652 5.92584 9.77307 5.91146 9.73648 5.88488C9.66805 5.86918 9.59781 5.86125 9.52728 5.86125C9.30269 5.86125 9.09197 5.93902 8.91769 6.08609C8.87859 6.11911 8.82951 6.13731 8.77933 6.13731C8.71216 6.13731 8.64951 6.10605 8.60744 6.05144C8.57043 6.00345 8.55345 5.94328 8.55978 5.88192C8.56593 5.82042 8.59468 5.76538 8.64052 5.72649C8.89037 5.51545 9.20512 5.39921 9.52687 5.39921C9.62951 5.39921 9.73213 5.41095 9.83279 5.43444C10.0212 5.27827 10.1404 5.0568 10.1701 4.80554C10.1749 4.76592 10.1773 4.72599 10.1773 4.68651C10.1773 4.45639 10.0968 4.2333 9.95057 4.05894C9.8032 3.88341 9.60006 3.77069 9.3784 3.74191C9.35148 3.73839 9.3243 3.73606 9.29722 3.73516C9.2773 3.75879 9.25656 3.78212 9.23512 3.80474C9.14818 3.89631 9.04107 3.97939 8.90748 4.05908C8.80681 4.11883 8.69267 4.17518 8.56832 4.22656C8.35285 4.31535 8.18404 4.35776 8.18236 4.35806C8.16609 4.36217 8.14871 4.36424 8.13132 4.36424C8.02912 4.36424 7.94107 4.29174 7.91683 4.18781C7.90294 4.12766 7.91234 4.06571 7.94304 4.01316C7.97291 3.96166 8.01959 3.92526 8.07511 3.90999L8.07945 3.90897L8.11955 4.01803L8.09193 3.90545L8.13162 3.89415C8.16722 3.88358 8.21769 3.86759 8.27742 3.84647C8.38537 3.80786 8.54449 3.74373 8.68947 3.65742C8.78509 3.60062 8.86543 3.53912 8.9215 3.47985C8.95361 3.44579 8.98502 3.40823 9.01502 3.36787L9.02931 3.34936C9.16713 3.15873 9.24689 2.91906 9.24676 2.6832C9.24648 2.43956 9.16431 2.21457 9.00912 2.03228C8.82474 1.81625 8.56019 1.69222 8.28314 1.69222C8.0441 1.69222 7.81416 1.78409 7.63583 1.95082C7.59533 1.98869 7.54316 2.00952 7.4889 2.00952C7.42595 2.00952 7.36593 1.98135 7.32415 1.9322C7.28505 1.88625 7.26529 1.82696 7.26849 1.76546C7.27187 1.70382 7.29794 1.6473 7.34183 1.60621C7.43744 1.51684 7.5433 1.44196 7.65726 1.38298C7.62921 1.16239 7.53277 0.957212 7.38107 0.798408C7.19726 0.605992 6.95304 0.500164 6.69337 0.500041C6.43357 0.500164 6.18935 0.605992 6.00556 0.798408C5.82189 0.990682 5.72081 1.2465 5.72067 1.51829V3.17823H6.62693C6.74861 3.17823 6.84759 3.282 6.84759 3.40923C6.84759 3.53661 6.74861 3.64025 6.62693 3.64025H5.72067V4.7799C5.98355 4.79281 6.20591 4.82967 6.39812 4.89189C6.62734 4.9657 6.81564 5.07931 6.95738 5.22916C7.04109 5.31765 7.11173 5.42215 7.16753 5.53974C7.24003 5.69339 7.27886 5.84984 7.30466 5.96902C7.31882 6.03508 7.33117 6.10036 7.34308 6.16407C7.36355 6.27195 7.38275 6.37381 7.40828 6.46406C7.43169 6.54713 7.45831 6.61374 7.49001 6.6679C7.52914 6.73541 7.57638 6.7862 7.63833 6.82818C7.72654 6.88718 7.84289 6.92593 7.9939 6.94648C8.05195 6.9541 8.10396 6.98522 8.14011 7.03395C8.17629 7.08297 8.19199 7.14374 8.18457 7.20479C8.17027 7.31986 8.07619 7.40645 7.96586 7.40645L7.93724 7.40439C7.75259 7.37956 7.59908 7.33174 7.46771 7.25836C7.34265 7.18878 7.2382 7.09426 7.15745 6.97788C7.11035 6.91066 7.07109 6.83625 7.0373 6.75097C7.00238 6.66291 6.97476 6.56796 6.94757 6.44306C6.93368 6.37849 6.92163 6.3139 6.90956 6.24991C6.89722 6.18474 6.88503 6.12003 6.87101 6.05692C6.83062 5.87229 6.7828 5.74532 6.71579 5.64524C6.67036 5.57699 6.61556 5.51974 6.54798 5.47028C6.45628 5.40336 6.34314 5.35215 6.2021 5.31369C6.06597 5.27656 5.90446 5.25247 5.72065 5.24235V9.48173C5.72079 9.75354 5.82189 10.0094 6.0054 10.2018C6.18935 10.394 6.43357 10.4999 6.69337 10.5C6.95302 10.4999 7.19724 10.394 7.38107 10.2018C7.56474 10.0092 7.66595 9.75354 7.66595 9.48173C7.66609 9.33452 7.62753 9.17294 7.55996 9.03834C7.48312 8.88436 7.37615 8.77079 7.24226 8.70033C7.13878 8.64633 7.02425 8.61992 6.89204 8.61961C6.77048 8.61961 6.6715 8.51613 6.6715 8.3889C6.6715 8.26134 6.77048 8.15774 6.89216 8.15774C7.04288 8.15774 7.18589 8.18284 7.31726 8.23244C7.44021 8.27867 7.55351 8.34662 7.65388 8.4341C7.82914 8.58747 7.9622 8.7978 8.03875 9.04229C8.08361 9.18598 8.10716 9.33787 8.10716 9.48171C8.1073 9.59647 8.09468 9.71036 8.06974 9.82162C8.17154 9.85802 8.27935 9.87709 8.38589 9.87709C8.62394 9.87695 8.85334 9.7855 9.03138 9.61966C9.23861 9.42665 9.3575 9.14926 9.35763 8.85854C9.35763 8.73539 9.3366 8.61476 9.29552 8.49984C9.25375 8.38344 9.19178 8.27644 9.11172 8.18209C9.03095 8.08683 9.03922 7.94064 9.12994 7.85597C9.1706 7.81825 9.22262 7.7977 9.27658 7.7977C9.33967 7.7977 9.39982 7.82588 9.44174 7.87534L9.45703 7.89368L9.46713 7.89545C9.474 7.89648 9.47834 7.89691 9.48857 7.89736C9.49754 7.8975 9.51002 7.89764 9.52726 7.89764C9.78691 7.8975 10.0313 7.79167 10.2151 7.59942C10.3988 7.40686 10.4999 7.1512 10.5 6.87937C10.4999 6.68931 10.4495 6.50395 10.3546 6.34353Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M4.30675 0.5C4.04694 0.500123 3.80272 0.605951 3.61891 0.798367C3.46721 0.957171 3.37075 1.16251 3.34272 1.38279C3.45643 1.4418 3.56227 1.51649 3.65803 1.60602L3.6736 1.62203L3.68973 1.64139L3.72212 1.67867C3.75141 1.71183 3.79403 1.75939 3.84618 1.81398C3.94053 1.9132 4.08508 2.05616 4.23833 2.17458C4.33997 2.25326 4.43516 2.31284 4.51395 2.34704C4.56864 2.37082 4.60677 2.37888 4.62919 2.38154C4.68794 2.38843 4.74052 2.41881 4.77724 2.46694C4.81411 2.51509 4.83079 2.5754 4.82419 2.63676C4.81171 2.75388 4.71751 2.84224 4.60507 2.84224L4.58067 2.84079C4.50524 2.83198 4.42813 2.80996 4.34485 2.77371C4.27559 2.74361 4.20493 2.70489 4.1285 2.65512C4.00864 2.5769 3.87923 2.47356 3.74393 2.34823C3.54585 2.16448 3.39428 1.98865 3.3553 1.94256C3.17795 1.78098 2.95151 1.69204 2.71668 1.69204C2.43977 1.69218 2.17522 1.81606 1.991 2.03209C1.83158 2.21864 1.74397 2.45948 1.74383 2.70971C1.74383 2.87966 1.78434 3.04611 1.86145 3.19508H1.8641C1.93688 3.19508 2.01006 3.2008 2.08143 3.2124C2.20186 3.23207 2.28444 3.3502 2.26592 3.47599C2.24895 3.58944 2.15741 3.67178 2.04805 3.67178C2.03684 3.67178 2.02534 3.67088 2.01385 3.66912C1.96506 3.66106 1.91457 3.6571 1.8641 3.6571C1.85246 3.6571 1.84098 3.65724 1.82918 3.65753C1.57598 3.66707 1.33932 3.77758 1.16322 3.96881C0.987696 4.15962 0.891095 4.41028 0.891095 4.67446C0.891095 4.68665 0.891231 4.69898 0.891524 4.71131C0.900763 4.98416 1.01504 5.24159 1.20697 5.42577C1.29502 5.40817 1.38418 5.39921 1.47266 5.39921C1.79485 5.39921 2.10959 5.51545 2.3593 5.72649L2.38118 5.74734L2.39787 5.76701C2.40545 5.77566 2.41707 5.78842 2.43237 5.80459C2.47569 5.85037 2.52252 5.89529 2.57145 5.93829C2.67983 6.0334 2.85157 6.16446 3.0553 6.24915C3.19422 6.30683 3.33092 6.33604 3.46147 6.33604C3.58315 6.33604 3.68213 6.43964 3.68213 6.56704C3.68213 6.69444 3.58315 6.79806 3.46147 6.79806C3.27428 6.7979 3.08292 6.7577 2.89252 6.67845C2.74446 6.61683 2.59655 6.53167 2.45272 6.42527C2.25293 6.2772 2.1158 6.12852 2.06983 6.07581C1.89782 5.93551 1.69156 5.86125 1.47272 5.86125C1.315 5.86125 1.16442 5.89956 1.0252 5.97544C0.869434 6.05998 0.738067 6.18736 0.645391 6.34353C0.550469 6.50394 0.500156 6.68931 0.5 6.87952C0.500156 7.15118 0.601231 7.40686 0.784883 7.5994C0.968692 7.79167 1.21305 7.89748 1.47272 7.89762C1.50483 7.89762 1.52026 7.89748 1.53315 7.89603L1.54184 7.89484L1.55824 7.87531C1.60016 7.82586 1.66031 7.79768 1.7234 7.79768C1.77739 7.79768 1.8294 7.81823 1.8699 7.85595C1.91393 7.89689 1.94016 7.9534 1.94366 8.01519C1.94701 8.07669 1.92739 8.13598 1.88815 8.18206C1.80823 8.27642 1.74627 8.38358 1.70448 8.49996C1.66326 8.61488 1.64237 8.73537 1.64237 8.85852C1.64248 9.14912 1.76139 9.42651 1.96846 9.61964C2.14666 9.78547 2.37604 9.87693 2.61409 9.87707C2.72065 9.87707 2.82846 9.858 2.93024 9.8216C2.90528 9.71064 2.8928 9.59676 2.8928 9.48169C2.8928 9.29778 2.9301 9.10802 3.00047 8.93235C3.07956 8.7348 3.19899 8.56263 3.34594 8.43437C3.38561 8.39973 3.43581 8.38066 3.48725 8.38066C3.55303 8.38066 3.61469 8.4109 3.65676 8.46373C3.73444 8.56148 3.72196 8.70736 3.62874 8.78898C3.53577 8.86999 3.45922 8.98126 3.40721 9.11113C3.35997 9.22898 3.33389 9.36063 3.33403 9.48173C3.33403 9.75354 3.43524 10.0092 3.61891 10.2018C3.80272 10.394 4.04696 10.4999 4.30675 10.5C4.56639 10.4999 4.81077 10.394 4.99458 10.2018C5.17809 10.0094 5.27919 9.75354 5.27933 9.48173V7.63056H4.45577C4.33423 7.63056 4.23524 7.52708 4.23524 7.39968C4.23524 7.2723 4.33423 7.16866 4.45577 7.16866H5.27933V5.76468C5.18565 5.7195 5.08331 5.6957 4.97983 5.69558C4.90722 5.69558 4.8346 5.70731 4.76407 5.73021C4.57956 5.79699 4.39352 5.83162 4.21448 5.83162C3.87366 5.83162 3.56311 5.70482 3.33823 5.47468C3.1244 5.25629 3.00159 4.95513 3.00147 4.64823C3.00133 4.3754 3.09426 4.11459 3.27065 3.894C3.3127 3.84115 3.3744 3.81107 3.44001 3.81107C3.49161 3.81107 3.5418 3.83017 3.58133 3.86479C3.67471 3.94655 3.68719 4.09229 3.60938 4.19004C3.49919 4.32858 3.44311 4.48283 3.44297 4.6484C3.44297 4.83112 3.51713 5.01192 3.64653 5.14417C3.79122 5.29138 3.98764 5.36932 4.21464 5.36961C4.34503 5.36961 4.48339 5.34333 4.62569 5.29169C4.74528 5.25235 4.86222 5.2337 4.97999 5.2337C5.08163 5.2337 5.18175 5.2475 5.27933 5.27525V1.51827C5.27917 1.24646 5.17809 0.990641 4.99458 0.798388C4.81077 0.605951 4.56639 0.500143 4.30675 0.5Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_695" x="0" y="0" width="11" height="11"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_695">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Stress</div>
+                    </div>
+
+                    <div class="category-item" data-category="bath">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1150)">
+                                    <path
+                                        d="M10.95 5.85715H10.7667V2.10714C10.7667 1.22089 10.0264 0.5 9.11667 0.5C8.30304 0.5 7.72113 1.0868 7.65642 1.94607C7.23548 2.02662 6.91667 2.38804 6.91667 2.82142C6.91667 2.92018 6.99881 2.99999 7.1 2.99999H8.56667C8.66787 2.99999 8.75 2.92018 8.75 2.82142C8.75 2.39321 8.43869 2.03518 8.0251 1.94892C8.07844 1.38284 8.42146 0.857129 9.11665 0.857129C9.82433 0.857129 10.4 1.41802 10.4 2.10712V5.85713H4.88148C4.79623 5.45017 4.4259 5.14285 3.98333 5.14285H3.97948C3.80733 4.91998 3.53765 4.7857 3.25 4.7857C2.90148 4.7857 2.59073 4.98178 2.43746 5.27213C2.29648 5.18839 2.13423 5.14285 1.96665 5.14285C1.5241 5.14285 1.15375 5.45017 1.0685 5.85713H1.05C0.74677 5.85713 0.5 6.09749 0.5 6.39284C0.5 6.6882 0.74677 6.92856 1.05 6.92856H1.27348L1.7639 8.83874C1.9069 9.39624 2.41896 9.7857 3.00892 9.7857H3.13671L2.9026 10.2416C2.85731 10.3298 2.89415 10.4369 2.98473 10.4812C3.01094 10.4939 3.039 10.5 3.0665 10.5C3.13379 10.5 3.1985 10.4639 3.23077 10.4012L3.54666 9.78572H8.63671L8.9526 10.4012C8.98487 10.4639 9.04958 10.5 9.11687 10.5C9.14437 10.5 9.17243 10.4939 9.19864 10.4812C9.28919 10.437 9.32606 10.3298 9.28077 10.2416L9.04447 9.78143C9.61133 9.75839 10.0975 9.37929 10.2361 8.83876L10.7266 6.92858H10.95C11.2532 6.92858 11.5 6.68822 11.5 6.39287C11.5 6.09751 11.2532 5.85715 10.95 5.85715ZM10.95 6.57143H1.05C0.94898 6.57143 0.866674 6.49143 0.866674 6.39287C0.866674 6.2943 0.94898 6.2143 1.05 6.2143H10.95C11.051 6.2143 11.1333 6.2943 11.1333 6.39287C11.1333 6.49143 11.051 6.57143 10.95 6.57143Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M7.1 3.80356C7.20119 3.80356 7.28333 3.72375 7.28333 3.625V3.5357C7.28333 3.43695 7.20119 3.35714 7.1 3.35714C6.99881 3.35714 6.91667 3.43695 6.91667 3.5357V3.625C6.91667 3.72375 6.99881 3.80356 7.1 3.80356Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M7.1 4.61988C7.20119 4.61988 7.28333 4.54006 7.28333 4.44131V4.2372C7.28333 4.13863 7.20119 4.05863 7.1 4.05863C6.99881 4.05863 6.91667 4.13863 6.91667 4.2372V4.44131C6.91667 4.54004 6.99881 4.61988 7.1 4.61988Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M7.1 5.32143C7.20119 5.32143 7.28333 5.24162 7.28333 5.14287V5.05358C7.28333 4.95483 7.20119 4.87501 7.1 4.87501C6.99881 4.87501 6.91667 4.95483 6.91667 5.05358V5.14287C6.91667 5.2416 6.99881 5.32143 7.1 5.32143Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M7.83333 3.80356C7.93452 3.80356 8.01665 3.72375 8.01665 3.625V3.5357C8.01665 3.43695 7.93452 3.35714 7.83333 3.35714C7.73214 3.35714 7.65 3.43695 7.65 3.5357V3.625C7.65 3.72375 7.73214 3.80356 7.83333 3.80356Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M7.65 4.44129C7.65 4.54004 7.73214 4.61986 7.83333 4.61986C7.93452 4.61986 8.01665 4.54004 8.01665 4.44129V4.23718C8.01665 4.13861 7.93452 4.05861 7.83333 4.05861C7.73214 4.05861 7.65 4.13861 7.65 4.23718V4.44129Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M7.65 5.14285C7.65 5.2416 7.73214 5.32141 7.83333 5.32141C7.93452 5.32141 8.01665 5.2416 8.01665 5.14285V5.05356C8.01665 4.9548 7.93452 4.87499 7.83333 4.87499C7.73214 4.87499 7.65 4.9548 7.65 5.05356V5.14285Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M8.56667 3.80356C8.66786 3.80356 8.75 3.72375 8.75 3.625V3.5357C8.75 3.43695 8.66786 3.35714 8.56667 3.35714C8.46548 3.35714 8.38335 3.43695 8.38335 3.5357V3.625C8.38333 3.72375 8.46546 3.80356 8.56667 3.80356Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M8.38333 4.44129C8.38333 4.54004 8.46546 4.61986 8.56665 4.61986C8.66784 4.61986 8.74998 4.54004 8.74998 4.44129V4.23718C8.74998 4.13861 8.66784 4.05861 8.56665 4.05861C8.46546 4.05861 8.38333 4.13861 8.38333 4.23718V4.44129Z"
+                                        fill="white" fill-opacity="0.8" />
+                                    <path
+                                        d="M8.38333 5.14285C8.38333 5.2416 8.46546 5.32141 8.56665 5.32141C8.66784 5.32141 8.74998 5.2416 8.74998 5.14285V5.05356C8.74998 4.9548 8.66784 4.87499 8.56665 4.87499C8.46546 4.87499 8.38333 4.9548 8.38333 5.05356V5.14285Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1150" x="0" y="0" width="12" height="11"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1150">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Bath</div>
+                    </div>
+
+                    <div class="category-item" data-category="toilet">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="11" viewBox="0 0 8 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1156)">
+                                    <path
+                                        d="M3.9 0.5C2.35625 0.5 1.1 2.025 1.1 3.9C1.1 4.49609 1.22656 5.06406 1.46875 5.575C1.53359 5.52891 1.61484 5.5 1.7 5.5H2.3C2.52031 5.5 2.7 5.67969 2.7 5.9H3.9C3.12656 5.9 2.5 5.00469 2.5 3.9C2.5 2.79531 3.12656 1.9 3.9 1.9C4.67344 1.9 5.3 2.79531 5.3 3.9C5.3 5.00469 4.67344 5.9 3.9 5.9H5.1C5.1 5.67969 5.27969 5.5 5.5 5.5H6.1C6.18516 5.5 6.26641 5.52891 6.33125 5.575C6.57344 5.06406 6.7 4.49609 6.7 3.9C6.7 2.025 5.44375 0.5 3.9 0.5ZM1.7 5.7C1.58984 5.7 1.5 5.78906 1.5 5.9H2.5C2.5 5.78906 2.41016 5.7 2.3 5.7H1.7ZM5.5 5.7C5.38906 5.7 5.3 5.78906 5.3 5.9H6.3C6.3 5.78906 6.21094 5.7 6.1 5.7H5.5ZM1.1 6.1C0.769531 6.1 0.5 6.36953 0.5 6.7C0.5 7.03047 0.769531 7.3 1.1 7.3H6.7C7.03047 7.3 7.3 7.03047 7.3 6.7C7.3 6.36953 7.03047 6.1 6.7 6.1H1.1ZM0.90625 7.475C0.995313 8.60625 1.94609 9.5 3.1 9.5H4.7C5.85391 9.5 6.80469 8.60625 6.89375 7.475C6.83203 7.48984 6.76641 7.5 6.7 7.5H1.1C1.03359 7.5 0.967969 7.48984 0.90625 7.475ZM2.0875 9.475C1.98594 9.65781 1.9 9.92266 1.9 10.3C1.9 10.4109 1.98984 10.5 2.1 10.5H5.7C5.70156 10.5 5.70547 10.5 5.70625 10.5C5.81719 10.5 5.90625 10.4109 5.90625 10.3C5.90625 10.2859 5.90313 10.2695 5.9 10.2563C5.89375 9.90078 5.81016 9.65156 5.7125 9.475C5.40469 9.61875 5.06172 9.7 4.7 9.7H3.1C2.73828 9.7 2.39531 9.61875 2.0875 9.475Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1156" x="0" y="0" width="7.80078" height="11"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1156">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Toilet</div>
+                    </div>
+
+
+                    <div class="category-item" data-category="temperature">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1161)">
+                                    <path
+                                        d="M5.24219 10.5V8M5.24219 8V6.75217M5.24219 8L3.72863 9.45652M5.24219 8L6.75574 9.45652M5.24219 4.25217V0.5M6.75574 1.54348L5.24219 3L3.72863 1.54348M9.74219 8L7.49219 6.75217M7.49219 6.75217L6.36719 6.12609M7.49219 6.75217L8.04791 8.74348M7.49219 6.75217L9.56146 6.21739M4.11719 4.87391L0.742188 3M2.43646 2.25652L2.99219 4.25217L0.92291 4.78261M4.11719 6.12609L0.742188 8M6.36719 4.87391L7.49219 4.25217M6.36719 4.87391C6.20822 4.61014 5.95501 4.411 5.65474 4.3136C5.35448 4.2162 5.02766 4.2272 4.7352 4.34455C4.44274 4.46189 4.2046 4.67757 4.06517 4.95138C3.92573 5.22519 3.89453 5.53846 3.97736 5.83277C4.06019 6.12709 4.25141 6.38238 4.51538 6.55106C4.77934 6.71974 5.09804 6.79029 5.41206 6.74956C5.72609 6.70884 6.01401 6.55962 6.22216 6.32972C6.4303 6.09982 6.54448 5.80492 6.54339 5.5C6.5424 5.28009 6.48165 5.06425 6.36719 4.87391ZM7.49219 4.25217L9.74219 3M7.49219 4.25217L8.04791 2.25652M7.49219 4.25217L9.56146 4.78261M2.43646 8.74348L2.99219 6.75217L0.92291 6.21739"
+                                        stroke="white" stroke-opacity="0.8" stroke-miterlimit="10" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1161" x="0" y="0" width="10.4844" height="11"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1161">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">Temperature</div>
+                    </div>
+
+                    <div class="category-divide">
+                        <div class="divide-name" data-locale-key="div_horse_meta">Horse Metabolism</div>
+                    </div>
+
+                    <div class="category-item" data-category="hhud">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="12" viewBox="0 0 6 12"
+                                fill="none">
+                                <path
+                                    d="M5.64614 3.03237C6.31654 1.46178 5.78159 0.0216827 5.45728 0.000190507C5.13296 -0.0214423 4.07266 1.80649 4.07266 1.80649H1.93273C1.93273 1.80649 0.872275 -0.0213017 0.548118 0.000190507C0.223778 0.0214952 -0.311148 1.46175 0.359253 3.03237C0.799839 4.0646 -0.165612 5.13635 0.0253331 6.19371C0.230363 7.33071 1.3663 9.80632 1.3663 10.0645C1.3663 10.3225 1.17743 11.2258 1.61802 11.6128C2.05858 12 3.00261 12 3.00261 12C3.00261 12 3.94679 12 4.38738 11.6128C4.82796 11.2258 4.6391 10.3225 4.6391 10.0645C4.6391 9.80632 5.86155 7.09104 5.98004 6.19371C6.14638 4.93702 5.20556 4.0646 5.64614 3.03237ZM2.32612 11.2258C2.22186 11.2258 2.13726 11.0669 2.13726 10.8709C2.13726 10.675 2.22186 10.5161 2.32612 10.5161C2.43025 10.5161 2.51485 10.675 2.51485 10.8709C2.51485 11.0669 2.43025 11.2258 2.32612 11.2258ZM2.99303 8.96768C2.66997 7.78477 2.34693 4.65867 2.19758 3.07596C2.45792 3.39021 2.85069 3.64873 3.24491 3.74201L3.18189 2.96796L3.77697 3.20009C3.6228 4.81704 3.30806 7.81495 2.99303 8.96768ZM3.67925 11.2258C3.57499 11.2258 3.49038 11.0669 3.49038 10.8709C3.49038 10.675 3.57499 10.5161 3.67925 10.5161C3.78354 10.5161 3.86814 10.675 3.86814 10.8709C3.86814 11.0669 3.78354 11.2258 3.67925 11.2258ZM3.86555 2.23024L3.81406 2.12911H3.8742C3.8742 2.12911 3.87132 2.16502 3.86555 2.23024Z"
+                                    fill="white" fill-opacity="0.8" />
+                            </svg>
+                        </div>
+                        <div class="category-name">H. Hud</div>
+                    </div>
+                    <div class="category-item" data-category="horse-health">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1179)">
+                                    <path
+                                        d="M10.2306 6.8767C10.186 6.75421 10.1211 6.6382 10.0791 6.51506C10.0195 6.34121 9.94008 6.17384 9.93423 5.98298C9.92896 5.80694 9.89619 5.63133 9.86891 5.45639C9.82858 5.19792 9.89527 4.95975 9.99623 4.72324C10.0726 4.54445 10.1136 4.35985 10.0981 4.15988C10.0884 4.03289 10.0637 3.91677 10.009 3.80658C9.99039 3.7696 9.95773 3.71088 9.93802 3.67444C9.86651 3.54164 9.67971 3.22621 9.34818 2.87171C9.15416 2.69731 8.97184 2.51293 8.83489 2.29112C8.7737 2.19201 8.69268 2.10399 8.63492 2.00334C8.49121 1.75278 8.44847 1.48224 8.48216 1.19908C8.48892 1.14266 8.48651 1.08537 8.48949 1.02852C8.4982 0.866414 8.56387 0.720663 8.62804 0.566899C8.64408 0.528815 8.62151 0.496657 8.57888 0.500279C8.4495 0.511584 8.33513 0.556363 8.22294 0.612556C8.02777 0.710236 7.88659 0.866634 7.78391 1.04081C7.69876 1.18503 7.66244 1.35789 7.61774 1.52131C7.5593 1.7339 7.58818 1.94737 7.63883 2.15842C7.64066 2.16556 7.64788 2.17324 7.64628 2.17917C7.64249 2.19355 7.63826 2.20781 7.63379 2.22197C7.62657 2.24546 7.60468 2.25446 7.58542 2.24195C7.57293 2.23393 7.5617 2.22515 7.55563 2.21396C7.48274 2.08138 7.45031 1.93705 7.42934 1.78965C7.42166 1.73423 7.41272 1.6788 7.40402 1.62349C7.3976 1.58288 7.38637 1.54864 7.3788 1.54688C7.37136 1.54513 7.35772 1.55994 7.34889 1.58003C7.34328 1.59232 7.33846 1.60472 7.33617 1.61756C7.31944 1.70723 7.31131 1.79865 7.28896 1.8869C7.28449 1.90424 7.27223 1.91971 7.2579 1.93486C7.23601 1.95813 7.19625 1.96065 7.16955 1.94056C7.15224 1.9275 7.13689 1.91357 7.1299 1.89655C7.05735 1.72062 7.09357 1.55094 7.20931 1.40772C7.35543 1.22706 7.51518 1.05662 7.67619 0.87728C7.67619 0.87728 7.67642 0.876951 7.67665 0.876841C7.82471 0.710346 6.84065 0.569094 6.71528 0.550216C6.38226 0.49984 6.04499 0.494572 5.71048 0.534961C5.09749 0.608934 4.38114 0.765332 3.85192 1.08197C3.71463 1.16417 3.5919 1.26405 3.48612 1.3817C3.42138 1.45359 3.34769 1.52197 3.29257 1.6011C3.27182 1.63095 3.20421 1.86714 3.27549 1.79394C3.41175 1.65378 3.59958 1.61306 3.77812 1.56334C4.04743 1.48838 4.31696 1.52757 4.58971 1.57388C4.88044 1.62316 5.17496 1.67354 5.47383 1.63084C5.47429 1.63073 5.47486 1.63073 5.47532 1.63062C5.68389 1.60055 5.59038 1.73039 5.48632 1.79042C5.36668 1.85935 5.20166 1.87482 5.06621 1.89183C4.8118 1.92377 4.53241 1.89096 4.28327 1.94814C3.80666 2.05745 3.32454 2.56023 3.02372 2.90727C2.91015 3.03831 2.83761 3.19175 2.76014 3.34332C2.74215 3.37844 2.5549 3.7426 2.51295 3.66171C2.50573 3.64777 2.50035 3.63427 2.50321 3.62253C2.53198 3.50301 2.54997 3.37668 2.60486 3.26814C2.7347 3.01153 2.87188 2.75702 3.07804 2.54464C3.13671 2.48428 3.19138 2.42029 3.24638 2.35675C3.27377 2.32514 3.29211 2.29496 3.28695 2.28903C3.28179 2.2831 3.24627 2.29254 3.20742 2.30999C2.467 2.64156 1.99279 3.2126 1.48111 3.79923C1.15485 4.17327 0.863538 4.57891 0.696682 5.04317C0.368931 5.95499 0.464506 7.10817 0.88153 7.98147C0.88153 7.98147 2.4568 7.70182 3.82236 9.17306C5.18802 10.6445 7.25171 10.4958 7.25171 10.4958C5.56047 9.00974 6.39555 6.02941 6.39555 6.02941C6.65168 6.11359 6.91021 6.19843 7.16875 6.28326C7.20931 6.29654 7.22971 6.33847 7.21814 6.37798C7.15259 6.60199 7.19396 6.81315 7.34706 7.0084C7.49741 7.20003 7.61327 7.40779 7.65361 7.64617C7.67069 7.74726 7.66198 7.84834 7.6182 7.94909C7.55322 8.09923 7.50188 8.2553 7.45157 8.41082C7.40642 8.55021 7.46131 8.67456 7.59986 8.77904C7.65648 8.82174 7.71446 8.86377 7.76385 8.91371C7.88315 9.034 8.02548 9.1218 8.17767 9.19654C8.20678 9.21092 8.24013 9.22157 8.27256 9.22486C8.37042 9.23529 8.3922 9.2107 8.40492 9.11697C8.4307 8.92864 8.3812 8.74875 8.34785 8.56656C8.34074 8.52793 8.33822 8.48776 8.3396 8.44858C8.34361 8.33345 8.37421 8.30754 8.49476 8.31084C8.65027 8.3149 8.73175 8.3746 8.75433 8.52321C8.77198 8.63977 8.77541 8.75918 8.77622 8.87727C8.77759 9.03565 8.75834 9.1949 8.76957 9.35217C8.78676 9.59231 8.9794 9.77439 9.23335 9.78998C9.2573 9.7914 9.29478 9.77845 9.3052 9.76089C9.33786 9.70623 9.36491 9.64752 9.38542 9.58759C9.39975 9.546 9.40055 9.50001 9.40697 9.45589C9.44719 9.17251 9.63215 8.98263 9.85711 8.81987C9.9881 8.72504 10.1252 8.63779 10.2537 8.54011C10.4185 8.41488 10.5034 8.25102 10.4999 8.04524C10.4963 7.81969 10.4677 7.59865 10.3976 7.38299C10.343 7.21364 10.2914 7.04352 10.2306 6.8767Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1179" x="0" y="0" width="11" height="11"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise"
+                                            baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1179">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">H. Health</div>
+                    </div>
+                    <div class="category-item" data-category="horse-durabilty">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="12" viewBox="0 0 17 12"
+                                fill="none">
+                                <g filter="url(#filter0_g_1483_1168)">
+                                    <path
+                                        d="M14.3742 1.2306C14.4197 1.17972 14.4673 1.11565 14.5265 1.06409C14.5778 1.01896 14.6025 0.945035 14.6536 0.899902C14.6655 0.908724 14.6769 0.917613 14.6887 0.92664C14.6745 0.994202 14.6598 1.06135 14.6456 1.12892C14.6536 1.13138 14.662 1.13398 14.6699 1.13637C14.7266 1.06306 14.7828 0.989826 14.8396 0.91693C14.8489 0.920554 14.858 0.923699 14.8673 0.927324C14.8614 0.980662 14.8642 1.03708 14.8468 1.08686C14.8061 1.2079 14.7557 1.32504 14.7106 1.44436C14.7008 1.46953 14.6974 1.49702 14.6908 1.52321L14.8003 1.83394C14.868 1.97802 14.9448 2.11205 15.0567 2.23227C15.1249 2.30558 15.1527 2.42183 15.2083 2.51633C15.3546 2.76394 15.5273 2.9933 15.6774 3.23688C15.7729 3.39211 15.8366 3.56395 15.8693 3.74524C15.8741 3.77095 15.8922 3.79406 15.8984 3.80637C15.8585 3.90949 15.8081 4.00653 15.7852 4.11006C15.7689 4.18398 15.7431 4.21824 15.6701 4.23629C15.6061 4.25195 15.5502 4.30037 15.486 4.3163C15.3296 4.35466 15.1284 4.25188 15.0943 4.08052C15.0679 3.94649 14.9907 3.91694 14.8931 3.88255C14.8678 3.87352 14.8333 3.8725 14.8183 3.85478C14.7332 3.757 14.6182 3.71296 14.5042 3.6627C14.4489 3.63828 14.4013 3.59623 14.3492 3.56361C14.3088 3.53824 14.2706 3.50521 14.2265 3.49167C13.9238 3.39813 13.9238 3.3997 13.757 3.23353C13.6809 3.22922 13.6062 3.22854 13.5214 3.26512C13.4544 3.29391 13.4185 3.31668 13.3733 3.38041C13.1537 3.68581 13.0085 4.02889 12.8403 4.36034C12.8073 4.42544 12.7757 4.50045 12.7742 4.5713C12.7687 4.82753 12.6943 5.07965 12.7284 5.33746C12.7353 5.39038 12.7638 5.44099 12.7694 5.49392C12.7979 5.75384 12.6672 5.95728 12.5244 6.15415C12.499 6.18909 12.4635 6.21652 12.426 6.25365C12.5177 6.31854 12.6219 6.37031 12.6957 6.45018C12.8416 6.60678 13.0279 6.6967 13.2058 6.80228C13.2173 6.80926 13.236 6.8085 13.2426 6.8176C13.3581 6.98562 13.5172 7.13148 13.5123 7.3596C13.5109 7.44679 13.5029 7.53534 13.514 7.62109C13.5487 7.89264 13.5262 8.17527 13.6721 8.42705C13.7014 8.47738 13.6951 8.5392 13.6562 8.60451C13.5526 8.77813 13.5165 8.975 13.513 9.17605C13.5116 9.22672 13.4936 9.26665 13.4737 9.31288C13.424 9.42988 13.3993 9.55728 13.3642 9.68194C13.2586 9.6243 13.0361 9.42181 12.9896 9.33401C12.9346 9.23082 12.8694 9.12804 12.9097 8.99196C12.9652 8.90101 13.0726 8.95237 13.1522 8.93643C13.1814 8.82388 13.1654 8.72807 13.1078 8.64581C13.0744 8.59821 13.0584 8.55171 13.0911 8.51246C13.1755 8.40934 13.1669 8.29166 13.1606 8.15304C13.0335 8.22218 12.9841 8.34992 12.9059 8.44408C12.7666 8.61285 12.6571 8.80589 12.5263 8.98225C12.4624 9.06841 12.3696 9.12462 12.2546 9.11074C12.0947 9.09166 11.956 9.15273 11.8177 9.21523C11.6926 9.27185 11.5501 9.26002 11.4271 9.32676C11.3868 9.34858 11.2533 9.22843 11.2454 9.16702C11.2381 9.11074 11.2437 9.05309 11.2437 9.02602C11.3138 8.94656 11.3833 8.89547 11.4129 8.82675C11.4418 8.75939 11.4661 8.71563 11.5432 8.71877C11.5557 8.71911 11.5734 8.71563 11.5815 8.70763C11.6273 8.66072 11.6739 8.60628 11.7462 8.6337C11.8345 8.66667 11.9394 8.66769 12.011 8.77088C12.0409 8.72089 12.059 8.66701 12.0958 8.6361C12.1353 8.60341 12.1958 8.5976 12.2421 8.57086C12.4232 8.46562 12.5601 8.31347 12.6838 8.14757C12.729 8.08678 12.7839 8.0292 12.8117 7.96075C12.8444 7.87917 12.8527 7.78788 12.8707 7.70452C12.6761 7.58581 12.469 7.54998 12.2674 7.49267C12.1145 7.44925 11.9714 7.36213 11.8352 7.27672C11.7615 7.23015 11.6947 7.19685 11.6072 7.19056C11.5259 7.18502 11.4466 7.15862 11.3313 7.13325C11.2819 7.07246 11.2117 6.98568 11.1439 6.9013C10.9171 6.95785 10.7079 7.07561 10.4569 7.06897C10.304 7.06453 10.1448 7.11171 9.9961 7.15992C9.88975 7.19466 9.80078 7.20964 9.69798 7.15643C9.65767 7.13599 9.59786 7.14392 9.54851 7.1509C9.35456 7.1777 9.16936 7.10022 8.97753 7.10617C8.88329 7.00996 8.7512 7.09229 8.63828 7.02664C8.54356 6.97208 8.40942 6.98637 8.29301 6.96763C8.28137 6.96558 8.27248 6.94787 8.24537 6.92106C8.19583 7.03636 8.11575 7.14331 8.11158 7.25272C8.1059 7.39475 8.07455 7.53227 8.05354 7.6691C8.01268 7.93853 8.00728 8.21739 7.89196 8.47225C7.88915 8.47813 7.8845 8.48538 7.88553 8.49133C7.93398 8.71187 7.88518 8.95175 8.01659 9.15594C8.03903 9.19143 8.06141 9.23513 8.09563 9.2525C8.22019 9.31569 8.30307 9.42407 8.39991 9.51707C8.53158 9.64385 8.66073 9.76776 8.82286 9.86295C8.92401 9.92265 8.98478 10.0519 9.06267 10.1505C9.08388 10.1772 9.09394 10.2203 9.12105 10.2339C9.30419 10.3283 9.41157 10.4863 9.50403 10.6613C9.53257 10.7151 9.6201 10.7377 9.57007 10.8418C9.52004 10.8985 9.43176 10.9033 9.34005 10.8985C9.06274 10.8835 8.93133 10.8426 8.83682 10.7676C8.81773 10.6548 8.9776 10.5485 8.82703 10.4242C8.76304 10.4242 8.69132 10.4242 8.60844 10.4242C8.53514 10.336 8.46212 10.243 8.38362 10.1554C8.30211 10.0644 8.21492 9.97865 8.12903 9.88935C8.01056 10.0536 8.08318 10.2311 8.05293 10.4033C7.97751 10.4703 7.91441 10.3859 7.85398 10.3595C7.76117 10.3196 7.67973 10.2533 7.59562 10.1943C7.45662 10.097 7.41994 9.95568 7.4931 9.77754C7.39667 9.76366 7.29429 9.74739 7.31776 9.61192C7.22776 9.47857 7.11032 9.36984 6.97577 9.28724C6.68717 9.11081 6.40808 8.91633 6.09531 8.78162C6.05829 8.76568 6.02701 8.73539 5.9893 8.72192C5.93195 8.70106 5.86474 8.70106 5.81451 8.67118C5.76017 8.63924 5.7202 8.58228 5.66976 8.53161C5.63623 8.42849 5.67674 8.33679 5.72239 8.23989C5.83935 7.98988 5.93195 7.72982 6.00422 7.46416C6.02373 7.39222 6.03967 7.29676 5.97431 7.21764C5.95228 7.19056 5.96617 7.13428 5.96247 7.06761C5.90163 7.02808 5.83114 6.97249 5.75257 6.93255C5.5272 6.81828 5.29089 6.72316 5.10775 6.53983C5.10165 6.53422 5.08099 6.54222 5.0558 6.54503C5.03369 6.66962 5.08277 6.81199 4.98038 6.93699C4.8949 6.89603 4.80593 6.85295 4.71121 6.8072C4.68918 6.87107 4.66536 6.94089 4.64086 7.01201C4.55018 6.97659 4.58823 6.89884 4.59781 6.84229C4.60876 6.77807 4.64579 6.71762 4.67111 6.65717C4.53403 6.544 4.36998 6.4655 4.39776 6.25782C4.34965 6.23354 4.30202 6.20975 4.25404 6.18561C4.23474 6.20222 4.2151 6.21351 4.20381 6.23033C4.09588 6.39287 3.95688 6.56684 3.74856 6.64049C3.72337 6.64951 3.69819 6.66962 3.67348 6.66825C3.43874 6.65991 3.25402 6.75537 3.10626 6.93282C3.09374 6.9478 3.07711 6.95956 3.02687 7.00435C3.05172 6.93631 3.05466 6.90157 3.07348 6.88215C3.10702 6.84741 3.14972 6.82239 3.18853 6.79325C3.1797 6.7804 3.17114 6.7672 3.16211 6.75434C3.11119 6.77 3.06048 6.7856 2.9828 6.8096C3.06321 6.69123 3.16608 6.6783 3.25785 6.645C3.09415 6.60931 2.97671 6.66312 2.91765 6.82731C2.89205 6.91443 2.96069 7.02733 2.849 7.10303C2.83477 7.09086 2.81978 7.078 2.80732 7.06754C2.76647 7.14912 2.72444 7.23145 2.67469 7.33006C2.64081 7.28253 2.61193 7.24116 2.58175 7.19883C2.55656 7.22311 2.52666 7.25155 2.49682 7.27939C2.4897 7.26797 2.47389 7.2495 2.47683 7.24608C2.54514 7.15992 2.57566 7.06514 2.5658 6.95375C2.56334 6.92804 2.59776 6.89884 2.62521 6.85541C2.51886 6.8669 2.45945 6.94958 2.36473 6.93426C2.26721 6.91833 2.18138 7.00469 2.0775 6.97659C1.99256 6.95368 1.90496 6.93912 1.81305 6.92038C1.83666 6.89467 1.8511 6.87935 1.87369 6.85541C1.86013 6.83422 1.8511 6.8016 1.83057 6.79189C1.70464 6.73075 1.62416 6.61895 1.52561 6.528C1.51479 6.51795 1.49638 6.50783 1.49604 6.49709C1.49173 6.38453 1.39557 6.34323 1.3259 6.28907C1.25185 6.23176 1.16295 6.19374 1.07987 6.14779C1.02046 6.1162 0.960648 6.08426 0.898438 6.05041C0.920132 6.02593 0.934094 6.01062 0.946892 5.99612C0.941827 5.97369 0.889541 5.96972 0.93471 5.92144C1.00192 5.96049 1.07166 6.00145 1.15036 6.04734C1.16459 6.04159 1.20025 6.01274 1.22126 6.02094C1.30968 6.05582 1.40666 6.05267 1.49372 6.10068C1.68315 6.20482 1.87841 6.21091 2.07065 6.09719C2.10487 6.07688 2.1447 6.06539 2.19589 6.0444C2.22792 5.99215 2.25639 5.90722 2.31511 5.85928C2.39553 5.79295 2.40579 5.6992 2.42681 5.62022C2.4845 5.40406 2.5606 5.19741 2.64245 4.9898C2.70186 4.83908 2.79049 4.70437 2.84476 4.54969C2.90368 4.38003 3.03714 4.25195 3.24581 4.22569C3.35353 4.21215 3.44825 4.16059 3.56206 4.22535C3.61592 4.2566 3.70195 4.23109 3.77703 4.2047C3.75184 4.19895 3.72611 4.18801 3.70092 4.1887C3.65575 4.18972 3.62154 4.18015 3.58554 4.14705C3.56706 4.13002 3.51984 4.14397 3.4863 4.12934C3.60689 4.06998 3.72125 4.11758 3.82582 4.16702C3.99056 4.24498 4.14783 4.33804 4.30702 4.42694C4.38415 4.46995 4.45471 4.5263 4.5343 4.56309C4.62553 4.60542 4.72298 4.63394 4.81873 4.66655C4.89483 4.69295 4.97162 4.71641 5.07414 4.7495C5.10124 4.72311 5.14641 4.67907 5.1909 4.63455C5.49114 4.33524 5.75148 4.18904 6.19544 4.00625C6.33964 3.9469 6.48877 3.90744 6.63283 3.85089C6.67697 3.83386 6.73117 3.84097 6.78052 3.83858C7.07994 3.82367 7.3838 3.837 7.67734 3.7877C8.03684 3.72725 8.39375 3.76527 8.75113 3.75385C8.94304 3.74777 9.12789 3.67603 9.32184 3.70728C9.53722 3.61298 9.78052 3.58454 9.96612 3.44524C9.95018 3.3694 9.9369 3.30512 9.92376 3.24105C9.87859 3.25288 9.82993 3.26519 9.77641 3.27873C9.77641 3.25568 9.77497 3.2364 9.77675 3.23606C9.85498 3.22478 9.89981 3.16672 9.93491 3.1077C9.99336 3.00821 10.0677 2.93429 10.1695 2.87698C10.295 2.80614 10.3853 2.69556 10.4455 2.56413C10.452 2.55025 10.4305 2.52385 10.4214 2.50252C10.4847 2.47298 10.5654 2.49472 10.5987 2.38709C10.6237 2.30667 10.7203 2.24875 10.7558 2.21203C10.8427 2.1764 10.8924 2.15636 10.9497 2.1327C10.9247 2.10392 10.9115 2.08894 10.8983 2.07369C10.9115 2.05912 10.9251 2.04381 10.9421 2.02473C10.915 2.01502 10.8896 2.00647 10.8472 1.99156C10.8983 1.94 10.9449 1.89343 10.9973 1.84119C10.9755 1.81096 10.9594 1.78888 10.9407 1.76255C10.9581 1.75735 10.9841 1.74108 10.9935 1.74798C11.0546 1.7936 11.1192 1.80351 11.1776 1.78423C11.187 1.71393 11.195 1.64985 11.204 1.58263C11.1526 1.57484 11.1126 1.56841 11.0522 1.55918C11.1004 1.53613 11.1293 1.52253 11.1678 1.50413C11.1505 1.47302 11.1345 1.44436 11.1192 1.41592C11.1282 1.41086 11.1435 1.39561 11.1512 1.39869C11.2064 1.42248 11.2606 1.4499 11.2933 1.46556C11.48 1.42898 11.653 1.39527 11.8337 1.35964C11.8528 1.37147 11.8809 1.38918 11.9199 1.414C11.933 1.37632 11.9414 1.35184 11.9498 1.32702C11.9582 1.32634 11.9713 1.32093 11.9783 1.32511C12.0499 1.36819 12.1208 1.40552 12.2105 1.39957C12.2786 1.39492 12.3485 1.38535 12.4134 1.43801C12.4381 1.45777 12.5003 1.44819 12.5378 1.43294C12.6372 1.39198 12.7171 1.30466 12.836 1.31068C12.8482 1.19108 12.9743 1.22663 13.0369 1.1655C13.1279 1.07626 13.2545 1.07592 13.3865 1.1136C13.6057 1.17644 13.8282 1.23949 14.0613 1.22246C14.101 1.21952 14.1402 1.19176 14.1789 1.19367C14.2358 1.19607 14.2936 1.21412 14.3742 1.2306ZM6.77128 7.50826C6.63782 7.74822 6.56001 7.99474 6.57808 8.2628C6.58307 8.33679 6.59163 8.41837 6.62722 8.48019C6.65452 8.52778 6.70264 8.5712 6.77128 8.59616C6.86771 8.63165 6.94853 8.70838 7.06235 8.7851C7.0321 8.5271 7.1275 8.31046 7.10334 8.08083C7.09191 7.96978 7.05988 7.86563 7.03066 7.76176C6.99507 7.63505 6.88769 7.56276 6.77128 7.50826Z"
+                                        fill="white" fill-opacity="0.8" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_g_1483_1168" x="-0.00156248" y="-9.76324e-05" width="16.8"
+                                        height="11.8" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                            result="shape" />
+                                        <feTurbulence type="fractalNoise" baseFrequency="0.25 0.25" numOctaves="3"
+                                            seed="7959" />
+                                        <feDisplacementMap in="shape" scale="1.7999999523162842" xChannelSelector="R"
+                                            yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                                        <feMerge result="effect1_texture_1483_1168">
+                                            <feMergeNode in="displacedImage" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="category-name">H. Stamina</div>
+                    </div>
+
+                </div>
+
+                <div class="hud-middle-group-2">
+                    <!-- General Page -->
+                    <div class="hud-page active" data-page="general">
+                        <!-- General içeriğini buraya ekleyeceksiniz -->
+                        <div class="already-layouts">
+                            <div class="layout-group">
+                                <div class="layout-group-text">
+                                    General Layouts
+                                </div>
+                                <div class="layout-group-desc">
+                                    The layouts we're prepare for you.
+                                </div>
+                            </div>
+                            <div class="layout-buttons">
+                                <div class="layout-button" data-layout="standart">Standart</div>
+                                <div class="layout-button" data-layout="normal">Normal</div>
+                                <div class="layout-button" data-layout="story">Story</div>
+                            </div>
+                        </div>
+                        <div class="already-layouts">
+                            <div class="layout-group">
+                                <div class="layout-group-text">
+                                    Edit Mode
+                                </div>
+                                <div class="layout-group-desc">
+                                    Edit hud like you want
+                                </div>
+
+                                <div class="edit-btn">Edit Position</div>
+                            </div>
+                        </div>
+
+                        <div class="apply-settings">
+                            <div class="apply-settings-header">
+                                <div class="apply-settings-text">Apply Settings</div>
+                                <div class="apply-settings-desc">You can copy other user's settings.</div>
+                            </div>
+
+                            <div class="apply-input-group">
+                                <input type="text" class="apply-input-group-inp" />
+                                <div class="apply-input-group-apply-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                                        fill="none">
+                                        <g filter="url(#filter0_g_1483_572)">
+                                            <path
+                                                d="M0.5 4.5C0.5 2.29086 2.29086 0.5 4.5 0.5H11.5C13.7091 0.5 15.5 2.29086 15.5 4.5V11.5C15.5 13.7091 13.7091 15.5 11.5 15.5H4.5C2.29086 15.5 0.5 13.7091 0.5 11.5V4.5Z"
+                                                fill="#D7D7D7" />
+                                        </g>
+                                        <g filter="url(#filter1_g_1483_572)">
+                                            <path
+                                                d="M12.1456 5.96978C12.3412 5.77445 12.3412 5.45743 12.1456 5.2621L11.7355 4.85263C11.5403 4.65778 11.2242 4.65775 11.029 4.85257L6.95956 8.9139C6.76441 9.10866 6.44845 9.1087 6.25325 8.91399L4.97101 7.63499C4.77579 7.44026 4.45977 7.44033 4.26463 7.63515L3.85441 8.04471C3.65877 8.24004 3.65877 8.55706 3.85441 8.75239L6.25318 11.1473C6.44838 11.3422 6.76452 11.3422 6.95972 11.1473L12.1456 5.96978Z"
+                                                fill="#0B0B0B" />
+                                        </g>
+                                        <defs>
+                                            <filter id="filter0_g_1483_572" x="0" y="0" width="16" height="16"
+                                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                                <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                                    result="shape" />
+                                                <feTurbulence type="fractalNoise"
+                                                    baseFrequency="0.38461539149284363 0.38461539149284363"
+                                                    numOctaves="3" seed="5238" />
+                                                <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                                    yChannelSelector="G" result="displacedImage" width="100%"
+                                                    height="100%" />
+                                                <feMerge result="effect1_texture_1483_572">
+                                                    <feMergeNode in="displacedImage" />
+                                                </feMerge>
+                                            </filter>
+                                            <filter id="filter1_g_1483_572" x="3.20703" y="4.20654" width="9.58594"
+                                                height="7.58691" filterUnits="userSpaceOnUse"
+                                                color-interpolation-filters="sRGB">
+                                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                                <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                                    result="shape" />
+                                                <feTurbulence type="fractalNoise"
+                                                    baseFrequency="0.3333333432674408 0.3333333432674408" numOctaves="3"
+                                                    seed="6268" />
+                                                <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                                    yChannelSelector="G" result="displacedImage" width="100%"
+                                                    height="100%" />
+                                                <feMerge result="effect1_texture_1483_572">
+                                                    <feMergeNode in="displacedImage" />
+                                                </feMerge>
+                                            </filter>
+                                        </defs>
+                                    </svg>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="copy-settings">
+                            <div class="copy-settings-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <g filter="url(#filter0_g_1483_569)">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M4.11111 1.94444H9.74083C10.5461 1.94444 10.8379 2.02822 11.1318 2.18567C11.4258 2.34311 11.6569 2.57422 11.8143 2.86817C11.9718 3.16211 12.0556 3.45389 12.0556 4.25917V9.88889C12.0556 10.0804 12.1316 10.2641 12.2671 10.3996C12.4025 10.535 12.5862 10.6111 12.7778 10.6111C12.9693 10.6111 13.153 10.535 13.2885 10.3996C13.4239 10.2641 13.5 10.0804 13.5 9.88889V4.20356C13.5 2.91583 13.3657 2.44856 13.1143 1.97767C12.868 1.51242 12.4876 1.13195 12.0223 0.885667C11.5514 0.634333 11.0842 0.5 9.79644 0.5H4.11111C3.91957 0.5 3.73587 0.576091 3.60042 0.711534C3.46498 0.846977 3.38889 1.03068 3.38889 1.22222C3.38889 1.41377 3.46498 1.59747 3.60042 1.73291C3.73587 1.86835 3.91957 1.94444 4.11111 1.94444ZM9.68739 3.63011C9.39345 3.47267 9.10167 3.38889 8.29639 3.38889H2.81472C2.00944 3.38889 1.71767 3.47267 1.42372 3.63011C1.13294 3.78404 0.895155 4.02183 0.741222 4.31261C0.583778 4.60656 0.5 4.89833 0.5 5.70361V11.1853C0.5 11.9898 0.583778 12.2823 0.741222 12.5763C0.898667 12.8702 1.12978 13.1013 1.42372 13.2588C1.71767 13.4162 2.00944 13.5 2.81472 13.5H8.29639C9.10094 13.5 9.39345 13.4162 9.68739 13.2588C9.98133 13.1013 10.2124 12.8702 10.3699 12.5763C10.5273 12.2823 10.6111 11.9906 10.6111 11.1853V5.70361C10.6111 4.89833 10.5273 4.60656 10.3699 4.31261C10.216 4.02183 9.97817 3.78404 9.68739 3.63011Z"
+                                            fill="white" />
+                                    </g>
+                                    <defs>
+                                        <filter id="filter0_g_1483_569" x="0" y="0" width="14" height="14"
+                                            filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix"
+                                                result="shape" />
+                                            <feTurbulence type="fractalNoise"
+                                                baseFrequency="0.38461539149284363 0.38461539149284363" numOctaves="3"
+                                                seed="5238" />
+                                            <feDisplacementMap in="shape" scale="1" xChannelSelector="R"
+                                                yChannelSelector="G" result="displacedImage" width="100%"
+                                                height="100%" />
+                                            <feMerge result="effect1_texture_1483_569">
+                                                <feMergeNode in="displacedImage" />
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <div class="copy-settings-text">Copy Settings</div>
+
+                        </div>
+
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Grid Size</div>
+                                    <div class="size-desc">Adjust snap grid precision.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" id="grid-size-slider" data-min="0.5" data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Cinematic Mode</div>
+                            <div class="hud-settings-checkbox" id="cinematic-mode-checkbox">ON<div class="checkbox-dot">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Hud Visibility</div>
+                            <div class="hud-settings-checkbox" id="hud-visibility-checkbox">ON<div class="checkbox-dot">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Compass Visibility</div>
+                            <div class="hud-settings-checkbox" id="compass-visibility-checkbox" data-element=".compass">
+                                ON<div class="checkbox-dot">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Pages (Voice, Weapon, Time, Date, Weather, Player ID, Money) -->
+                    <div class="hud-page" data-page="voice">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Voice Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".voice">ON<div class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Voice Size</div>
+                                    <div class="size-desc">Adjust voice display size.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".voice" data-min="0.5" data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text"></div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="voice-color"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text"></div>
+                            <div class="hud-settings-checkbox voice-follow-head-checkbox off">OFF<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text"></div>
+                            <div class="hud-settings-checkbox voice-talk-only-checkbox off">OFF<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="weapon">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Right Hand Weapon</div>
+                            <div class="hud-settings-checkbox" data-element=".weapon-hud-group">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Left Hand Weapon</div>
+                            <div class="hud-settings-checkbox" data-element=".weapon-hud-group-secondary">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Right Hand Size</div>
+                                    <div class="size-desc">Adjust right hand weapon HUD size.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".weapon-hud-group" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Left Hand Size</div>
+                                    <div class="size-desc">Adjust left hand weapon HUD size.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".weapon-hud-group-secondary" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="time">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Time Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".details-group > .time:first">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Time Size</div>
+                                    <div class="size-desc">Adjust time display scale.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".details-group > .time:first" data-min="0.5"
+                                data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Time Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="details-time"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="date">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Date Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".details-group > .date">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Date Size</div>
+                                    <div class="size-desc">Adjust date display scale.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".details-group > .date" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Date Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="details-date"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="weather">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Weather Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".details-group > .weather-group">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Weather Size</div>
+                                    <div class="size-desc">Adjust weather info scale.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".details-group > .weather-group" data-min="0.5"
+                                data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Weather Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="details-weather"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="playerid">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Player ID Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".details-group > .time:last">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Player ID Size</div>
+                                    <div class="size-desc">Adjust the player ID size.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".details-group > .time:last" data-min="0.5"
+                                data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Player ID Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input"
+                                    data-target="details-playerid" value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="money">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Money Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".details-group > .money">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Money Size</div>
+                                    <div class="size-desc">Adjust money display size.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".details-group > .money" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Money Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="details-money"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metabolism Pages (Health, Stamina, Water, Hungry, Stress, Bath, Toilet, Temperature) -->
+                    <div class="hud-page" data-page="health">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Health Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".health">ON<div class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Health Size</div>
+                                    <div class="size-desc">Adjust health bar display.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".health" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Health Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="health"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="stamina">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Stamina Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".stamina">ON<div class="checkbox-dot">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Stamina Size</div>
+                                    <div class="size-desc">Adjust the stamina display.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".stamina" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Stamina Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="stamina"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="water">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Water Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".water">ON<div class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Water Size</div>
+                                    <div class="size-desc">Adjust water indicator bar.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".water" data-min="0.5" data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Water Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#6DB4DA</span>
+                                <input type="color" class="color-input color-picker-input" data-target="water"
+                                    value="#6DB4DA">
+                                <div class="color-square" style="background-color: #6DB4DA;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="hungry">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Hunger Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".hunger">ON<div class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Hunger Size</div>
+                                    <div class="size-desc">Adjust hunger display bar.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".hunger" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Hunger Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#E5896A</span>
+                                <input type="color" class="color-input color-picker-input" data-target="hunger"
+                                    value="#E5896A">
+                                <div class="color-square" style="background-color: #E5896A;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="stress">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Stress Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".brain">ON<div class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Stress Size</div>
+                                    <div class="size-desc">Adjust stress display bar.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".brain" data-min="0.5" data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Stress Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#C48DDB</span>
+                                <input type="color" class="color-input color-picker-input" data-target="brain"
+                                    value="#C48DDB">
+                                <div class="color-square" style="background-color: #C48DDB;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="bath">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Bath Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".bath">ON<div class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Bath Size</div>
+                                    <div class="size-desc">Adjust bath display scale.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".bath" data-min="0.5" data-max="2" data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Bath Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#8DD8F0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="bath"
+                                    value="#8DD8F0">
+                                <div class="color-square" style="background-color: #8DD8F0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="toilet">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Toilet Visibility</div>
+                            <div class="hud-settings-checkbox" data-element=".toilet">ON<div class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Toilet Size</div>
+                                    <div class="size-desc">Adjust toilet display bar.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".toilet" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Toilet Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#E8D98F</span>
+                                <input type="color" class="color-input color-picker-input" data-target="toilet"
+                                    value="#E8D98F">
+                                <div class="color-square" style="background-color: #E8D98F;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="temperature">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Temperature</div>
+                            <div class="hud-settings-checkbox" data-element=".temparature-group">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Temperature Size</div>
+                                    <div class="size-desc">Adjust temperature display.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".temparature-group" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Temperature Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="temparature"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Horse Pages (H. Hud, H. Health, H. Stamina) -->
+                    <div class="hud-page" data-page="hhud">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Horse HUD</div>
+                            <div class="hud-settings-checkbox" data-element=".horse-hud-group">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Horse HUD Size</div>
+                                    <div class="size-desc">Adjust the horse HUD size.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".horse-hud-group" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Horse HUD Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="horse-hud-group"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="horse-health">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Horse Health</div>
+                            <div class="hud-settings-checkbox" data-element=".horse-health">ON<div class="checkbox-dot">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Horse Health Size</div>
+                                    <div class="size-desc">Adjust horse health scale.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".horse-health" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Horse Health Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="horse-health"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hud-page" data-page="horse-durabilty">
+                        <div class="hud-visibility-checkbox">
+                            <div class="hud-visibility-text">Horse Stamina</div>
+                            <div class="hud-settings-checkbox" data-element=".horse-durabilty">ON<div
+                                    class="checkbox-dot"></div>
+                            </div>
+                        </div>
+                        <div class="size-set">
+                            <div class="size-header-grp">
+                                <div>
+                                    <div class="size-text">Horse Stamina Size</div>
+                                    <div class="size-desc">Adjust horse stamina size.</div>
+                                </div>
+                                <div class="size-value">1.0</div>
+                            </div>
+                            <div class="size-slider" data-element=".horse-durabilty" data-min="0.5" data-max="2"
+                                data-default="1">
+                                <div class="size-slider-track">
+                                    <div class="size-slider-fill"></div>
+                                    <div class="size-slider-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-wrapper">
+                            <div class="color-picker-text">Horse Stamina Color</div>
+                            <div class="color-picker-preview">
+                                <span class="color-code">#F1EAD0</span>
+                                <input type="color" class="color-input color-picker-input" data-target="horse-durabilty"
+                                    value="#F1EAD0">
+                                <div class="color-square" style="background-color: #F1EAD0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="hud-bottom-group">
+                <div class="reset-btn">Reset (Default)</div>
+                <div class="save-btn">Save (Confirm)</div>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+<script src="./script.js"></script>
+
+</html>

@@ -1,0 +1,16 @@
+{
+    "rob_grave": "Rob Grave",
+    "pray_grave": "Pray",
+    "digging": "Digging up the grave...",
+    "cancelled": "You stopped digging.",
+    "cooldown": "This grave has already been looted by someone...",
+    "night_only": "Too many eyes around during daylight. Come back at night (22:00 - 05:00).",
+    "need_shovel": "You need a shovel to dig.",
+    "skill_failed": "You fumbled with the shovel... Try again.",
+    "someone_saw": "A local saw you disturbing the dead! They're reporting you to the law!",
+    "praying_start": "You kneel and pay your respects...",
+    "praying_stop_hint": "Press [Backspace] to stop praying",
+    "police_alert_title": "Law Official Alert",
+    "police_alert_msg": "CRIME REPORTED: A local reports someone is robbing graves! Ride out and investigate!",
+    "police_blip_name": "Grave Robbery Reported"
+}

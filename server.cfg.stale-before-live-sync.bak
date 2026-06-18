@@ -1,0 +1,160 @@
+endpoint_add_tcp "0.0.0.0:30176" 
+endpoint_add_udp "0.0.0.0:30176" 
+set sv_listingIPOverride "185.249.196.154" 
+## server main settings
+sv_maxclients 30
+set gamename rdr3
+set sv_enforceGameBuild 1491
+
+# https://docs.fivem.net/docs/server-manual/server-commands/#sv_purelevel-level
+#sets sv_pureLevel 1
+#sets sv_pureLevel 2
+
+# locale config
+setr rsg_locale "en"
+setr ox:locale en
+
+## key license settings
+sv_licenseKey "cfxk_xtJcuqRg3nIt2ZtcjZzs_4CKU6O"
+set steam_webApiKey "none"
+
+## database settings
+set mysql_connection_string "mysql://zap933340-1:CG0Rv8LbMLxjCJ0b@mysql-mariadb-3-25-dal.zap-srv.com/zap933340-1?charset=utf8mb4"
+set mysql_slow_query_warning 300
+
+## voice settings
+setr voice_useSendingRangeOnly true
+setr voice_use3dAudio true
+setr voice_defaultVoiceMode 2
+setr voice_enableUi 1
+
+## server settings
+sv_hostname "Shady RP"
+sets sv_projectName "[Shady RP] Shady RP"
+sets sv_projectDesc "Roleplay"
+sets locale "en-US"
+load_server_icon shadyrpIco.png
+sets Framework "RSG"
+sets Framework Discord "https://discord.gg/eW3ADkf4Af"
+sets banner_detail "link"
+sets banner_connecting  "link"
+sets Discord "link"
+sets Developer "link"
+sets tags "rsg,roleplay"
+sv_endpointprivacy true
+
+set txAdmin-menuPtfxDisable true # Disable TXAdmin NoClip Particle Effect
+set sv_experimentalNetGameEventHandler false
+
+# https://v6.mantine.dev/theming/colors/#default-colors
+setr ox:primaryColor red
+setr ox:primaryShade 8
+
+# use target
+setr UseTarget false
+
+# default resources
+ensure mapmanager
+ensure spawnmanager
+ensure sessionmanager-rdr3
+#ensure basic-gamemode
+#ensure hardcap
+
+# database and library
+ensure oxmysql
+ensure ox_lib
+ensure vorp_menu
+ensure PolyZone
+ensure gs_gizmo
+ensure xsound
+
+# resources
+ensure rsg-core
+ensure v-inventory
+ensure v-bridge
+ensure rsg-inventory
+ensure fx-hud
+ensure vorp_inventory
+ensure v-loadingscreen
+ensure rsg-multicharacter
+ensure rsg-spawn
+ensure rsg-menubase
+ensure ox_target
+ensure chat-redm
+ensure [standalone]
+ensure [framework]
+ensure [mapmods]
+
+# Dodiban
+ensure [dodiban]
+
+# valenor
+ensure [valenor]
+# v-scene-ui lives outside auto-start groups and is started on demand by v-scene
+
+# murphy
+ensure murphy_interact
+ensure [murphy]
+
+# Mundi
+ensure [mundi]
+
+# MX
+ensure [mx]
+
+# tp
+ensure [tp]
+
+# spooner
+exec @spooni_spooner/permissions.cfg
+
+# sirevlc
+ensure sire_menu
+ensure sirevlc_notifications
+ensure sirevlc_herbs
+ensure sirevlc_butcher
+ensure sirevlc_hunting_script
+ensure sirevlc_horses
+ensure sirevlc_horses_interactions
+ensure sirevlc_debug_tool
+ensure [sirevlc]
+
+ensure [drugs]
+
+## weathersync permissions
+exec resources/[standalone]/weathersync/permissions.cfg
+
+## Permissions ##
+add_ace group.admin command allow # allow all commands
+###################### GOD ######################
+add_principal identifier.license:1214f93e85745a0c84f40b48d7ce2c95ea118a6c rsgcore.god
+add_principal identifier.license:51f30b20e2bb1ed0a46eb53f3ecaa0739e725515 rsgcore.god
+add_principal identifier.license:f0466aae29297dc875f1d8d085a7a09c09aebf7c rsgcore.god
+add_principal identifier.license:ed695caae85bdca9f71ec0c91fbac660e650c236 rsgcore.god
+add_principal identifier.license:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx rsgcore.god   # << god rockstar licence
+add_principal identifier.license:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx rsgcore.admin # << god rockstar licence
+add_principal identifier.license:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx group.admin   # << god rockstar licence
+###################### ADMIN ####################
+add_principal identifier.license:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx rsgcore.admin # << admins rockstar licence
+add_principal identifier.license:1214f93e85745a0c84f40b48d7ce2c95ea118a6c rsgcore.admin
+add_principal identifier.license:f0466aae29297dc875f1d8d085a7a09c09aebf7c rsgcore.admin
+add_principal identifier.license:ed695caae85bdca9f71ec0c91fbac660e650c236 rsgcore.admin
+add_principal identifier.license:51f30b20e2bb1ed0a46eb53f3ecaa0739e725515 rsgcore.admin
+add_principal identifier.license:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx group.admin   # << admins rockstar licence
+#################################################
+
+# Resources
+add_ace resource.rsg-core command allow # Allow rsg-core to execute commands
+
+# Gods
+add_ace rsgcore.god command allow # Allow all commands
+
+# Inheritance
+add_principal rsgcore.god group.admin # Allow gods access to the main admin group used to get all default permissions
+add_principal rsgcore.god rsgcore.admin # Allow gods access to admin commands
+add_principal rsgcore.admin rsgcore.mod # Allow admins access to mod commands
+# ox_lib
+add_ace resource.ox_lib command.add_ace allow
+add_ace resource.ox_lib command.remove_ace allow
+add_ace resource.ox_lib command.add_principal allow
+add_ace resource.ox_lib command.remove_principal allow

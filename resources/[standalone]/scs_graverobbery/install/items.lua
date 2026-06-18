@@ -1,0 +1,2 @@
+-- this goes into your rsg-core/shared/items.lua file
+grave_shovel    = { name = 'grave_shovel',     label = 'Grave Shovel',        weight = 100, type = 'item', image = 'shovel.png', unique = true, useable = true, shouldClose = false, description = 'Used to disturb graves' },

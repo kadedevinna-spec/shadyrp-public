@@ -1,0 +1,1310 @@
+/* Variáveis CSS para o sistema de dial */
+:root {
+    /* Cores principais */
+    --dial-bg-primary: rgb(24, 24, 24);
+    --dial-bg-overlay: rgba(0, 0, 0, 0.8);
+    --dial-border-primary: #666;
+    --dial-border-secondary: #444;
+    --dial-border-accent: #555;
+    
+    /* Cores de texto */
+    --dial-text-primary: #ccc;
+    --dial-text-secondary: #999;
+    --dial-text-white: #fff;
+    --dial-text-found: #c44;
+    --dial-text-current: #aaa;
+    
+    /* Cores de background dos elementos */
+    --dial-digit-bg: rgba(25, 25, 25, 0.9);
+    --dial-digit-found-bg: rgba(40, 25, 25, 0.9);
+    --dial-digit-current-bg: rgba(35, 35, 35, 0.9);
+    --dial-digit-found-border: #800;
+    
+    /* Sombras e efeitos */
+    --dial-shadow-primary: 0 4px 12px rgba(0, 0, 0, 0.8);
+    --dial-shadow-digit-found: 0 0 8px rgba(136, 68, 68, 0.3);
+    --dial-shadow-digit-current: 0 0 6px rgba(255, 255, 255, 0.2);
+    --dial-shadow-text: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    
+    /* Fonte principal do sistema */
+    --dial-font-family: 'Courier New', monospace;
+    --dial-font-fallback: Arial, sans-serif;
+    
+    /* Tamanhos */
+    --dial-interface-width: 280px;
+    --dial-interface-padding: 20px;
+    --dial-digit-size: 35px;
+    --dial-border-radius: 3px;
+    --dial-digit-border-radius: 2px;
+    
+    /* Animações */
+    --dial-transition-fast: all 0.2s ease;
+    --dial-transition-normal: all 0.3s ease;
+    --dial-animation-pulse: pulseMinimal 2s infinite;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--dial-font-fallback);
+    background: transparent;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Container principal do dial */
+.dial-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent; /* Removido background opaco */
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* backdrop-filter: blur(5px); */ /* Removido blur para melhor visão */
+}
+
+/* Background SVG que será "desenhado" */
+.dial-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/dialbg.svg') center center no-repeat;
+    background-size: cover;
+    clip-path: circle(0% at 50% 50%);
+    animation: drawBackground 2.5s ease-out forwards;
+    z-index: -1;
+}
+
+/* Animação de "desenho" do background */
+@keyframes drawBackground {
+    0% {
+        clip-path: circle(0% at 50% 50%);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    25% {
+        clip-path: circle(15% at 50% 50%);
+    }
+    50% {
+        clip-path: circle(35% at 50% 50%);
+    }
+    75% {
+        clip-path: circle(60% at 50% 50%);
+    }
+    100% {
+        clip-path: circle(100% at 50% 50%);
+        opacity: 1;
+    }
+}
+
+/* Viewer 3D */
+.dial-3d-viewer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: transparent;
+    border-radius: 50%;
+    overflow: visible; /* Mudado de hidden para visible para não cortar */
+    z-index: 1;
+}
+
+.model-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Interface do minigame - Estilo Red Dead minimalista */
+.dial-interface {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: var(--dial-interface-width);
+    background: var(--dial-bg-primary);
+    border: 1px solid var(--dial-border-primary);
+    border-radius: var(--dial-border-radius);
+    padding: var(--dial-interface-padding);
+    color: var(--dial-text-primary);
+    box-shadow: var(--dial-shadow-primary);
+    font-family: var(--dial-font-family);
+    z-index: 2;
+}
+
+.dial-header {
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--dial-border-secondary);
+    padding-bottom: 10px;
+}
+
+.dial-header h2 {
+    color: var(--dial-text-primary);
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: var(--dial-shadow-text);
+}
+
+.dial-header p {
+    color: var(--dial-text-secondary);
+    font-size: 11px;
+    line-height: 1.2;
+    margin: 0;
+}
+
+/* Display da combinação - Estilo Red Dead */
+.combination-display {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.combination-numbers {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.digit {
+    width: var(--dial-digit-size);
+    height: var(--dial-digit-size);
+    background: var(--dial-digit-bg);
+    border: 1px solid var(--dial-border-accent);
+    border-radius: var(--dial-digit-border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--dial-text-primary);
+    font-family: var(--dial-font-family);
+    transition: var(--dial-transition-fast);
+}
+
+.digit.found {
+    background: var(--dial-digit-found-bg);
+    border-color: var(--dial-digit-found-border);
+    color: var(--dial-text-found);
+    box-shadow: var(--dial-shadow-digit-found);
+}
+
+.digit.current {
+    background: var(--dial-digit-current-bg);
+    border-color: var(--dial-text-current);
+    color: var(--dial-text-white);
+    box-shadow: var(--dial-shadow-digit-current);
+    animation: var(--dial-animation-pulse);
+}
+
+@keyframes pulseMinimal {
+    0%, 100% {
+        border-color: #aaa;
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+    }
+    50% {
+        border-color: #ccc;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+}
+
+.combination-status {
+    color: var(--dial-text-secondary);
+    font-size: 12px;
+    font-weight: normal;
+    font-family: var(--dial-font-family);
+}
+
+/* Barra de progresso */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4a90e2, #2ecc71);
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 4px;
+}
+
+/* Instruções */
+.instructions {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.instructions p {
+    color: var(--dial-text-secondary);
+    font-size: 12px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* Removido efeitos visuais coloridos para estilo Red Dead minimalista */
+
+@keyframes borderGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+/* Responsividade */
+@media (max-width: 1400px) {
+    .dial-3d-viewer {
+        width: 700px;
+        height: 700px;
+    }
+    
+    .dial-interface {
+        width: 300px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .dial-3d-viewer {
+        width: 600px;
+        height: 600px;
+    }
+    
+    .dial-interface {
+        width: 300px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .dial-3d-viewer {
+        width: 500px;
+        height: 500px;
+    }
+    
+    .dial-interface {
+        top: 30px;
+        left: 30px;
+        width: 280px;
+    }
+}
+
+/* Estados especiais */
+.success {
+    animation: successPulse 0.6s ease;
+}
+
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.error {
+    animation: errorShake 0.6s ease;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+
+#sabotageContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: uiOpen 0.5s ease-out;
+}
+
+#sabotageContainer.hidden {
+    display: none;
+}
+
+/* Animação de abertura da UI */
+@keyframes uiOpen {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+        background: rgba(0, 0, 0, 0);
+    }
+    50% {
+        opacity: 0.7;
+        background: rgba(0, 0, 0, 0.4);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        background: rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* Animação de fechamento da UI */
+@keyframes uiClose {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        background: rgba(0, 0, 0, 0.7);
+    }
+    50% {
+        opacity: 0.3;
+        background: rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.6);
+        background: rgba(0, 0, 0, 0);
+    }
+}
+
+/* Animação específica da caixa de fios */
+.sabotage-ui {
+    animation: wireBoxOpen 0.6s ease-out;
+}
+
+@keyframes wireBoxOpen {
+    0% {
+        opacity: 0;
+        transform: scale(0.7) rotateY(-15deg);
+        filter: blur(5px);
+    }
+    30% {
+        opacity: 0.5;
+        transform: scale(0.9) rotateY(-5deg);
+        filter: blur(2px);
+    }
+    60% {
+        opacity: 0.8;
+        transform: scale(1.05) rotateY(2deg);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+        filter: blur(0px);
+    }
+}
+
+@keyframes wireBoxClose {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+        filter: blur(0px);
+    }
+    30% {
+        opacity: 0.7;
+        transform: scale(0.9) rotateY(10deg);
+        filter: blur(1px);
+    }
+    70% {
+        opacity: 0.3;
+        transform: scale(0.6) rotateY(25deg);
+        filter: blur(3px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.3) rotateY(45deg);
+        filter: blur(8px);
+    }
+}
+
+.sabotage-ui {
+    position: relative;
+}
+
+/* Classes para controlar animações */
+#sabotageContainer.closing {
+    animation: uiClose 0.4s ease-in forwards;
+}
+
+.sabotage-ui.closing {
+    animation: wireBoxClose 0.5s ease-in forwards;
+}
+
+.wire-box {
+    position: relative;
+}
+
+#wireBoxImage {
+    max-width: 95vw;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+    min-width: 600px;
+    min-height: 500px;
+}
+
+.fuses-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.fuse-place {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    z-index: 5;
+}
+
+#fusePlace1 {
+    top: 300px;
+    left: 310px;
+}
+
+#fusePlace2 {
+    top: 300px;
+    left: 400px;
+}
+
+#fusePlace3 {
+    top: 300px;
+    left: 480px;
+}
+
+#fusePlace4 {
+    top: 420px;
+    left: 310px;
+}
+
+#fusePlace5 {
+    top: 420px;
+    left: 400px;
+}
+
+#fusePlace6 {
+    top: 420px;
+    left: 480px;
+}
+
+.fuse {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    cursor: pointer;
+    z-index: 15;
+    animation: fuseAppear 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fuseAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+    }
+    60% {
+        opacity: 0.8;
+        transform: scale(1.1) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+#fuse1 {
+    top: 300px;
+    left: 290px;
+    animation-delay: 0.9s;
+}
+
+#fuse2 {
+    top: 300px;
+    left: 380px;
+    animation-delay: 1.0s;
+}
+
+#fuse3 {
+    top: 300px;
+    left: 460px;
+    animation-delay: 1.1s;
+}
+
+.lever {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    cursor: pointer;
+    z-index: 15;
+}
+
+#lever {
+    top: 430px;
+    left: 340px;
+    transition: transform 0.1s ease-out;
+}
+
+.lever-stuck {
+    animation: leverStuck 0.3s ease-out;
+}
+
+@keyframes leverStuck {
+    0% { transform: perspective(200px) rotateX(0deg) translateY(0px); }
+    25% { transform: perspective(200px) rotateX(-8deg) translateY(-3px); }
+    50% { transform: perspective(200px) rotateX(-5deg) translateY(-2px); }
+    75% { transform: perspective(200px) rotateX(-2deg) translateY(-1px); }
+    100% { transform: perspective(200px) rotateX(0deg) translateY(0px); }
+}
+
+.wire-svg {
+    position: absolute;
+    width: 50px;
+    height: 320px;
+    z-index: 8;
+    overflow: visible;
+    animation: wireAppear 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes wireAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wire-svg path {
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    stroke: url(#wireGradient);
+}
+
+#wire1 {
+    top: 60px;
+    left: 360px;
+    animation-delay: 0.3s;
+}
+
+#wire2 {
+    top: 60px;
+    left: 450px;
+    animation-delay: 0.5s;
+}
+
+#wire3 {
+    top: 60px;
+    left: 530px;
+    animation-delay: 0.7s;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.15s ease;
+    z-index: 1001;
+    font-family: Arial, sans-serif;
+}
+
+.close-button:hover {
+    color: #fff;
+    background: rgba(50, 50, 50, 0.95);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+.close-button:active {
+    transform: scale(0.9);
+    background: rgba(20, 20, 20, 1);
+}
+
+/* Minigame de cortar fio */
+.wire-minigame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding-top: 950px;
+}
+
+.wire-minigame.hidden {
+    display: none;
+}
+
+.wire-progress-bar {
+    position: relative;
+    width: 500px;
+    height: 20px;
+    background: #2a2a2a;
+    border-radius: 6px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 2px solid #444;
+    box-shadow: 0 0 0 1px #000;
+}
+ 
+.hit-zone {
+    position: absolute;
+    height: 100%;
+    background: #012901;
+    left: 45%;
+    width: 15%;
+}
+
+.progress-indicator {
+    position: absolute;
+    height: 100%;
+    width: 4px;
+    background: #fff;
+    left: 0;
+    transition: none;
+}
+
+.minigame-instruction {
+    color: #fff;
+    font-size: 16px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.key-highlight {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+    font-family: monospace;
+}
+
+/* Animação de flash inicial */
+@keyframes wireFlash {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(3) drop-shadow(0 0 10px #fff);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+
+.wire-flash {
+    animation: wireFlash 0.2s ease-out;
+}
+
+/* Animações de separação do fio */
+@keyframes wireSeparateTop {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-8px) rotate(-5deg);
+        opacity: 1;
+    }
+}
+
+@keyframes wireSeparateBottom {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(8px) rotate(5deg);
+        opacity: 1;
+    }
+}
+
+.wire-cut-top {
+    animation: wireSeparateTop 0.8s ease-out forwards;
+    pointer-events: none;
+}
+
+.wire-cut-bottom {
+    animation: wireSeparateBottom 0.8s ease-out forwards;
+    pointer-events: none;
+}
+
+/* Efeito de partículas quando corta */
+@keyframes sparkle {
+    0% {
+        opacity: 1;
+        transform: scale(0.2);
+        filter: brightness(2);
+    }
+    30% {
+        opacity: 0.9;
+        transform: scale(1);
+        filter: brightness(1.5);
+    }
+    70% {
+        opacity: 0.4;
+        transform: scale(0.8);
+        filter: brightness(0.8);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.1);
+        filter: brightness(0);
+    }
+}
+
+.cut-effect {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #ffffff, #ffaa00, #ff4400, transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle 0.6s ease-out forwards;
+    z-index: 20;
+    box-shadow: 0 0 6px #ffaa00;
+}
+
+/* Efeito de faísca realista dos fusíveis */
+@keyframes realisticSpark {
+    0% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+        filter: brightness(3) blur(0px);
+    }
+    20% {
+        opacity: 0.9;
+        transform: translateY(-15px) translateX(var(--lateral-drift, 0px)) scale(0.8) rotate(90deg);
+        filter: brightness(2.5) blur(0.5px);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-30px) translateX(calc(var(--lateral-drift, 0px) * 1.5)) scale(0.6) rotate(180deg);
+        filter: brightness(1.8) blur(1px);
+    }
+    80% {
+        opacity: 0.3;
+        transform: translateY(-42px) translateX(calc(var(--lateral-drift, 0px) * 2)) scale(0.3) rotate(270deg);
+        filter: brightness(1) blur(2px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px) translateX(calc(var(--lateral-drift, 0px) * 2.5)) scale(0.1) rotate(360deg);
+        filter: brightness(0) blur(3px);
+    }
+}
+
+.fuse-spark {
+    position: absolute;
+    width: 3px;
+    height: 8px;
+    background: linear-gradient(to bottom, #ffffff 0%, #ffff88 30%, #ffaa00 70%, #ff4400 100%);
+    pointer-events: none;
+    animation: realisticSpark 0.8s ease-out forwards;
+    z-index: 30;
+    border-radius: 1px;
+    box-shadow: 
+        0 0 4px #ffaa00,
+        0 0 8px rgba(255, 170, 0, 0.5);
+}
+
+/* Faíscas maiores para mais realismo */
+.fuse-spark.large {
+    width: 4px;
+    height: 12px;
+    animation-duration: 1.0s;
+}
+
+.fuse-spark.small {
+    width: 2px;
+    height: 6px;
+    animation-duration: 0.6s;
+}
+
+
+
+/* TORCH CUTTING MINIGAME */
+
+
+.minigame-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 999;
+    transform: scale(0.8);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.minigame-container.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.minigame-container.closing {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.9) translateY(-20px);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.minigame-container.closing .dark-overlay {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.minigame-container.closing .image-container {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-30px) scale(0.95);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.minigame-container.closing .cutting-progress {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.minigame-container.active .dark-overlay {
+    opacity: 1;
+}
+
+.image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35%;
+    height: 70%;
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(30px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s;
+}
+
+.minigame-container.active .image-container {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    background-image: url('images/top_door.png');
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Vault door images - larger size */
+.background-image.vault-door {
+    background-size: 120%; /* Vault images are larger */
+}
+
+/* Regular door images - normal size */
+.background-image.regular-door {
+    background-size: 80%; /* Keep original size */
+}
+
+.door-hinge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;  /* Much bigger - was 120px */
+    height: 200px;
+    background-image: url('images/door_hinge.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Vault hinge - MASSIVE size */
+.door-hinge.vault-hinge {
+    width: 250px !important;  /* FORCE BIG SIZE */
+    height: 250px !important;
+}
+
+/* Regular hinge - bigger size */
+.door-hinge.regular-hinge {
+    width: 200px;  /* Much bigger - was 120px */
+    height: 200px;
+}
+
+
+
+/* Robbery Progress Bar Styles - Same as cutting progress */
+.robbery-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: var(--dial-font-family);
+    pointer-events: none;
+}
+
+.robbery-container.active {
+    display: flex;
+}
+
+.robbery-content {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(25, 25, 25, 0.95);
+    border: 1px solid var(--dial-border-secondary);
+    border-radius: 8px;
+    padding: 20px 25px;
+    min-width: 450px;
+    max-width: 550px;
+    box-shadow: var(--dial-shadow-primary);
+    opacity: 0;
+    transition: all 0.3s ease-out;
+    pointer-events: auto;
+}
+
+.robbery-container.active .robbery-content {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.robbery-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.robbery-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(40, 40, 40, 0.8);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.robbery-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.robbery-text h2 {
+    color: var(--dial-text-primary);
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: var(--dial-font-family);
+    text-shadow: var(--dial-shadow-text);
+}
+
+.robbery-text p {
+    color: var(--dial-text-secondary);
+    margin: 3px 0 0 0;
+    font-size: 13px;
+    font-family: var(--dial-font-family);
+}
+
+.robbery-percentage {
+    color: var(--dial-text-primary);
+    font-size: 18px;
+    font-weight: bold;
+    font-family: var(--dial-font-family);
+    text-shadow: var(--dial-shadow-text);
+    margin-left: auto;
+}
+
+.robbery-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(60, 60, 60, 0.8);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.robbery-progress-fill {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.2s ease-out;
+    border-radius: 3px;
+}
+
+/* Cutting Progress Styles */
+.cutting-progress {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(25, 25, 25, 0.95);
+    border: 1px solid var(--dial-border-secondary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    min-width: 350px;
+    max-width: 450px;
+    box-shadow: var(--dial-shadow-primary);
+    opacity: 0;
+    transition: all 0.3s ease-out;
+    font-family: var(--dial-font-family);
+}
+
+.cutting-progress.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.progress-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 12px;
+}
+
+.progress-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(40, 40, 40, 0.8);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-icon img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.progress-info {
+    flex: 1;
+}
+
+.progress-title {
+    color: var(--dial-text-primary);
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--dial-font-family);
+    text-shadow: var(--dial-shadow-text);
+}
+
+.progress-subtitle {
+    color: var(--dial-text-secondary);
+    margin: 2px 0 0 0;
+    font-size: 11px;
+    font-family: var(--dial-font-family);
+}
+
+.progress-percentage {
+    color: var(--dial-text-primary);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: var(--dial-font-family);
+    text-shadow: var(--dial-shadow-text);
+    margin-left: auto;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(60, 60, 60, 0.8);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.2s ease-out;
+    border-radius: 2px;
+}
+
+/* Cutting Canvas Styles */
+#cuttingCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    z-index: 4;
+    pointer-events: auto;
+}
+
+.cutting-progress {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(25, 25, 25, 0.95);
+    border: 1px solid var(--dial-border-secondary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    min-width: 320px;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
+}
+
+.minigame-container.active .cutting-progress {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.progress-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 12px;
+}
+
+.progress-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(40, 40, 40, 0.8);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.progress-info {
+    flex: 1;
+}
+
+.progress-title {
+    color: var(--dial-text-white);
+    font-family: var(--dial-font-family), var(--dial-font-fallback);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.progress-subtitle {
+    color: var(--dial-text-secondary);
+    font-family: var(--dial-font-family), var(--dial-font-fallback);
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.progress-percentage {
+    color: var(--dial-text-white);
+    font-family: var(--dial-font-family), var(--dial-font-fallback);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(60, 60, 60, 0.8);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.2s ease-out;
+    border-radius: 2px;
+}

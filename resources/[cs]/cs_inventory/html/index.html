@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Inventory</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============================================================ MAIN INVENTORY ============================================================ -->
+<div id="cs-inventory" class="hidden">
+
+    <!-- Header -->
+    <div class="inv-header">
+        <div class="inv-header-deco left"></div>
+        <div class="inv-header-text">
+            <span class="inv-title" data-lang="inventory">INVENTORY</span>
+            <span class="inv-subtitle" id="server-name">CAS ROLEPLAY</span>
+        </div>
+        <div class="inv-header-deco right"></div>
+        <button class="inv-close-btn" id="inv-close-btn" title="Close (Backspace)">&#x2715;</button>
+    </div>
+
+    <!-- Body: 3 columns -->
+    <div class="inv-body">
+
+        <!-- ===== LEFT: PLAYER INVENTORY ===== -->
+        <div class="inv-panel left-panel">
+            <div class="panel-header">
+                <span class="panel-title" data-lang="panel_player">PLAYER</span>
+                <span class="panel-weight" id="weight-display">0.0 / 35.0 KG</span>
+            </div>
+            <div class="weight-bar-container">
+                <div class="weight-bar" id="weight-bar"></div>
+            </div>
+            <div class="panel-search-row">
+                <input type="text" id="player-search" class="search-input" placeholder="SEARCH..." autocomplete="off" data-lang-ph="search">
+            </div>
+            <div class="category-bar" id="category-bar">
+                <button class="cat-btn active" data-cat="all"       data-lang="cat_all">ALL</button>
+                <button class="cat-btn"        data-cat="ammo"      data-lang="cat_ammo">AMMO</button>
+                <button class="cat-btn"        data-cat="animals"   data-lang="cat_animals">ANIMALS</button>
+                <button class="cat-btn"        data-cat="docs"      data-lang="cat_docs">DOCS</button>
+                <button class="cat-btn"        data-cat="foods"     data-lang="cat_foods">FOODS</button>
+                <button class="cat-btn"        data-cat="herbs"     data-lang="cat_herbs">HERBS</button>
+                <button class="cat-btn"        data-cat="horse"     data-lang="cat_horse">HORSE</button>
+                <button class="cat-btn"        data-cat="medical"   data-lang="cat_medical">MEDICAL</button>
+                <button class="cat-btn"        data-cat="tools"     data-lang="cat_tools">TOOLS</button>
+                <button class="cat-btn"        data-cat="trade"     data-lang="cat_trade">TRADE</button>
+                <button class="cat-btn"        data-cat="valuables" data-lang="cat_valuables">VALUABLES</button>
+                <button class="cat-btn"        data-cat="weapons"   data-lang="cat_weapons">WEAPONS</button>
+            </div>
+            <div class="item-grid" id="player-grid"></div>
+        </div>
+
+        <!-- ===== CENTER: STATS ===== -->
+        <div class="stats-panel">
+            <div class="location-block">
+                <div class="location-region" id="location-region">...</div>
+                <div class="location-city" id="location-city"></div>
+            </div>
+
+            <div class="stat-divider"></div>
+
+            <div class="stat-row money-row">
+                <span class="stat-amount" id="stat-money">0.00</span>
+                <span class="stat-label" data-lang="stat_cash">CASH</span>
+            </div>
+            <div class="stat-row gold-row">
+                <span class="stat-amount" id="stat-gold">0.00</span>
+                <span class="stat-label" data-lang="stat_gold">GOLD</span>
+            </div>
+
+            <div class="stat-divider"></div>
+
+            <div class="stat-row">
+                <span class="stat-amount capitalize" id="stat-job">UNEMPLOYED</span>
+                <span class="stat-label" data-lang="stat_job">JOB</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-amount" id="stat-id">#1</span>
+                <span class="stat-label" data-lang="stat_id">ID</span>
+            </div>
+
+            <div class="stat-divider"></div>
+
+            <!-- Vitals -->
+            <div class="vital-row">
+                <div class="vital-icon health-icon">&#x2665;</div>
+                <div class="vital-content">
+                    <div class="vital-header">
+                        <span class="vital-name" data-lang="vital_health">HEALTH</span>
+                        <span class="vital-val" id="health-val">100 %</span>
+                    </div>
+                    <div class="vital-bar-wrap">
+                        <div class="vital-bar health-bar" id="health-bar" style="width:100%"></div>
+                    </div>
+                </div>
+                <div class="vital-side">
+                    <span class="vital-name" data-lang="vital_temp">TEMP</span>
+                    <span class="vital-val" id="temp-val">21°C</span>
+                    <div class="temp-icon">🌡</div>
+                </div>
+            </div>
+
+            <div class="vital-row">
+                <div class="vital-icon hunger-icon">&#x25C9;</div>
+                <div class="vital-content">
+                    <div class="vital-header">
+                        <span class="vital-name" data-lang="vital_hunger">HUNGER</span>
+                        <span class="vital-val" id="hunger-val">100 %</span>
+                    </div>
+                    <div class="vital-bar-wrap">
+                        <div class="vital-bar hunger-bar" id="hunger-bar" style="width:100%"></div>
+                    </div>
+                </div>
+                <div class="vital-side">
+                    <span class="vital-name" data-lang="vital_thirst">THIRST</span>
+                    <span class="vital-val" id="thirst-val">100 %</span>
+                    <div class="vital-bar-wrap small-bar">
+                        <div class="vital-bar thirst-bar" id="thirst-bar" style="width:100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clothing Panel (shown only if Config.ClothingEnabled = true) -->
+            <div id="clothing-panel" class="hidden">
+                <div class="stat-divider"></div>
+                <div class="clothing-title" data-lang="cloth_panel_title">VETEMENTS</div>
+                <div class="clothing-grid" id="clothing-grid"></div>
+            </div>
+        </div>
+
+        <!-- ===== RIGHT: SECONDARY / DROP / TRADE PANEL ===== -->
+        <div class="inv-panel right-panel">
+            <div class="panel-tabs" id="panel-tabs">
+                <button class="tab-btn active" data-tab="drop"  id="tab-drop"  data-lang="tab_drop">DROP</button>
+                <button class="tab-btn"        data-tab="give"  id="tab-give"  data-lang="tab_give">GIVE</button>
+                <button class="tab-btn"        data-tab="trade" id="tab-trade" data-lang="tab_trade">ECHANGER</button>
+            </div>
+
+            <!-- Trade panel (absolute overlay inside right-panel, shown during active trade) -->
+            <div id="trade-panel" class="hidden">
+                <div class="trade-status-bar" id="trade-status-bar">IN TRADE</div>
+                <div class="trade-columns">
+                    <div class="trade-col">
+                        <div class="trade-col-hdr" data-lang="trade_my_offer">MY OFFER</div>
+                        <div class="trade-items-list" id="my-offer-items">
+                            <div class="trade-hint" data-lang="trade_drag_hint">Drag items here</div>
+                        </div>
+                    </div>
+                    <div class="trade-vsep"></div>
+                    <div class="trade-col">
+                        <div class="trade-col-hdr" data-lang="trade_their_offer">THEIR OFFER</div>
+                        <div class="trade-items-list" id="their-offer-items">
+                            <div class="trade-hint" data-lang="trade_waiting">Waiting...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="trade-footer">
+                    <button class="trade-btn trade-validate" id="trade-validate-btn" data-lang="trade_validate">VALIDATE</button>
+                    <button class="trade-btn trade-cancel"   id="trade-cancel-btn"   data-lang="trade_cancel">CANCEL</button>
+                </div>
+            </div>
+            <div class="secondary-title hidden" id="secondary-title-bar">
+                <span id="secondary-title-text">HORSE</span>
+                <span class="secondary-cap" id="secondary-cap-text"></span>
+            </div>
+            <div class="panel-search-row">
+                <input type="text" id="secondary-search" class="search-input" placeholder="SEARCH..." autocomplete="off" data-lang-ph="search_secondary">
+            </div>
+            <div class="item-grid" id="secondary-grid"></div>
+        </div>
+
+    </div><!-- end inv-body -->
+
+    <!-- Hotbar: A=Ammo filter, M=Money give, G=Gold give -->
+    <!-- Ammo popup (floats above hotbar-a) -->
+    <div id="ammo-popup" class="hidden">
+        <div class="ammo-popup-title" data-lang="hotbar_ammo">AMMUNITION</div>
+        <div id="ammo-popup-list"></div>
+    </div>
+
+    <div class="hotbar">
+        <div class="hotbar-slot" data-key="A" id="hotbar-a" title="Click: show ammo">
+            <div class="hotbar-item-wrap">
+                <img class="hotbar-img" src="nui://vorp_inventory/html/img/items/ammopistolnormal.png"
+                     onerror="this.src='nui://vorp_inventory/html/img/items/ammorevolvernormal.png';this.onerror=null;" alt="AMMO">
+                <span class="hotbar-hlabel" data-lang="hotbar_ammo">AMMO</span>
+            </div>
+        </div>
+        <div class="hotbar-slot" data-key="M" id="hotbar-m" title="Double-click: give money | Drag to GIVE zone">
+            <div class="hotbar-item-wrap">
+                <img class="hotbar-img" src="nui://vorp_inventory/html/img/items/money.png"
+                     onerror="this.src='nui://vorp_inventory/html/img/items/default_box.png';this.onerror=null;" alt="CASH">
+                <span class="hotbar-hamount" id="hotbar-money">0.00</span>
+            </div>
+        </div>
+        <div class="hotbar-slot" data-key="G" id="hotbar-g" title="Double-click: give gold | Drag to GIVE zone">
+            <div class="hotbar-item-wrap">
+                <img class="hotbar-img" src="nui://vorp_inventory/html/img/items/goldbar.png"
+                     onerror="this.src='nui://vorp_inventory/html/img/items/default_box.png';this.onerror=null;" alt="GOLD">
+                <span class="hotbar-hamount" id="hotbar-gold">0.00</span>
+            </div>
+        </div>
+    </div>
+
+</div><!-- end cs-inventory -->
+
+
+<!-- ============================================================ CONTEXT MENU ============================================================ -->
+<div id="ctx-menu" class="hidden">
+    <div class="ctx-header" id="ctx-item-name">ITEM</div>
+    <div class="ctx-desc" id="ctx-item-desc"></div>
+    <div class="ctx-divider"></div>
+    <ul class="ctx-list">
+        <li class="ctx-item ctx-use"              id="ctx-use"   data-lang="ctx_use">USE</li>
+        <li class="ctx-item ctx-equip hidden"     id="ctx-equip" data-lang="ctx_equip">EQUIP</li>
+        <li class="ctx-item ctx-drop"             id="ctx-drop"  data-lang="ctx_drop">DROP</li>
+        <li class="ctx-item ctx-give"             id="ctx-give"  data-lang="ctx_give">GIVE</li>
+        <li class="ctx-item ctx-move hidden"      id="ctx-move"  data-lang="ctx_move">MOVE →</li>
+        <li class="ctx-item ctx-take hidden"      id="ctx-take"  data-lang="ctx_take">TAKE ←</li>
+    </ul>
+</div>
+
+
+<!-- ============================================================ QUANTITY MODAL ============================================================ -->
+<div id="qty-overlay" class="modal-overlay hidden">
+    <div class="modal-box">
+        <div class="modal-title" id="qty-title" data-lang="modal_qty_title">SELECT QUANTITY</div>
+        <div class="modal-item-info" id="qty-item-info"></div>
+        <div class="qty-controls">
+            <button class="qty-btn" id="qty-minus">&#x2212;</button>
+            <input type="number" id="qty-input" class="qty-input" min="1" max="999" value="1">
+            <button class="qty-btn" id="qty-plus">+</button>
+        </div>
+        <div class="qty-range">
+            <input type="range" id="qty-slider" min="1" max="999" value="1">
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn confirm-btn" id="qty-confirm" data-lang="btn_confirm">CONFIRM</button>
+            <button class="modal-btn cancel-btn"  id="qty-cancel"  data-lang="btn_cancel">CANCEL</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================ PLAYERS MODAL ============================================================ -->
+<div id="players-overlay" class="modal-overlay hidden">
+    <div class="modal-box">
+        <div class="modal-title" data-lang="modal_give_title">CHOOSE RECIPIENT</div>
+        <div class="modal-subtitle" id="give-item-label"></div>
+        <ul class="players-list" id="players-list"></ul>
+        <div class="modal-actions">
+            <button class="modal-btn cancel-btn" id="players-cancel" data-lang="btn_cancel">CANCEL</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================ TRANSACTION LOADER ============================================================ -->
+<div id="transaction-loader" class="hidden">
+    <div class="loader-wrap">
+        <div class="revolver">
+            <div class="rev-part"></div>
+            <div class="rev-part"></div>
+            <div class="rev-part"></div>
+            <div class="rev-part"></div>
+            <div class="rev-part"></div>
+            <div class="rev-part"></div>
+        </div>
+        <div class="loader-text" id="loader-text">Processing...</div>
+    </div>
+</div>
+
+
+<!-- ============================================================ TRADE DOTS SELECTOR ============================================================ -->
+<div id="trade-selector" class="hidden">
+    <div id="trade-dots-layer"></div>
+    <div class="trade-selector-hint" data-lang="trade_selector_hint">CLICK A PLAYER TO TRADE &bull; ESC TO CANCEL</div>
+</div>
+
+
+<!-- ============================================================ TRADE REQUEST POPUP ============================================================ -->
+<div id="trade-request-overlay" class="modal-overlay hidden">
+    <div class="modal-box">
+        <div class="modal-title" data-lang="modal_trade_title">TRADE REQUEST</div>
+        <div class="modal-subtitle" id="trade-request-from">A player wants to trade with you</div>
+        <div class="modal-actions">
+            <button class="modal-btn confirm-btn" id="trade-accept-btn" data-lang="btn_accept">ACCEPT</button>
+            <button class="modal-btn cancel-btn"  id="trade-refuse-btn" data-lang="btn_refuse">REFUSE</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/app.js"></script>
+</body>
+</html>

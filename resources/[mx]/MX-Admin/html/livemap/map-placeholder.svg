@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#3a4a32" stroke-width="0.5" opacity="0.35"/>
+    </pattern>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c2218"/>
+      <stop offset="50%" stop-color="#252e22"/>
+      <stop offset="100%" stop-color="#1a1f17"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg)"/>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <text x="400" y="390" text-anchor="middle" fill="#5a6b52" font-family="Georgia, serif" font-size="22" opacity="0.65">Mapa ao vivo</text>
+  <text x="400" y="425" text-anchor="middle" fill="#6a7d62" font-family="Georgia, serif" font-size="13" opacity="0.5">Adiciona rdr3-map.jpg em html/livemap para o mapa HD</text>
+</svg>

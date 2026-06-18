@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
+    <title>FX-Camping Store</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+
+    <div class="container" id="store-container" style="display: none;">
+
+        <!-- MOUSE DRAG ZONE (full-screen, behind panels) -->
+        <div id="preview-drag-zone"></div>
+
+        <!-- LEFT: MAIN MENU (drill-down) -->
+        <div class="panel panel-left animate__animated animate__fadeIn">
+            <div class="menu-title" id="store-title">
+                <div class="back-btn" id="btn-back" style="display: none;">
+                    <iconify-icon icon="mdi:chevron-left"></iconify-icon>
+                </div>
+                <span id="title-text" data-i18n="ui_store_title">CAMPING STORE</span>
+            </div>
+
+            <div class="menu-body">
+
+                <!-- Return home (visible inside a category) -->
+                <div class="form-section no-border" id="home-section" style="display: none;">
+                    <div class="nav-row home-row" id="btn-home">
+                        <iconify-icon class="row-icon" icon="mdi:home"></iconify-icon>
+                        <span class="row-name" data-i18n="ui_return_home">RETURN HOME</span>
+                        <iconify-icon class="chev" icon="mdi:chevron-left"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="form-section">
+                    <div class="section-label">
+                        <iconify-icon icon="mdi:magnify" class="label-iconify"></iconify-icon>
+                        <span id="search-label" data-i18n="ui_search">SEARCH</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" class="fx-input" id="search-input" placeholder="Search..." data-i18n-ph="ui_search_ph" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Dynamic list: categories OR items -->
+                <div class="form-section no-border list-section">
+                    <div class="section-label">
+                        <iconify-icon id="list-icon" icon="mdi:shape-outline" class="label-iconify"></iconify-icon>
+                        <span id="list-label" data-i18n="ui_categories">CATEGORIES</span>
+                        <span class="section-count" id="list-count">0</span>
+                    </div>
+                    <div class="nav-list" id="nav-list"></div>
+                </div>
+
+                <!-- Current money -->
+                <div class="form-section no-border money-section">
+                    <div class="section-label">
+                        <iconify-icon icon="mdi:wallet-outline" class="label-iconify"></iconify-icon>
+                        <span data-i18n="ui_current_money">CURRENT MONEY</span>
+                    </div>
+                    <div class="money-bar">
+                        <div class="money-item">
+                            <iconify-icon icon="mdi:cash" class="money-icon"></iconify-icon>
+                            <span id="money-cash">$0</span>
+                        </div>
+                        <div class="money-item gold">
+                            <iconify-icon icon="mdi:gold" class="money-icon"></iconify-icon>
+                            <span id="money-gold">0</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Footer hints -->
+            <div class="menu-footer nav-hints">
+                <div class="nav-hint"><span class="key">↑↓</span><span data-i18n="ui_hint_move">Move</span></div>
+                <div class="nav-hint"><span class="key">ENTER</span><span data-i18n="ui_hint_select">Select</span></div>
+                <div class="nav-hint"><span class="key">BACK</span><span data-i18n="ui_hint_return">Return</span></div>
+            </div>
+        </div>
+
+        <!-- CENTER: PREVIEW INFO -->
+        <div class="preview-info animate__animated animate__fadeIn">
+            <div class="preview-top" id="preview-top">
+                <div class="preview-item-label" id="preview-label" data-i18n="ui_select_item">Select an item</div>
+                <div class="preview-item-price" id="preview-price">—</div>
+            </div>
+
+            <div class="key-hints" id="key-hints">
+                <div class="key-hint"><span class="key">LMB</span><span class="hint" data-i18n="ui_move_prop">Move Prop</span></div>
+                <div class="key-hint"><span class="key">RMB</span><span class="hint" data-i18n="ui_fov">FOV</span></div>
+                <div class="key-hint"><span class="key">Q/E</span><span class="hint" data-i18n="ui_rotate">Rotate</span></div>
+                <div class="key-hint"><span class="key">R/F</span><span class="hint" data-i18n="ui_tilt">Tilt</span></div>
+                <div class="key-hint"><span class="key">Wheel</span><span class="hint" data-i18n="ui_zoom">Zoom</span></div>
+                <div class="key-hint"><span class="key">X</span><span class="hint" data-i18n="ui_reset">Reset</span></div>
+                <div class="key-hint"><span class="key">SPACE</span><span class="hint" data-i18n="ui_add_to_cart">Add to Cart</span></div>
+                <div class="key-hint"><span class="key">B</span><span class="hint" data-i18n="ui_quick_buy">Quick Buy</span></div>
+                <div class="key-hint key-hint-toggle" id="btn-toggle-menu">
+                    <span class="key">H</span>
+                    <iconify-icon icon="mdi:eye-outline" id="toggle-icon"></iconify-icon>
+                    <span class="hint" id="toggle-label" data-i18n="ui_hide_menu">Hide Menu</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: CART -->
+        <div class="panel panel-right animate__animated animate__fadeIn">
+            <div class="menu-title" data-i18n="ui_your_cart">YOUR CART</div>
+
+            <div class="menu-body cart-body">
+
+                <div class="form-section cart-section">
+                    <div class="section-label">
+                        <iconify-icon icon="mdi:cart-outline" class="label-iconify"></iconify-icon>
+                        <span data-i18n="ui_items">ITEMS</span>
+                        <span class="section-count" id="cart-count">0</span>
+                    </div>
+                    <div class="cart-list" id="cart-list">
+                        <div class="cart-empty" data-i18n="ui_cart_empty">Cart is empty</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-label">
+                        <iconify-icon icon="mdi:calculator" class="label-iconify"></iconify-icon>
+                        <span data-i18n="ui_total">TOTAL</span>
+                    </div>
+                    <div class="total-row">
+                        <div class="total-label" data-i18n="ui_cash">CASH</div>
+                        <div class="total-value" id="total-cash">$0</div>
+                    </div>
+                    <div class="total-row">
+                        <div class="total-label" data-i18n="ui_gold">GOLD</div>
+                        <div class="total-value gold" id="total-gold">0</div>
+                    </div>
+                    <div class="total-row no-border">
+                        <div class="total-label" data-i18n="ui_weight">WEIGHT</div>
+                        <div class="total-value" id="total-weight">0.0</div>
+                    </div>
+                </div>
+
+                <div class="form-section no-border">
+                    <div class="info-panel" id="info-panel">
+                        <iconify-icon icon="mdi:information-outline" class="info-icon"></iconify-icon>
+                        <span id="info-text" data-i18n="ui_cart_empty_info">Your cart is empty.</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="menu-footer">
+                <div class="fx-btn btn-cancel" id="btn-close">
+                    <img src="./assets/img/cancel.png" class="btn-icon" alt="">
+                    <span data-i18n="ui_close">CLOSE</span>
+                </div>
+                <div class="fx-btn btn-save" id="btn-purchase">
+                    <img src="./assets/img/okey.png" class="btn-icon" alt="">
+                    <span data-i18n="ui_purchase">PURCHASE</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PLACEMENT HUD
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="placement-hud" style="display: none;">
+    <div class="ph-inner">
+
+        <!-- Multi-placement counter (shown when player has >1 of the same item) -->
+        <div id="ph-item-counter" style="display:none;">
+            <iconify-icon icon="mdi:package-variant-closed"></iconify-icon>
+            <span id="ph-counter-label"></span>
+            <span class="ph-counter-badge" id="ph-counter-badge">×0</span>
+        </div>
+
+        <!-- Key row -->
+        <div class="ph-keys-row">
+            <div class="ph-group">
+                <span class="ph-key">↑↓←→</span>
+                <span class="ph-desc" data-i18n="ui_ph_move">Move</span>
+            </div>
+            <div class="ph-sep"></div>
+            <div class="ph-group">
+                <span class="ph-key">Q</span><span class="ph-desc" data-i18n="ui_ph_up">Up</span>
+            </div>
+            <div class="ph-group">
+                <span class="ph-key">Z</span><span class="ph-desc" data-i18n="ui_ph_down">Down</span>
+            </div>
+            <div class="ph-group">
+                <span class="ph-key">SPACE</span><span class="ph-desc" data-i18n="ui_ph_snap">Snap to Ground</span>
+            </div>
+            <div class="ph-sep"></div>
+            <div class="ph-group">
+                <span class="ph-key">A</span><span class="ph-key">D</span>
+                <span class="ph-desc" data-i18n="ui_ph_yaw">Yaw</span>
+            </div>
+            <div class="ph-sep"></div>
+            <div class="ph-group">
+                <span class="ph-key">C</span><span class="ph-key">V</span>
+                <span class="ph-desc" data-i18n="ui_ph_axis">Axis</span>
+                <span class="ph-axis-badge" id="ph-axis-badge">X</span>
+            </div>
+            <div class="ph-group">
+                <span class="ph-key">B</span>
+                <span class="ph-desc" data-i18n="ui_ph_switch_axis">Switch Axis</span>
+            </div>
+            <div class="ph-sep"></div>
+            <div class="ph-group">
+                <span class="ph-key ph-key-lmb">LMB</span>
+                <span class="ph-desc" data-i18n="ui_ph_orbit">Orbit</span>
+            </div>
+            <div class="ph-group">
+                <span class="ph-key ph-key-rmb">RMB</span>
+                <span class="ph-desc" data-i18n="ui_ph_cam_z">Cam Height</span>
+            </div>
+            <div class="ph-group">
+                <span class="ph-key ph-key-scroll">SCROLL</span>
+                <span class="ph-desc" data-i18n="ui_fov">FOV</span>
+            </div>
+            <div class="ph-sep"></div>
+            <div class="ph-group ph-confirm">
+                <span class="ph-key">ENTER</span>
+                <span class="ph-desc" data-i18n="ui_ph_place">Place</span>
+            </div>
+            <div class="ph-group ph-cancel">
+                <span class="ph-key">BACK</span>
+                <span class="ph-desc" data-i18n="ui_ph_cancel">Cancel</span>
+            </div>
+        </div>
+
+        <!-- Radius status bar -->
+        <div id="ph-radius-status" class="ph-radius ph-ok">
+            <iconify-icon icon="mdi:map-marker-radius-outline"></iconify-icon>
+            <span id="ph-radius-text" data-i18n="ui_within_radius">Within camp radius</span>
+            <span class="ph-dist-badge" id="ph-dist-badge">— / —</span>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PROGRESSBAR
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="progress">
+    <img src="" id="progressbar-img" alt="">
+    <div id="progressbar-text">...</div>
+    <div id="progress-bar">
+        <div id="progress-fill"></div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CONFIRM DIALOG
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="fx-confirm-overlay" style="display: none;">
+    <div id="fx-confirm-box">
+        <div id="fx-confirm-title">
+            <iconify-icon icon="mdi:alert-outline"></iconify-icon>
+            <span data-i18n="ui_confirm_action">CONFIRM ACTION</span>
+        </div>
+        <div id="fx-confirm-msg" data-i18n="ui_are_you_sure">Are you sure?</div>
+        <div id="fx-confirm-btns">
+            <div id="fx-confirm-yes">
+                <iconify-icon icon="mdi:check"></iconify-icon>
+                <span data-i18n="ui_confirm">CONFIRM</span>
+            </div>
+            <div id="fx-confirm-no">
+                <iconify-icon icon="mdi:close"></iconify-icon>
+                <span data-i18n="ui_cancel">CANCEL</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     MY CAMP MENU
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="mycamp-container" style="display: none;">
+
+    <!-- LEFT PANEL: Camp Props -->
+    <div class="panel panel-left animate__animated animate__fadeIn">
+        <div class="menu-title">
+            <button class="back-btn" id="mc-rename-btn" title="Rename Camp">
+                <iconify-icon icon="mdi:pencil"></iconify-icon>
+            </button>
+            <span id="mc-camp-name" data-i18n="ui_my_camp">MY CAMP</span>
+        </div>
+
+        <div class="menu-body">
+
+            <!-- PROPS section (hidden when members view active) -->
+            <div id="mc-props-section">
+                <div class="form-section no-border list-section">
+                    <div class="section-label">
+                        <iconify-icon icon="mdi:tent" class="label-iconify"></iconify-icon>
+                        <span data-i18n="ui_camp_props">CAMP PROPS</span>
+                        <span class="section-count" id="mc-prop-count">0</span>
+                    </div>
+                    <div id="mc-prop-filter" style="display:none;"></div>
+                    <div class="input-wrapper mc-search-wrapper">
+                        <input type="text" class="fx-input mc-search-input" id="mc-prop-search" placeholder="Search..." data-i18n-ph="ui_search_ph" autocomplete="off">
+                    </div>
+                    <div class="nav-list" id="mc-prop-list"></div>
+                </div>
+
+                <div class="form-section no-border" id="mc-prop-actions" style="display: none;">
+                    <div class="section-label">
+                        <iconify-icon icon="mdi:cursor-default" class="label-iconify mc-prop-action-icon"></iconify-icon>
+                        <span id="mc-selected-label">—</span>
+                    </div>
+                    <div class="mc-prop-action-btns">
+                        <div class="fx-btn mc-act-move mc-act-btn" id="mc-btn-edit-prop">
+                            <iconify-icon icon="mdi:cursor-move"></iconify-icon> <span data-i18n="ui_move">MOVE</span>
+                        </div>
+                        <div class="fx-btn mc-act-install mc-act-btn" id="mc-btn-install-prop">
+                            <iconify-icon icon="mdi:hammer"></iconify-icon> <span data-i18n="ui_install">INSTALL</span>
+                        </div>
+                        <div class="fx-btn btn-cancel mc-act-btn" id="mc-btn-remove-prop">
+                            <iconify-icon icon="mdi:trash-can-outline"></iconify-icon> <span data-i18n="ui_remove">REMOVE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEMBERS section (hidden by default, shown when MEMBERS btn clicked) -->
+            <div id="mc-members-section" style="display: none;">
+                <div class="form-section no-border list-section">
+                    <div class="section-label mc-members-title">
+                        <iconify-icon icon="mdi:account-group" class="label-iconify"></iconify-icon>
+                        <span data-i18n="ui_members">MEMBERS</span>
+                    </div>
+                    <div id="mc-members-list" class="nav-list mc-scroll-list"></div>
+                </div>
+
+                <div class="form-section no-border">
+                    <div class="mc-add-member-row">
+                        <div class="input-wrapper mc-member-input-wrapper">
+                            <input type="number" class="fx-input" id="mc-member-input" placeholder="Enter Server ID..." data-i18n-ph="ui_serverid_ph" min="1">
+                        </div>
+                        <div class="fx-btn btn-save" id="mc-member-add-btn">
+                            <iconify-icon icon="mdi:account-plus"></iconify-icon> <span data-i18n="ui_add">ADD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section no-border list-section">
+                    <div class="section-label mc-nearby-title">
+                        <iconify-icon icon="mdi:map-marker-radius" class="label-iconify mc-nearby-icon"></iconify-icon>
+                        <span data-i18n="ui_nearby_players">NEARBY PLAYERS</span>
+                    </div>
+                    <div id="mc-nearby-list" class="nav-list mc-scroll-list"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="menu-footer">
+            <div class="fx-btn btn-cancel" id="mc-close-btn">
+                <img src="./assets/img/cancel.png" class="btn-icon" alt="">
+                <span data-i18n="ui_close">CLOSE</span>
+            </div>
+            <div class="fx-btn" id="mc-btn-members">
+                <iconify-icon icon="mdi:account-group"></iconify-icon>
+                <span data-i18n="ui_members">MEMBERS</span>
+            </div>
+            <div class="fx-btn mc-wardrobe-btn" id="mc-btn-set-wardrobe" style="display: none;">
+                <iconify-icon icon="mdi:hanger"></iconify-icon>
+                <span data-i18n="ui_set_wardrobe">SET WARDROBE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CENTER: Drop zone (appears only while dragging) -->
+    <div class="preview-info animate__animated animate__fadeIn mc-center-area">
+
+        <div id="mc-drag-hint" style="display:none;">
+            <iconify-icon icon="mdi:cursor-move"></iconify-icon>
+            <span data-i18n="ui_drag_to_place">DRAG TO PLACE</span>
+        </div>
+
+        <div id="mc-drop-zone" style="display: none;">
+            <iconify-icon icon="mdi:arrow-down-circle-outline"></iconify-icon>
+            <span data-i18n="ui_drop_here">DROP HERE</span>
+            <span data-i18n="ui_to_place">TO PLACE</span>
+        </div>
+
+        <div class="key-hints mc-center-hints">
+            <div class="key-hint"><span class="key">DRAG</span><span class="hint" data-i18n="ui_place_item">Place Item</span></div>
+            <div class="key-hint"><span class="key">CLICK</span><span class="hint" data-i18n="ui_select_prop">Select Prop</span></div>
+            <div class="key-hint"><span class="key">ESC</span><span class="hint" data-i18n="ui_esc_close_hint">Close</span></div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: Inventory -->
+    <div class="panel panel-right animate__animated animate__fadeIn">
+        <div class="menu-title" data-i18n="ui_your_items">YOUR ITEMS</div>
+
+        <div class="menu-body">
+            <div class="form-section no-border list-section">
+                <div class="section-label">
+                    <iconify-icon icon="mdi:bag-personal-outline" class="label-iconify"></iconify-icon>
+                    <span data-i18n="ui_inventory">INVENTORY</span>
+                </div>
+                <div id="mc-inv-filter" style="display:none;"></div>
+                    <div class="input-wrapper mc-search-wrapper">
+                        <input type="text" class="fx-input mc-search-input" id="mc-inv-search" placeholder="Search..." data-i18n-ph="ui_search_ph" autocomplete="off">
+                    </div>
+                <div class="nav-list" id="mc-inv-grid"></div>
+            </div>
+        </div>
+
+        <div class="menu-footer">
+            <div class="fx-btn btn-cancel" id="mc-btn-delete-camp">
+                <iconify-icon icon="mdi:delete-forever"></iconify-icon>
+                <span data-i18n="ui_delete">DELETE</span>
+            </div>
+            <div class="fx-btn btn-save" id="mc-btn-move-camp">
+                <iconify-icon icon="mdi:wagon"></iconify-icon>
+                <span data-i18n="ui_move_camp">MOVE CAMP</span>
+            </div>
+            <div class="fx-btn mc-edit-mode-btn" id="mc-btn-edit-mode">
+                <iconify-icon icon="mdi:pencil-ruler"></iconify-icon>
+                <span data-i18n="ui_edit_mode">EDIT MODE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename overlay (centered modal) -->
+    <div id="mc-rename-overlay" style="display: none;">
+        <div class="mc-rename-title" data-i18n="ui_rename_camp">
+            RENAME CAMP
+        </div>
+        <div class="input-wrapper mc-rename-input-wrapper">
+            <input type="text" class="fx-input" id="mc-rename-input" maxlength="32" placeholder="New camp name..." data-i18n-ph="ui_new_camp_name_ph">
+        </div>
+        <div class="mc-rename-actions">
+            <div class="fx-btn btn-save" id="mc-rename-save">
+                <img src="./assets/img/okey.png" class="btn-icon" alt=""> <span data-i18n="ui_save">SAVE</span>
+            </div>
+            <div class="fx-btn btn-cancel" id="mc-rename-cancel">
+                <img src="./assets/img/cancel.png" class="btn-icon" alt=""> <span data-i18n="ui_cancel">CANCEL</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     ADMIN CAMPS PANEL
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="admincamp-container" style="display: none;">
+
+    <!-- Single panel: camp list with accordion rows -->
+    <div class="panel panel-left animate__animated animate__fadeIn">
+        <div class="menu-title" data-i18n="ui_all_camps">ALL CAMPS</div>
+
+        <div class="menu-body">
+
+            <!-- Toggle blips -->
+            <div class="form-section no-border ac-blip-section">
+                <div class="fx-btn btn-save" id="ac-toggle-blips">
+                    <iconify-icon id="ac-blips-icon" icon="mdi:map-marker-multiple-outline"></iconify-icon>
+                    <span id="ac-blips-label" data-i18n="ui_open_blips">OPEN BLIPS</span>
+                </div>
+            </div>
+
+            <!-- Camp list -->
+            <div class="form-section no-border list-section">
+                <div class="section-label">
+                    <iconify-icon icon="mdi:tent" class="label-iconify"></iconify-icon>
+                    <span data-i18n="ui_all_camps">ALL CAMPS</span>
+                    <span class="section-count" id="ac-camp-count">0</span>
+                </div>
+                <div class="nav-list" id="ac-camp-list"></div>
+            </div>
+
+        </div>
+
+        <div class="ac-esc-hint" data-i18n="ui_esc_menu_hint">Press ESC to close the menu</div>
+    </div>
+
+    <!-- Preview overlay: zone name + ESC hint (bottom-center, visible during camera preview) -->
+    <div id="ac-preview-overlay" style="display: none;">
+        <div id="ac-preview-zone"></div>
+        <div class="ph-keys-row ac-preview-keys">
+            <div class="ph-group ph-cancel ac-preview-cancel">
+                <span class="ph-key">ESC</span>
+                <span class="ph-desc" data-i18n="ui_return_menu">RETURN MENU</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera control panel (right-side, visible during preview) -->
+    <div id="ac-cam-controls" style="display: none;">
+        <div class="ac-cam-panel">
+
+            <!-- Header -->
+            <div class="ac-cam-title">
+                <iconify-icon icon="mdi:camera-control" style="pointer-events:none;font-size:1.3vh;"></iconify-icon>
+                <span data-i18n="ui_cam_title">CAMERA</span>
+            </div>
+
+            <!-- Zoom in -->
+            <div class="ac-cam-body">
+                <div class="ac-cam-action-btn" id="ac-cam-zoom-in">
+                    <iconify-icon icon="mdi:magnify-plus-outline" style="pointer-events:none;font-size:1.5vh;"></iconify-icon>
+                    <span data-i18n="ui_cam_zoom_in">ZOOM IN</span>
+                </div>
+
+                <!-- D-pad -->
+                <div class="ac-cam-dpad">
+                    <div class="ac-cam-dir-btn" id="ac-cam-up">
+                        <iconify-icon icon="mdi:chevron-up" style="pointer-events:none;"></iconify-icon>
+                    </div>
+                    <div class="ac-cam-dpad-row">
+                        <div class="ac-cam-dir-btn" id="ac-cam-left">
+                            <iconify-icon icon="mdi:chevron-left" style="pointer-events:none;"></iconify-icon>
+                        </div>
+                        <div class="ac-cam-dpad-center">
+                            <iconify-icon icon="mdi:crosshairs" style="pointer-events:none;"></iconify-icon>
+                        </div>
+                        <div class="ac-cam-dir-btn" id="ac-cam-right">
+                            <iconify-icon icon="mdi:chevron-right" style="pointer-events:none;"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="ac-cam-dir-btn" id="ac-cam-down">
+                        <iconify-icon icon="mdi:chevron-down" style="pointer-events:none;"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Zoom out -->
+                <div class="ac-cam-action-btn" id="ac-cam-zoom-out">
+                    <iconify-icon icon="mdi:magnify-minus-outline" style="pointer-events:none;font-size:1.5vh;"></iconify-icon>
+                    <span data-i18n="ui_cam_zoom_out">ZOOM OUT</span>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="ac-cam-divider"></div>
+
+            <!-- Key combination hints -->
+            <div class="ac-cam-keyhints">
+                <div class="ph-group ac-cam-keyhint">
+                    <span class="ph-key" data-i18n="ui_cam_key_arrows">ARROWS</span>
+                    <span class="ph-desc" data-i18n="ui_cam_hint_pan">PAN</span>
+                </div>
+                <div class="ph-group ac-cam-keyhint">
+                    <iconify-icon icon="mdi:mouse" style="pointer-events:none;color:#c9a86c;font-size:1.1vh;margin-right:2px;"></iconify-icon>
+                    <span class="ph-key" data-i18n="ui_cam_key_drag">LMB</span>
+                    <span class="ph-desc" data-i18n="ui_cam_hint_drag">FREE PAN</span>
+                </div>
+                <div class="ph-group ac-cam-keyhint">
+                    <iconify-icon icon="mdi:mouse-scroll-wheel" style="pointer-events:none;color:#c9a86c;font-size:1.1vh;margin-right:2px;"></iconify-icon>
+                    <span class="ph-key" data-i18n="ui_cam_key_scroll">SCROLL</span>
+                    <span class="ph-desc" data-i18n="ui_cam_hint_zoom">ZOOM</span>
+                </div>
+                <div class="ph-group ph-cancel ac-cam-keyhint">
+                    <span class="ph-key">ESC</span>
+                    <span class="ph-desc" data-i18n="ui_return_menu">RETURN</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- In-world markers container: circle-black.png icons drawn over nearby player peds -->
+<div id="mc-markers-container"></div>
+
+<!-- Permission selection / edit dialog -->
+<div id="mc-perm-dialog" style="display: none;">
+    <div id="mc-perm-box">
+        <div id="mc-perm-title">
+            <iconify-icon icon="mdi:shield-account-outline"></iconify-icon>
+            <span id="mc-perm-title-text">SELECT PERMISSIONS</span>
+        </div>
+        <div id="mc-perm-list"></div>
+        <div id="mc-perm-btns">
+            <div id="mc-perm-cancel">
+                <iconify-icon icon="mdi:close"></iconify-icon>
+                <span data-i18n="ui_cancel">CANCEL</span>
+            </div>
+            <div id="mc-perm-confirm">
+                <iconify-icon icon="mdi:check"></iconify-icon>
+                <span data-i18n="ui_confirm">CONFIRM</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CREATE CAMP MENU  (/createcamp)
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="createcamp-container">
+    <div class="panel panel-left animate__animated animate__fadeIn">
+        <div class="menu-title" data-i18n="ui_cc_title">CREATE CAMP</div>
+        <div class="menu-body">
+            <div class="form-section no-border list-section">
+                <div class="section-label">
+                    <iconify-icon icon="mdi:tent" class="label-iconify"></iconify-icon>
+                    <span data-i18n="ui_cc_base_items">BASE ITEMS</span>
+                    <span class="section-count" id="cc-items-count">0</span>
+                </div>
+                <div class="nav-list" id="cc-inv-grid"></div>
+            </div>
+        </div>
+        <div class="menu-footer nav-hints">
+            <div class="nav-hint"><span class="key">ENTER</span><span data-i18n="ui_hint_select">Select</span></div>
+            <div class="nav-hint"><span class="key">ESC</span><span data-i18n="ui_esc_close_hint">Close</span></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CAMP INFO MENU  (/campinfo)
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="campinfo-container">
+
+    <!-- Single centered panel -->
+    <div class="panel campinfo-panel animate__animated animate__fadeIn">
+
+        <!-- Tab bar -->
+        <div class="ci-tab-bar">
+            <div class="ci-tab active" id="ci-tab-info" data-i18n="ui_ci_tab_info">CAMP INFO</div>
+            <div class="ci-tab" id="ci-tab-tutorial" data-i18n="ui_ci_tab_tutorial">HOW TO PLAY</div>
+            <div class="ci-tab" id="ci-tab-commands" data-i18n="ui_ci_tab_commands">COMMANDS</div>
+        </div>
+
+        <!-- ── CAMP INFO tab ───────────────────────────────────── -->
+        <div class="ci-body" id="ci-info-body">
+
+            <!-- No camp message -->
+            <div id="ci-no-camp">
+                <div class="info-panel ci-no-camp-panel">
+                    <iconify-icon icon="mdi:tent-outline" class="ci-no-camp-icon"></iconify-icon>
+                    <span id="ci-no-camp-text" data-i18n="ui_ci_no_camp">
+                        You don't have a camp. Use /createcamp to get started.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Camp data -->
+            <div id="ci-camp-data">
+
+                <div class="ci-camp-name-block">
+                    <iconify-icon icon="mdi:tent" class="ci-camp-name-icon"></iconify-icon>
+                    <span id="ci-camp-name">—</span>
+                </div>
+
+                <div class="ci-stats-block">
+                    <div class="ci-stat-item">
+                        <iconify-icon icon="mdi:map-marker" class="ci-stat-icon"></iconify-icon>
+                        <span class="ci-stat-label" data-i18n="ui_ci_location">LOCATION</span>
+                        <span class="ci-stat-value" id="ci-camp-location">—</span>
+                    </div>
+                    <div class="ci-stat-item">
+                        <iconify-icon icon="mdi:hammer" class="ci-stat-icon"></iconify-icon>
+                        <span class="ci-stat-label" data-i18n="ui_ci_props">PROPS</span>
+                        <span class="ci-stat-value" id="ci-camp-props">—</span>
+                    </div>
+                    <div class="ci-stat-item">
+                        <iconify-icon icon="mdi:account-multiple" class="ci-stat-icon"></iconify-icon>
+                        <span class="ci-stat-label" data-i18n="ui_ci_members">MEMBERS</span>
+                        <span class="ci-stat-value" id="ci-camp-members">—</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ── TUTORIAL tab ──────────────────────────────────── -->
+        <div class="ci-body" id="ci-tutorial-body">
+
+            <!-- Step header and counter -->
+            <div class="ci-step-header">
+                <div class="ci-step-counter">
+                    <span data-i18n="ui_ci_step">STEP</span>
+                    <span id="ci-step-current">1</span>
+                    <span data-i18n="ui_ci_of">of</span>
+                    <span id="ci-step-total">10</span>
+                </div>
+                <div class="ci-step-title" id="ci-step-title">—</div>
+            </div>
+
+            <!-- Step description -->
+            <div class="ci-step-desc-wrapper">
+                <div class="ci-step-desc" id="ci-step-desc"></div>
+            </div>
+
+            <!-- Image area -->
+            <div class="ci-step-img-area" id="ci-step-img-area">
+                <div class="ci-no-image" id="ci-no-image">
+                    <iconify-icon icon="mdi:image-off-outline"></iconify-icon>
+                    <span data-i18n="ui_ci_no_image">No image configured</span>
+                </div>
+                <div class="ci-img-caption" id="ci-img-caption"></div>
+                <!-- Multiple images rendered dynamically here -->
+                <div id="ci-images-container"></div>
+            </div>
+
+        </div>
+
+        <!-- ── COMMANDS tab ─────────────────────────────────────── -->
+        <div class="ci-body" id="ci-commands-body">
+            <div id="ci-commands-list"></div>
+        </div>
+
+        <!-- Prev / Next navigation — fixed inside panel, outside body -->
+        <div class="ci-nav-row" id="ci-nav-row">
+            <div class="fx-btn" id="ci-btn-prev">
+                <iconify-icon icon="mdi:chevron-left"></iconify-icon>
+                <span data-i18n="ui_ci_prev">PREV</span>
+            </div>
+            <div class="ci-step-dots" id="ci-step-dots"></div>
+            <div class="fx-btn btn-save" id="ci-btn-next">
+                <span data-i18n="ui_ci_next">NEXT</span>
+                <iconify-icon icon="mdi:chevron-right"></iconify-icon>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="menu-footer">
+            <div class="fx-btn btn-cancel" id="ci-close-btn">
+                <img src="./assets/img/cancel.png" class="btn-icon" alt="">
+                <span data-i18n="ui_close">CLOSE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image lightbox overlay -->
+    <div id="ci-lightbox">
+        <div id="ci-lightbox-inner">
+            <img id="ci-lightbox-img" src="" alt="">
+            <div id="ci-lightbox-hint" data-i18n="ui_ci_close_preview">Click to close</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- CAMP EDIT MODE HUD (fixed, always in DOM) -->
+<div id="camp-edit-hud" style="display:none;">
+    <span class="ceh-dot"></span>
+    <span class="ceh-label" data-i18n="ui_camp_edit_mode">CAMP EDIT MODE</span>
+</div>
+
+</body>
+<script src="./main.js" type="text/javascript"></script>
+</html>

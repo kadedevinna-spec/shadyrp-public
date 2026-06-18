@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <!-- Standalone Progress Bar (replaces bzk_progressbar) -->
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-label" id="progressLabel">Loading...</div>
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+        </div>
+        
+        <div class="minigame-container">
+            <canvas class="canvas"></canvas>
+            
+            <!-- Sound toggle button -->
+            <div class="sound-toggle" id="soundToggle" title="Toggle Sound Effects">
+                🔊
+            </div>
+            
+            <!-- Timer bar -->
+            <div class="timer-container" id="timerContainer">
+                <div class="timer-text" id="timerText">10s</div>
+                <div class="timer-bar">
+                    <div class="timer-bar-fill" id="timerBar"></div>
+                </div>
+            </div>
+            
+            <!-- Gold counter -->
+            <div class="gold-counter" id="goldCounter">
+                Gold: <span id="goldCollectedText">0</span> / <span id="goldTotalText">0</span>
+            </div>
+        </div>
+        
+        <script src="js/script.js"></script>
+    </body>
+</html>

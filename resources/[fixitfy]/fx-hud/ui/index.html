@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixitfy Hud</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <audio id="notify-info-sound" src="assets/sounds/info.ogg" preload="auto"></audio>
+    <audio id="notify-success-sound" src="assets/sounds/info.ogg" preload="auto"></audio>
+    <audio id="notify-error-sound" src="assets/sounds/alert.ogg" preload="auto"></audio>
+</head>
+
+<body>
+    <div class="container">
+        <div class="progress" style="display: none;">
+            <img src="/assets/img/items/bluebox.png" id="progressbar-img">
+            <div id="progressbar-text">...</div>
+            <div id="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+        </div>
+        <div class="grid-overlay" style="display: none;"></div>
+        <div class="ui-panel" style="display: none;">
+            <div class="ui-box">
+                <!-- <button id="close-btn" type="button">
+                    <img src="/ui/assets/img/cancel.png" alt="" srcset="">
+                </button> -->
+                <div class="navbar">
+                    <div id="home-btn">
+                        <iconify-icon id="navbar-btn-icon" icon="game-icons:magic-swirl"></iconify-icon>
+                    </div>
+                    <div id="hud-color-btn">
+                        <iconify-icon id="navbar-btn-icon"icon="game-icons:paint-bucket"></iconify-icon>
+                    </div>
+                    <div id="hud-size-btn">
+                        <iconify-icon id="navbar-btn-icon" icon="fluent:slide-size-24-regular"></iconify-icon>
+                    </div>
+                    <!-- <div id="hud-setting-btn">
+                        <iconify-icon id="navbar-btn-icon" icon="game-icons:auto-repair"></iconify-icon>
+                    </div> -->
+                </div>
+                <div class="hud-settings">
+                    <h1 id="hud-settings-title">SETTING</h1>
+                    <div class="home-cont">
+                        <div id="default-settings" class="home-cont-btn">DEFAULT SETTINGS</div>
+                        <div id="change-position" class="home-cont-btn">CHANGE POSITION</div>
+                    </div>
+                    <div class="sizing-cont">
+                        <input type="text" id="width-value" maxlength="4" value="1.8">            
+                        <input type="range" name="" id="hud-width" min="1.8" max="3.5" step="0.1" value="1.8">
+                        <div class="select-hud-widht">
+                            <div id="changehud-widht" class="selectwidht-type">HUDS</div>
+                            <div id="changestat-widht" class="selectwidht-type">STATS</div>
+                        </div>
+                        <h2 class="onofftitle">HIDE/SHOW</h2>
+                        <label class="switch">
+                            <input class="checkbox" type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="color-cont">
+                        <img data-color = "#3b3831" class="color-box" src="/ui/assets/img/colors/strap_tint_swatch_14.png" alt="" srcset="">
+                        <img data-color = "#1b2c36" class="color-box" src="/ui/assets/img/colors/metal_swatch_steel_blued.png" alt="" srcset="">
+                        <img data-color = "#3c322d" class="color-box" src="/ui/assets/img/colors/metal_swatch_steel_browned.png" alt="" srcset="">
+                        <img data-color = "#655349" class="color-box" src="/ui/assets/img/colors/strap_tint_swatch_0.png" alt="" srcset="">
+                        <img data-color = "#755b45" class="color-box" src="/ui/assets/img/colors/strap_tint_swatch_1.png" alt="" srcset="">
+                        <img data-color = "#917a63" class="color-box" src="/ui/assets/img/colors/strap_tint_swatch_10.png" alt="" srcset="">
+                        <img data-color = "#3b2b1b" class="color-box" src="/ui/assets/img/colors/strap_tint_swatch_11.png" alt="" srcset="">
+                        <img data-color = "#494b4d" class="color-box" src="/ui/assets/img/colors/strap_tint_swatch_12.png" alt="" srcset="">
+                        <img data-color = "#412514" class="color-box" src="/ui/assets/img/colors/wood_tint_swatch_black_walnut.png" alt="" srcset="">
+                        <img data-color = "#5e2b19" class="color-box" src="/ui/assets/img/colors/wood_tint_swatch_mesquite.png" alt="" srcset="">
+                        <img data-color = "#7f5834" class="color-box" src="/ui/assets/img/colors/wood_tint_swatch_myrtle.png" alt="" srcset="">
+                        <img data-color = "#703e28" class="color-box" src="/ui/assets/img/colors/wood_tint_swatch_rosewood.png" alt="" srcset="">
+                        <img data-color = "#58412d" class="color-box" src="/ui/assets/img/colors/wood_tint_swatch_walnut.png" alt="" srcset="">
+                        <img data-color = "#ffffff" class="color-box" src="/ui/assets/img/colors/wrap_tint_swatch_white.png" alt="" srcset="">
+                        <div class="color-pick">
+                            <input type="color" id="customColorPicker" value="#000000">
+                            <iconify-icon id="picker-icon" icon="dashicons:color-picker"></iconify-icon>
+                        </div>
+                        <div class="select-hud-color">
+                            <div id="colorbox1" class="selectcolortype">PROGRESS</div>
+                            <div id="colorbox2" class="selectcolortype">ICON</div>
+                        </div>
+                    </div>
+                    <h1 id="title-huds">HUDS</h1>
+                    <div class="hud-prewiev">
+                        <div class="huds-container">
+                            <div class="health2">
+                                <img id="health-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="health-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Health Meter">
+                                <img id="health-core" class="core-img" src="/ui/assets/img/player_core_health/core_state_7.png" alt="">
+                            </div>
+                            <div class="stamina2">
+                                <img id="stamina-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="stamina-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Stamina Meter">
+                                <img id="stamina-core" class="core-img" src="/ui/assets/img/player_core_stamina/core_state_7.png" alt="">
+                            </div>
+                            <div class="hunger2">
+                                <img id="hunger-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="hunger-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="hunger Meter">
+                                <img id="hunger-core" class="core-img" src="/ui/assets/img/hunger/4.png" alt="">
+                            </div>
+                            <div class="thirst2">
+                                <img id="thirst-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="thirst-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Thirst Meter">
+                                <img id="thirst-core" class="core-img" src="/ui/assets/img/thirst/4.png" alt="">
+                            </div>
+                            <div class="stress2">
+                                <img id="stress-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="stress-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Stress Meter">
+                                <img id="stress-core" class="core-img" src="/ui/assets/img/rpg_sick_01.png" alt="">
+                            </div>
+                            <div class="pvp2">
+                                <img id="pvp-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="pvp-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Pvp Meter">
+                                <img id="pvp-core" class="core-img" src="/ui/assets/img/pvpoff.png" alt="">
+                            </div>
+                            <div class="armour2">
+                                <img id="armour-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="armour-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Armour Meter">
+                                <img id="armour-core" class="core-img" src="/ui/assets/img/armour.png" alt="">
+                            </div>
+                            <div class="dirty2">
+                                <img id="dirty-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="dirty-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Dirty Meter">
+                                <img id="dirty-core" class="core-img" src="/ui/assets/img/shower.png" alt="">
+                            </div>
+                            <div class="microphone2">
+                                <img id="microphone-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="microphone-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Microphone Meter">
+                                <img id="microphone-core" class="core-img" src="/ui/assets/img/overhead_speaker.png" alt="">
+                            </div>
+                            <span class="temp-value" style="display: none;">°22</span>
+                            <div class="temp2">
+                                <img id="temp-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="temp-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Temperature Meter">
+                                <img id="temp-core" class="core-img" src="/ui/assets/img/rpg_hot.png" alt="">
+                            </div>
+                            <div class="onesync2">
+                                <img id="onesync-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="onesync-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="OneSync Meter">
+                                <img id="onesync-core" class="core-img" src="/ui/assets/img/onesync.png" alt="">
+                            </div>
+                            <div class="alcohol2">
+                                <img id="alcohol-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="alcohol-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Alcohol Meter">
+                                <img id="alcohol-core" class="core-img" src="/ui/assets/img/alcohol.png" alt="">
+                            </div>
+                            <div class="horse-health2">
+                                <img id="horse-health-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="horse-health-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Horse Health Meter">
+                                <img id="horse-health-core" class="core-img" src="/ui/assets/img/horse_core_health/core_state_7.png" alt="">
+                            </div>
+                            <div class="horse-stamina2">
+                                <img id="horse-stamina-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="horse-stamina-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Horse Stamina Meter">
+                                <img id="horse-stamina-core" class="core-img" src="/ui/assets/img/horse_core_stamina/core_state_7.png" alt="">
+                            </div>
+                            <div class="horse-dirty2">
+                                <img id="horse-dirty-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="horse-dirty-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Horse Dirty Meter">
+                                <img id="horse-dirty-core" class="core-img" src="/ui/assets/img/rpg_horse_dirty.png" alt="">
+                            </div> 
+                            <div class="level2">
+                                <img id="level-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="level-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_1.png" alt="Level Meter">
+                                <img id="level-core" class="core-img" src="/ui/assets/img/xp.png" alt="">
+                                <!-- <span class="level-value">5</span> -->
+                            </div>
+                            <!-- <div class="mail-box">
+                                <img id="mail-box-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+                                <img id="mail-box-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Mail Box Meter">
+                                <img id="mail-box-png" src="/ui/assets/img/menu_icon_invite_sent.png" alt="">
+                            </div> -->
+                        </div>                    
+                        <div class="select-all-hud">SELECT ALL</div>
+                        <!-- PLAYER STAT -->
+                        <h1 id="title-stat">STATS</h1>
+                        <div class="locations2">
+                            <!-- <img id="locationsicon" src="/ui/assets/img/radio_on.png" alt="" srcset=""> -->
+                            <span class="locations-area">Grizzlies East</span>
+                            <span class="locations-txt">Blackwater</span>
+                        </div> 
+                        <div id="cash" class="stat-box">
+                            <img id="stat-img" src="/ui/assets/img/cash.png" alt="" srcset="">
+                            <span class="cash-value2">8945.75</span>
+                        </div>
+                        <div id="gold" class="stat-box">
+                            <img id="stat-img" src="/ui/assets/img/gold.png" alt="" srcset="">
+                            <span class="gold-value2">8945.75</span>
+                        </div>
+                        <div id="hour" class="stat-box">
+                            <img id="stat-img" src="/ui/assets/img/hour.png" alt="" srcset="">
+                            <span class="hour-text2">14:50</span>
+                        </div>
+                        <div id="id" class="stat-box">
+                            <img id="stat-img" src="/ui/assets/img/id.png" alt="" srcset="">
+                            <span class="id-value2">78</span>
+                        </div>                
+                    </div>
+                    <div class="container-description">
+                        <p>HUDs are divided into two colors. The first is the color of the outer progress bar, and the second is the color of the icon inside the circular bar. The color of the icon/image for the player's and horse's health and stamina does not change.</p>
+                        <ul>
+                            <li>First, click on the HUD whose color you want to change.</li>
+                            <!-- <li>Choose which part of the HUD you want to recolor.</li> -->
+                            <!-- <li>Select a color from the presets or create a custom color.</li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- NOTIFY -->
+        <div class="notify-container" style="display: none;">
+            <!-- <div class="notify">
+                <span class="notify-title">Error</span>
+                <span class="notify-desc">This notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsiveThis notification system is designed to be responsive !</span>
+                <div class="notify-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                </div>
+                <img id="notify-img" src="/ui/assets/img/cancel.png" alt="" srcset="">
+            </div>
+            <div class="notify">
+                <span class="notify-title">Information</span>
+                <span class="notify-desc">This notification system is designed to be responsive !</span>
+                <div class="notify-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                </div>
+                <img id="notify-img" src="/ui/assets/img/info.png" alt="" srcset="">
+            </div>
+            <div class="notify">
+                <span class="notify-title">Warning</span>
+                <span class="notify-desc">This notification system is designed to be responsive !</span>
+                <div class="notify-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                </div>
+                <img id="warning-img" src="/ui/assets/img/warning.png" alt="" srcset="">
+            </div>  -->
+        </div>
+        
+
+        <!-- useItemText -->
+        <div class="use-text">
+
+            <!-- <div class="usevalue">20</div> -->
+
+        </div>
+
+        <!-- HUDS -->
+        <div class="voice-pulse-ring"></div>
+        <div class="voice-pulse-ring"></div>
+        <div class="voice-pulse-ring"></div>
+        <div class="showvoicerange" style="display: none;">
+            <iconify-icon id="range-icon" icon="mingcute:voice-line"></iconify-icon>
+            <span class="voice-range"></span>
+        </div>
+        <div class="health" style="display: none;">
+            <img id="health-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="health-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Health Meter">
+            <img id="health-core" class="core-img" src="/ui/assets/img/player_core_health/core_state_7.png" alt="" srcset="">
+        </div>
+        <div class="stamina" style="display: none;">
+            <img id="stamina-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="stamina-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Stamina Meter">
+            <img id="stamina-core" class="core-img" src="/ui/assets/img/player_core_stamina/core_state_7.png" alt="" srcset="">
+        </div>
+        <div class="hunger" style="display: none;">
+            <img id="hunger-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="hunger-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="hunger Meter">
+            <img id="hunger-core" class="core-img" src="/ui/assets/img/hunger/8.png" alt="">
+        </div>
+        <div class="thirst" style="display: none;">
+            <img id="thirst-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="thirst-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Thirst Meter">
+            <img id="thirst-core" class="core-img" src="/ui/assets/img/thirst/8.png" alt="">
+        </div>
+        <div class="stress" style="display: none;">
+            <img id="stress-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="stress-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Stress Meter">
+            <img id="stress-core" class="core-img" src="/ui/assets/img/rpg_sick_01.png" alt="">
+        </div>
+        <div class="pvp" style="display: none;">
+            <img id="pvp-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="pvp-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Pvp Meter">
+            <img id="pvp-core" class="core-img" src="/ui/assets/img/pvpoff.png" alt="">
+        </div>
+        <div class="armour" style="display: none;">
+            <img id="armour-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="armour-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Armour Meter">
+            <img id="armour-core" class="core-img" src="/ui/assets/img/armour.png" alt="">
+        </div>
+        <div class="dirty" style="display: none;">
+            <img id="dirty-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="dirty-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Dirty Meter">
+            <img id="dirty-core" class="core-img" src="/ui/assets/img/shower.png" alt="">
+        </div>
+        <div class="microphone" style="display: none;">
+            <img id="microphone-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="microphone-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Microphone Meter">
+            <img id="microphone-core" class="core-img" src="/ui/assets/img/mic.png" alt="">
+        </div>
+        <span class="temp-value" style="display: none;">°22</span>
+        <div class="temp" style="display: none;">
+            <img id="temp-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="temp-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Temperature Meter">
+            <img id="temp-core" class="core-img" src="/ui/assets/img/rpg_hot.png" alt="">
+        </div>
+        <div class="onesync" style="display: none;">
+            <img id="onesync-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="onesync-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="OneSync Meter">
+            <img id="onesync-core" class="core-img" src="/ui/assets/img/onesync.png" alt="">
+        </div>
+        <div class="alcohol" style="display: none;">
+            <img id="alcohol-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="alcohol-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Alcohol Meter">
+            <img id="alcohol-core" class="core-img" src="/ui/assets/img/alcohol.png" alt="">
+        </div>
+        <div class="horse-health" style="display: none;">
+            <img id="horse-health-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="horse-health-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Horse Health Meter">
+            <img id="horse-health-core" class="core-img" src="/ui/assets/img/horse_core_health/core_state_7.png" alt="">
+            <span class="horse-bounding health-bounding">1</span>
+        </div>
+        <div class="horse-stamina" style="display: none;">
+            <img id="horse-stamina-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="horse-stamina-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Horse Stamina Meter">
+            <img id="horse-stamina-core" class="core-img" src="/ui/assets/img/horse_core_stamina/core_state_7.png" alt="">
+            <span class="horse-bounding stamina-bounding">1</span>
+        </div>
+        <div class="horse-dirty" style="display: none;">
+            <img id="horse-dirty-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="horse-dirty-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_50.png" alt="Horse Dirty Meter">
+            <img id="horse-dirty-core" class="core-img" src="/ui/assets/img/rpg_horse_dirty.png" alt="">
+        </div>
+        <span class="level-value" style="display: none;">5</span>
+        <div class="level" style="display: none;">
+            <img id="level-background" class="hud-background" src="/ui/assets/img/rpg_background.png">
+            <img id="level-meter" class="progress-bar-img" src="/ui/assets/img/rpg_meter/rpg_meter_1.png" alt="Level Meter">
+            <img id="level-core" class="core-img" src="/ui/assets/img/xp.png" alt="">
+        </div>
+        <!-- PLAYER STAT -->
+        <div class="cash" style="display: none;">
+            <img id="stat-img" src="/ui/assets/img/cash.png" alt="" srcset="">
+            <span class="cash-value">8945.75</span>
+        </div>
+        <div class="gold" style="display: none;">
+            <img id="stat-img" src="/ui/assets/img/gold.png" alt="" srcset="">
+            <span class="gold-value">8945.75</span>
+        </div>
+        <div class="hour" style="display: none;">
+            <img id="stat-img" src="/ui/assets/img/hour.png" alt="" srcset="">
+            <span class="hour-text">14:50</span>
+        </div>
+        <div class="id" style="display: none;">
+            <img id="stat-img" src="/ui/assets/img/id.png" alt="" srcset="">
+            <span class="id-text">78</span>
+        </div>  
+        <div class="locations" style="display: none;">
+            <!-- <img id="locationsicon" src="/ui/assets/img/radio_on.png" alt="" srcset=""> -->
+            <span class="locations-area">Grizzlies East</span>
+            <span class="locations-txt">Blackwater</span>
+        </div> 
+    </div>
+</body>
+<script src="assets/main.js" type="text/javascript"></script>
+
+</html>

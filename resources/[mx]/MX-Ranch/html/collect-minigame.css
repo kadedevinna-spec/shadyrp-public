@@ -1,0 +1,338 @@
+/* Collect minigame — fullscreen, transparent (no backdrop-filter: CEF RedM bug) */
+
+#collectMinigameRoot,
+#collectMinigameRoot.cmg-root {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  z-index: 9000;
+  background: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+#collectMinigameRoot.hidden {
+  display: none !important;
+}
+
+#collectMinigameRoot.is-active {
+  pointer-events: auto;
+}
+
+#collectMinigameRoot .cmg-panel {
+  font-family: Bahnschrift, 'Segoe UI', Tahoma, sans-serif;
+  color: #ebe3d4;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+#collectMinigameRoot .cmg-panel--fullscreen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* HUD — text shadow only (no background that turns black in CEF) */
+#collectMinigameRoot .cmg-hud {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  padding: 14px 20px 8px;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+#collectMinigameRoot .cmg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+#collectMinigameRoot .cmg-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #f5efe0;
+  text-shadow:
+    0 0 3px #000,
+    0 1px 4px #000,
+    0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+#collectMinigameRoot .cmg-timer {
+  font-size: 0.9rem;
+  color: #f5efe0;
+  font-variant-numeric: tabular-nums;
+  text-shadow:
+    0 0 3px #000,
+    0 1px 4px #000;
+}
+
+#collectMinigameRoot .cmg-hint {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  color: #ebe3d4;
+  line-height: 1.35;
+  text-shadow:
+    0 0 3px #000,
+    0 1px 4px #000,
+    0 2px 6px rgba(0, 0, 0, 0.85);
+}
+
+#collectMinigameRoot .cmg-hint strong {
+  color: #fff8e8;
+  font-weight: 700;
+}
+
+#collectMinigameRoot .cmg-hint .cmg-hint-green {
+  color: #5ecf82;
+  font-weight: 700;
+}
+
+#collectMinigameRoot .cmg-hint .cmg-hint-red {
+  color: #e87062;
+  font-weight: 700;
+}
+
+#collectMinigameRoot .cmg-hud-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 480px;
+}
+
+#collectMinigameRoot .cmg-target-badge {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  border: 2px solid rgba(90, 175, 115, 0.75);
+  background-color: transparent !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 88%;
+  box-shadow: none;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.75));
+  position: relative;
+}
+
+#collectMinigameRoot .cmg-target-badge__label {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #e8f0e4;
+  text-transform: capitalize;
+  text-shadow: 0 0 3px #000, 0 1px 3px #000;
+}
+
+#collectMinigameRoot .cmg-progress-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+#collectMinigameRoot .cmg-progress {
+  height: 8px;
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+#collectMinigameRoot .cmg-progress__fill {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #5a9e6f, #8bc49a);
+  transition: width 0.2s ease;
+}
+
+/* Arena — fills screen below HUD */
+#collectMinigameRoot .cmg-fall-arena {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 108px;
+  bottom: 48px;
+  overflow: hidden;
+  background: none !important;
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+
+#collectMinigameRoot .cmg-fall-arena::before,
+#collectMinigameRoot .cmg-fall-arena::after {
+  display: none !important;
+  content: none !important;
+}
+
+#collectMinigameRoot .cmg-fall-item {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: transparent !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 88%;
+  box-shadow: none;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.85));
+  transition: transform 0.08s ease, filter 0.12s ease, outline-color 0.12s ease;
+  z-index: 2;
+  outline: 1px solid rgba(255, 255, 255, 0.22);
+  outline-offset: 1px;
+}
+
+/* Green/red visible but similar — subtle confusion */
+#collectMinigameRoot .cmg-fall-item--good {
+  outline: 2px solid rgba(62, 168, 98, 0.72);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 8px rgba(55, 150, 90, 0.28),
+    inset 0 0 14px rgba(55, 140, 85, 0.14);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.85));
+}
+
+#collectMinigameRoot .cmg-fall-item--trap,
+#collectMinigameRoot .cmg-fall-item--decoy {
+  outline: 2px solid rgba(195, 82, 72, 0.72);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 8px rgba(180, 70, 60, 0.28),
+    inset 0 0 14px rgba(160, 65, 55, 0.14);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.85));
+}
+
+#collectMinigameRoot .cmg-fall-item:hover {
+  transform: scale(1.05) !important;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.9)) brightness(1.06);
+  z-index: 4;
+}
+
+#collectMinigameRoot .cmg-fall-item--good:hover {
+  outline-color: rgba(75, 185, 110, 0.88);
+  box-shadow:
+    0 0 10px rgba(55, 160, 95, 0.38),
+    inset 0 0 16px rgba(55, 150, 90, 0.18);
+}
+
+#collectMinigameRoot .cmg-fall-item--trap:hover,
+#collectMinigameRoot .cmg-fall-item--decoy:hover {
+  outline-color: rgba(210, 95, 85, 0.88);
+  box-shadow:
+    0 0 10px rgba(190, 80, 70, 0.38),
+    inset 0 0 16px rgba(175, 75, 65, 0.18);
+}
+
+#collectMinigameRoot .cmg-fall-item--noimg {
+  background-color: rgba(60, 50, 40, 0.35) !important;
+}
+
+#collectMinigameRoot .cmg-fall-item--noimg .cmg-fall-item__label {
+  display: flex;
+}
+
+#collectMinigameRoot .cmg-fall-item__label {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  padding: 4px;
+  line-height: 1.1;
+  pointer-events: none;
+  text-shadow: 0 0 3px #000, 0 1px 3px #000;
+}
+
+#collectMinigameRoot .cmg-fall-item--caught {
+  animation: cmg-catch-pop 0.2s ease forwards;
+  pointer-events: none;
+}
+
+#collectMinigameRoot .cmg-fall-item--wrong {
+  animation: cmg-wrong-shake 0.25s ease;
+  outline-color: rgba(220, 70, 60, 0.9);
+  box-shadow: 0 0 12px rgba(200, 60, 50, 0.45);
+}
+
+@keyframes cmg-catch-pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+@keyframes cmg-wrong-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+#collectMinigameRoot .cmg-feedback {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 0.88rem;
+  min-height: 1.2em;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  color: #f5efe0;
+  background: none !important;
+  background-color: transparent !important;
+  text-shadow:
+    0 0 4px #000,
+    0 1px 6px #000,
+    0 2px 10px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  z-index: 5;
+}
+
+#collectMinigameRoot .cmg-feedback--ok {
+  color: #b8f0c8;
+}
+
+#collectMinigameRoot .cmg-feedback--miss {
+  color: #ffc8b8;
+}

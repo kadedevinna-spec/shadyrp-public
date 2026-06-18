@@ -1,0 +1,1856 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+/* Theme Color Variable - Set by server config */
+:root {
+    --theme-color: #F1EAD0;
+}
+
+/* ============================================
+   HUE COLOR THEMES - Applied to HUD containers
+   ============================================ */
+
+/* Default Theme - Original cream/beige (no filter) */
+body.theme-default .hud-main-container,
+body.theme-default .hud-menu-container {
+    filter: none !important;
+}
+
+/* Crimson Theme - Red */
+body.theme-crimson .hud-main-container,
+body.theme-crimson .hud-menu-container {
+    filter: sepia(1) saturate(5) hue-rotate(325deg) !important;
+}
+
+/* Gold Theme - Yellow/Gold */
+body.theme-gold .hud-main-container,
+body.theme-gold .hud-menu-container {
+    filter: sepia(1) saturate(3) hue-rotate(20deg) !important;
+}
+
+/* Emerald Theme - Green */
+body.theme-emerald .hud-main-container,
+body.theme-emerald .hud-menu-container {
+    filter: sepia(1) saturate(5) hue-rotate(85deg) !important;
+}
+
+/* Sapphire Theme - Blue */
+body.theme-sapphire .hud-main-container,
+body.theme-sapphire .hud-menu-container {
+    filter: sepia(1) saturate(5) hue-rotate(185deg) !important;
+}
+
+/* Amethyst Theme - Purple */
+body.theme-amethyst .hud-main-container,
+body.theme-amethyst .hud-menu-container {
+    filter: sepia(1) saturate(5) hue-rotate(245deg) !important;
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* Edit Mode Overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+body.edit-mode::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Vignette Effects Container - Below HUD elements */
+.vignette-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bladder-vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    background: radial-gradient(ellipse at center,
+            transparent 30%,
+            rgba(80, 0, 0, 0.3) 60%,
+            rgba(60, 0, 0, 0.6) 80%,
+            rgba(40, 0, 0, 0.85) 100%);
+}
+
+.bladder-vignette.active {
+    opacity: 1;
+    animation: bladderPulse 2s ease-in-out infinite;
+}
+
+@keyframes bladderPulse {
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Hot Temperature Vignette - Red/Orange tones */
+.hot-vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    background: radial-gradient(ellipse at center,
+            transparent 25%,
+            rgba(255, 100, 0, 0.15) 50%,
+            rgba(255, 60, 0, 0.35) 70%,
+            rgba(180, 30, 0, 0.55) 85%,
+            rgba(120, 20, 0, 0.75) 100%);
+}
+
+.hot-vignette.active {
+    opacity: 1;
+    animation: hotPulse 3s ease-in-out infinite;
+}
+
+@keyframes hotPulse {
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Cold Temperature Vignette - Blue/Turquoise tones */
+.cold-vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    background: radial-gradient(ellipse at center,
+            transparent 25%,
+            rgba(0, 180, 220, 0.15) 50%,
+            rgba(0, 140, 200, 0.35) 70%,
+            rgba(0, 80, 160, 0.55) 85%,
+            rgba(0, 40, 120, 0.75) 100%);
+}
+
+.cold-vignette.active {
+    opacity: 1;
+    animation: coldPulse 3s ease-in-out infinite;
+}
+
+@keyframes coldPulse {
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Poison/Venom Vignette - Green/Toxic tones (snake bite, poison) */
+.poison-vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    background: radial-gradient(ellipse at center,
+            transparent 40%,
+            rgba(30, 80, 20, 0.3) 60%,
+            rgba(50, 120, 30, 0.5) 75%,
+            rgba(20, 80, 10, 0.75) 100%);
+}
+
+.poison-vignette.active {
+    opacity: 1;
+    animation: poisonPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes poisonPulse {
+    0%,
+    100% {
+        opacity: 0.6;
+        filter: hue-rotate(0deg);
+    }
+    25% {
+        opacity: 1;
+        filter: hue-rotate(10deg);
+    }
+    50% {
+        opacity: 0.8;
+        filter: hue-rotate(-10deg);
+    }
+    75% {
+        opacity: 1;
+        filter: hue-rotate(5deg);
+    }
+}
+
+/* Edit Mode Grid Background */
+body.edit-mode::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent calc(var(--grid-size, 10px) - 1px), rgba(255, 255, 255, 0.15) calc(var(--grid-size, 10px) - 1px), rgba(255, 255, 255, 0.15) var(--grid-size, 10px)),
+        repeating-linear-gradient(90deg, transparent, transparent calc(var(--grid-size, 10px) - 1px), rgba(255, 255, 255, 0.15) calc(var(--grid-size, 10px) - 1px), rgba(255, 255, 255, 0.15) var(--grid-size, 10px));
+    z-index: 100;
+    pointer-events: none;
+}
+
+.hud-main-container {
+    width: 100vw;
+    height: 100vh;
+    user-select: none;
+    position: relative;
+    z-index: 10;
+}
+
+/* Ensure all HUD components are above grid in edit mode */
+body.edit-mode .hud-main-container,
+body.edit-mode .hud-main-container > *,
+body.edit-mode .weapon-hud-group,
+body.edit-mode .weapon-hud-group-secondary,
+body.edit-mode .voice,
+body.edit-mode .compass {
+    z-index: 10000;
+}
+
+/* Draggable Elements in Edit Mode */
+.hud-draggable {
+    cursor: move;
+    z-index: 10000;
+    transition: none;
+}
+
+.hud-draggable.dragging {
+    opacity: 0.8;
+    cursor: grabbing;
+}
+
+.hud-draggable:hover {
+    outline: 2px dashed rgba(255, 255, 255, 0.3);
+    outline-offset: 2px;
+}
+
+.details-group {
+    position: absolute;
+    margin-top: 2.6042vw;
+    margin-left: 2.6042vw;
+    display: flex;
+    flex-wrap: wrap;
+    width: 30.3438vw;
+    gap: .5208vw;
+}
+
+.time {
+    background-image: url('./img/time_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    width: max-content;
+    height: 1.8229vw;
+    display: flex;
+    align-items: center;
+    padding-left: .4688vw;
+    padding-right: .7813vw;
+    padding-bottom: .026vw;
+    gap: .2604vw;
+}
+
+.icon-bg {
+    background-color: var(--theme-color);
+    -webkit-mask-image: url('./img/icon_bg.png');
+    mask-image: url('./img/icon_bg.png');
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    width: 1.0417vw;
+    height: 1.0417vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-icon {
+    background-image: url('./img/time_icon.png');
+    background-size: 100% 100%;
+    width: .5208vw;
+    height: .5208vw;
+}
+
+.details-title {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.details-text {
+    color: var(--theme-color);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.date {
+    background-image: url('./img/date_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    width: max-content;
+    height: 1.8229vw;
+    display: flex;
+    align-items: center;
+    padding-left: .4688vw;
+    padding-right: .7813vw;
+    padding-bottom: .026vw;
+    gap: .2604vw;
+}
+
+.date-icon {
+    background-image: url('./img/date_icon.png');
+    background-size: 100% 100%;
+    width: .5208vw;
+    height: .5729vw;
+}
+
+.weather-group {
+    display: flex;
+    gap: .2604vw;
+}
+
+.weather {
+    background-image: url('./img/weather_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    width: max-content;
+    height: 1.8229vw;
+    display: flex;
+    align-items: center;
+    padding-left: .4688vw;
+    padding-right: .7813vw;
+    padding-bottom: .026vw;
+    gap: .2604vw;
+}
+
+.weather-icon {
+    background-image: url('./img/weather_icon.png');
+    background-size: 100% 100%;
+    width: .625vw;
+    height: .4688vw;
+}
+
+.weather-celsius {
+    background-color: var(--theme-color);
+    -webkit-mask-image: url('./img/celsius_bg.png');
+    mask-image: url('./img/celsius_bg.png');
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    width: 2.0833vw;
+    height: 1.0417vw;
+
+    color: #0B0B0B;
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .5208vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.id-icon {
+    background-image: url('./img/id_icon.png');
+    background-size: 100% 100%;
+    width: .4167vw;
+    height: .5208vw;
+}
+
+.money {
+    background-image: url('./img/money_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    width: max-content;
+    height: 1.8229vw;
+    display: flex;
+    align-items: center;
+    padding-left: .4688vw;
+    padding-right: .7813vw;
+    padding-bottom: .026vw;
+    gap: .2604vw;
+}
+
+.money-icon {
+    background-image: url('./img/money_icon.png');
+    background-size: 100% 100%;
+    width: .625vw;
+    height: .625vw;
+}
+
+/* Weapon Hud */
+
+.weapon-hud-group {
+    position: fixed;
+    left: 83.0729vw;
+    top: 2.6042vw;
+    background-image: url('./img/weapon_hud_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    display: flex;
+    width: 14.3229vw;
+    height: 3.125vw;
+    padding: .5208vw;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.weapon-icon-bg {
+    background-image: url('./img/weapon_image_bg.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.6875vw;
+    height: 2.0833vw;
+}
+
+.weapon-icon-bg img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.weapon-details {
+    margin-left: -3.6458vw;
+    display: flex;
+    width: 3.3854vw;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.ammo-group {
+    display: flex;
+}
+
+.weapon-name {
+    color: #E9E9E9;
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.max-ammo {
+    color: rgba(233, 233, 233, 0.80);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.max-ammo-text {
+    color: rgba(233, 233, 233, 0.80);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.current-ammo {
+    color: #E9E9E9;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.ammo-type {
+    background-image: url('./img/weapon_ammo_background.png');
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: .9896vw;
+    height: .9896vw;
+}
+
+/* Weapon Hud Secondary (Dual Wield) */
+
+.weapon-hud-group-secondary {
+    position: fixed;
+    left: 83.0729vw;
+    top: 6.1979vw;
+    background-image: url('./img/weapon_hud_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    display: none;
+    width: 14.3229vw;
+    height: 3.125vw;
+    padding: .5208vw;
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.weapon-name-secondary {
+    color: #E9E9E9;
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.max-ammo-secondary {
+    color: rgba(233, 233, 233, 0.80);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.current-ammo-secondary {
+    color: #E9E9E9;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+/* Horse Hud */
+
+.horse-hud-group {
+    position: absolute;
+    margin-top: 48.4375vw;
+    margin-left: 84.375vw;
+    display: flex;
+    flex-direction: column;
+    gap: .5208vw;
+}
+
+.horse-hud {
+    background-image: url('./img/horse_hud_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    display: flex;
+    width: 13.0208vw;
+    height: 3.6458vw;
+    padding: .7813vw;
+    justify-content: space-between;
+}
+
+.horse-speed-details {
+    display: flex;
+    margin-top: -0.1563vw;
+}
+
+.speed {
+    display: flex;
+    line-height: 2.3438vw;
+}
+
+.default-speed {
+    color: rgba(255, 255, 255, 0.40);
+    font-family: "EB Garamond";
+    font-size: 2.3438vw;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.current-speed {
+    color: var(--theme-color);
+    font-family: "EB Garamond";
+    font-size: 2.3438vw;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.speed-text {
+    margin-top: 1.1979vw;
+    color: rgba(255, 255, 255, 0.40);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.horse-stamina {
+    background-image: url('./img/horse_stamina_background.png');
+    background-size: 100% 100%;
+    width: 13.0208vw;
+    height: 1.0417vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stamina-line-bg {
+    background-image: url('./img/stamina_line_bg.png');
+    background-size: 100% 100%;
+    width: 12.2396vw;
+    height: .3125vw;
+    -webkit-mask-image: url('./img/line_mask.png');
+    mask-image: url('./img/line_mask.png');
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    display: flex;
+}
+
+.line {
+    width: 10.4167vw;
+    height: .3125vw;
+    border-radius: .5208vw;
+    background: var(--theme-color);
+}
+
+.hud-group {
+    position: absolute;
+    margin-top: 51.0417vw;
+    margin-left: 15.1042vw;
+    display: flex;
+    gap: .5208vw;
+}
+
+.health {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.health-icon {
+    position: absolute;
+    background-image: url('./img/heart_icon.png');
+    background-size: 100% 100%;
+    width: 1.1979vw;
+    height: 1.0417vw;
+}
+
+.stamina {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stamina-icon {
+    position: absolute;
+    background-image: url('./img/stamina_icon.png');
+    background-size: 100% 100%;
+    width: .7292vw;
+    height: 1.1979vw;
+}
+
+.water {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.water-icon {
+    position: absolute;
+    background-image: url('./img/water_icon.png');
+    background-size: 100% 100%;
+    width: .7292vw;
+    height: 1.0208vw;
+}
+
+.hunger {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hunger-icon {
+    position: absolute;
+    background-image: url('./img/hunger_icon.png');
+    background-size: 100% 100%;
+    width: 1.0938vw;
+    height: 1.0417vw;
+}
+
+.brain {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brain-icon {
+    position: absolute;
+    background-image: url('./img/brain_icon.png');
+    background-size: 100% 100%;
+    width: 1.0938vw;
+    height: 1.0417vw;
+}
+
+.bath {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bath-icon {
+    position: absolute;
+    background-image: url('./img/bath_icon.png');
+    background-size: 100% 100%;
+    width: 1.25vw;
+    height: 1.1458vw;
+}
+
+.toilet {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toilet-icon {
+    position: absolute;
+    background-image: url('./img/toilet_icon.png');
+    background-size: 100% 100%;
+    width: .7813vw;
+    height: 1.1458vw;
+}
+
+.horse-health {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.horse-health-icon {
+    position: absolute;
+    background-image: url('./img/horse_health_icon.png');
+    background-size: 100% 100%;
+    width: 1.25vw;
+    height: 1.3021vw;
+}
+
+.horse-durabilty {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.horse-durabilty-icon {
+    position: absolute;
+    background-image: url('./img/horse_durability_icon.png');
+    background-size: 100% 100%;
+    width: 1.25vw;
+    height: 1.1979vw;
+    margin-top: -0.1042vw;
+}
+
+.temparature-group {
+    display: flex;
+}
+
+.temparature {
+    background-image: url('./img/circle_bg.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.temparature-icon {
+    position: absolute;
+    background-image: url('./img/temp_icon.png');
+    background-size: 100% 100%;
+    width: 1.25vw;
+    height: 1.3021vw;
+    margin-top: -0.0781vw;
+}
+
+.stroke {
+    background-image: url('./img/circle_stroke.png');
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+}
+
+.circle-group {
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    -webkit-mask-image: url('./img/circle_mask.png');
+    mask-image: url('./img/circle_mask.png');
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle {
+    width: 2.6042vw;
+    height: 2.6042vw;
+    border-radius: 50%;
+    /* 0–100 arası oran: --p */
+    background: conic-gradient(var(--theme-color) calc(var(--p) * 3.6deg),
+            transparent 0);
+    transition: --p 0.5s ease-in-out;
+}
+
+@property --p {
+    syntax: '<number>';
+    initial-value: 0;
+    inherits: false;
+}
+
+
+/* Voice */
+
+.voice {
+    position: absolute;
+    margin-top: 47.8125vw;
+    margin-left: 15vw;
+    background-image: url('./img/voice_background.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    width: 7.2521vw;
+    height: 2.3438vw;
+    display: flex;
+    align-items: center;
+    padding-left: .4688vw;
+    gap: .5208vw;
+    transition: all 0.15s ease;
+}
+
+.voice.follow-head {
+    margin-left: 0;
+    margin-top: 0;
+    pointer-events: none;
+}
+
+.voice-icon-group {
+    width: 1.5625vw;
+    height: 1.5625vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -0.0521vw;
+    -webkit-mask-image: url('./img/voice_icon_bg.png');
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-image: url('./img/voice_icon_bg.png');
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    background-color: var(--theme-color);
+}
+
+.voice-icon {
+    background-image: url('./img/voice_icon.png');
+    background-size: 100% 100%;
+    width: .5515vw;
+    height: .7484vw;
+}
+
+.sounds {
+    display: flex;
+    align-items: center;
+    gap: .1042vw;
+    height: 1.0417vw;
+    padding: 0 .1042vw;
+}
+
+.voice-bar {
+    width: .1563vw;
+    height: 20%;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: .2083vw;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.sounds.talking .voice-bar {
+    background: var(--theme-color);
+
+    box-shadow: 0 0 .2083vw rgba(241, 234, 208, 0.5);
+}
+
+/* Horse HUD visibility */
+.horse-hud-group {
+    visibility: hidden;
+}
+
+.horse-health,
+.horse-durabilty {
+    visibility: hidden;
+}
+
+/* Animation transitions */
+.hud-group {
+    transition: all 0.3s ease;
+}
+
+.hud-group>div {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Horse indicators appear when mounted */
+
+.hud-group.horse-mounted .horse-health,
+.hud-group.horse-mounted .horse-durabilty {
+    visibility: visible;
+}
+
+
+.hud-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8229vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url(./img/hud_menu_bg.png);
+    background-size: 100% 100%;
+    width: 23.4375vw;
+    height: 44.7917vw;
+    padding-top: 1.0417vw;
+    box-sizing: border-box;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.hud-menu-container.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.hud-top-group {
+    display: flex;
+    align-items: center;
+    gap: .5208vw;
+    background-image: url(./img/hud_top_bg.png);
+    background-size: 100% 100%;
+    width: 21.3542vw;
+    height: 4.1667vw;
+    padding: 0 .7813vw;
+    box-sizing: border-box;
+    cursor: move;
+    user-select: none;
+    transition: filter 0.2s ease;
+}
+
+.hud-top-group:hover {
+    filter: brightness(1.05);
+}
+
+.hud-top-group:active {
+    cursor: grabbing;
+}
+
+.settings-img {
+    background-image: url(./img/top_settings_bg.png);
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    flex-shrink: 0;
+}
+
+.hud-settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: .2604vw;
+    flex: 1;
+}
+
+.hud-settings-text {
+    color: #0B0B0B;
+    font-family: "EB Garamond";
+    font-size: .9375vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.hud-settings-desc {
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.settings-close {
+    background-image: url(./img/top_settings_close.png);
+    background-size: 100% 100%;
+    width: 1.5625vw;
+    height: 1.5625vw;
+    margin-bottom: 1.0417vw;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.settings-close:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.hud-middle-group {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.7813vw;
+    height: 32.2917vw;
+    width: 21.3542vw;
+}
+
+.hud-middle-group-2 {
+    display: flex;
+    flex-direction: column;
+    height: 32.2917vw;
+    width: calc(21.3542vw - 6.7708vw - 0.7813vw);
+    position: relative;
+}
+
+.hud-page {
+    opacity: 0;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.hud-page.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 6.7708vw;
+    height: 32.2917vw;
+    max-height: 32.2917vw;
+    gap: .5208vw;
+    padding-right: 0.5208vw;
+    box-sizing: border-box;
+}
+
+/* Hide Scrollbar */
+.category::-webkit-scrollbar {
+    display: none;
+}
+
+/* Firefox Scrollbar */
+.category {
+    scrollbar-width: none;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-image: url(./img/category_deactive_bg.png);
+    background-size: 100% 100%;
+    width: calc(6.7708vw - 0.5208vw);
+    height: 1.8229vw;
+    padding-left: 0.4167vw;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    transform: translateX(0);
+    opacity: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-item:hover {
+    transform: translateX(0.1042vw);
+}
+
+.category-item.active {
+    background-image: url(./img/category_active_bg.png);
+    transform: translateX(0.2083vw);
+}
+
+.category-icon {
+    width: 0.7292vw;
+    height: 0.7292vw;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.category-icon svg path {
+    fill: white !important;
+    fill-opacity: 0.65 !important;
+    transition: fill 0.3s cubic-bezier(0.4, 0, 0.2, 1), fill-opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s cubic-bezier(0.4, 0, 0.2, 1), stroke-opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-item.active .category-icon svg path {
+    fill: #0B0B0B !important;
+    fill-opacity: 1 !important;
+}
+
+/* Temperature icon uses stroke instead of fill */
+.category-item[data-category="temperature"] .category-icon svg path {
+    stroke: white !important;
+    stroke-opacity: 0.8 !important;
+    fill: none !important;
+}
+
+.category-item[data-category="temperature"].active .category-icon svg path {
+    stroke: #0B0B0B !important;
+    stroke-opacity: 1 !important;
+    fill: none !important;
+}
+
+.category-name {
+    margin-left: 0.3125vw;
+    color: rgba(255, 255, 255, 0.80);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-item.active .category-name {
+    color: #0B0B0B;
+}
+
+.category-divide {
+    flex-shrink: 0;
+}
+
+.divide-name {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-left: .2604vw;
+}
+
+.category-icon {
+    background-image: url(./img/category_icon_deactive_bg.png);
+    background-size: 100% 100%;
+    width: 1.0417vw;
+    height: 1.0417vw;
+
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+}
+
+.category-item.active .category-icon {
+    background-image: url(./img/category_icon_active_bg.png);
+}
+
+.already-layouts {
+    background-image: url(./img/hud_layouts_bg.png);
+    background-size: 100% 100%;
+    width: 13.8021vw;
+    height: 4.9479vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-group {
+    margin-top: .5729vw;
+    margin-left: .7813vw;
+}
+
+.layout-group-text {
+    color: #FFF;
+
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.layout-group-desc {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.layout-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2604vw;
+    margin: .7813vw;
+}
+
+.layout-button {
+    /* Inactive state - buraya özelliklerini ekleyeceksiniz */
+    background-image: url(./img/layout_btn_deactive.png);
+    background-size: 100% 100%;
+    width: 3.9063vw;
+    height: 1.0417vw;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.65);
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .5208vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout-button.active {
+    /* Active state - buraya özelliklerini ekleyeceksiniz */
+    background-image: url(./img/layout_btn_active.png);
+    background-size: 100% 100%;
+    width: 3.9063vw;
+    height: 1.0417vw;
+    color: #0B0B0B;
+
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .5208vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+
+.edit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: .625vw;
+    background-image: url(./img/edit_mode_btn.png);
+    background-size: 100% 100%;
+    width: 12.2396vw;
+    height: 1.3021vw;
+    color: #0B0B0B;
+    font-family: "EB Garamond";
+    font-size: .5208vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+
+.hud-bottom-group {
+    display: flex;
+    flex-direction: row;
+    height: 2.6042vw;
+    width: 21.3542vw;
+    gap: 1.0417vw;
+}
+
+.reset-btn {
+    background-image: url(./img/bottom_reset_bg.png);
+    background-size: 100% 100%;
+    width: 10.1563vw;
+    height: 2.6042vw;
+    color: rgba(255, 255, 255, 0.65);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .9375vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.reset-btn:hover {
+    transform: scale(1.05);
+}
+
+.save-btn {
+    background-image: url(./img/bottom_save_btn.png);
+    background-size: 100% 100%;
+    width: 10.1563vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #0B0B0B;
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .9375vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.save-btn:hover {
+    transform: scale(1.05);
+}
+
+.apply-settings {
+    background-image: url(./img/apply_hud_bg.png);
+    background-size: 100% 100%;
+    width: 13.8021vw;
+    height: 4.9479vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.apply-settings-header {
+    margin-top: .5208vw;
+    margin-left: .7813vw;
+}
+
+.apply-settings-text {
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .8333vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.apply-settings-desc {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.apply-input-group {
+    background-image: url(./img/apply_input_bg.png);
+    background-size: 100% 100%;
+    width: 11.4696vw;
+    height: 1.3021vw;
+
+    margin-top: .4167vw;
+    margin-left: .7813vw;
+
+    padding-left: 0.4vw;
+    /* ← yazı başlangıç mesafesi */
+    padding-right: 0.4vw;
+    /* ← sağ boşluk */
+    display: flex;
+    align-items: center;
+    /* dikey hizalama */
+
+
+}
+
+.apply-input-group-inp {
+
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: #000;
+    width: 100%;
+    padding: 0;
+    /* wrapper zaten padding veriyor */
+    outline: none;
+    box-shadow: none;
+
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.apply-input-group-apply-btn {
+    width: .7813vw;
+    height: .7813vw;
+}
+
+.copy-settings {
+    background-image: url(./img/copy_settings_btn_bg.png);
+    background-size: 100% 100%;
+    width: 13.8021vw;
+    height: 2.3438vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: .5208vw;
+}
+
+.copy-settings-icon {
+    width: .7292vw;
+    height: .7292vw;
+}
+
+.copy-settings-text {
+    color: #FFF;
+
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.hud-visibility-checkbox {
+    background-image: url(./img/hud_visibility_checkbox.png);
+    background-size: 100% 100%;
+    height: 2.6042vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    padding-left: .7813vw;
+    padding-right: .7813vw;
+}
+
+.hud-visibility-text {
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .8333vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    flex: 1;
+}
+
+.hud-settings-checkbox {
+    background-image: url(./img/hud_checkbox_active.png);
+    background-size: 100% 100%;
+    width: 4.1667vw;
+    height: 1.3021vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    position: relative;
+    color: #0B0B0B;
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.hud-settings-checkbox.off {
+    background-image: url(./img/checkbox_off_shit.png);
+}
+
+.checkbox-dot {
+    background-image: url(./img/checkbox_on_off_shit.png);
+    background-size: 100% 100%;
+    width: .7813vw;
+    height: .7813vw;
+    position: absolute;
+    left: 0.3646vw;
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+}
+
+.hud-settings-checkbox:not(.off) .checkbox-dot {
+    transform: translateX(2.5vw);
+}
+
+.size-set {
+    background-image: url(./img/size_set_bg.png);
+    background-size: 100% 100%;
+    height: 4.1667vw;
+    padding-top: .5729vw;
+    padding-left: .7813vw;
+}
+
+.size-header-grp {
+    display: flex;
+
+    align-items: center;
+}
+
+.size-text {
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .8333vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.size-desc {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.size-value {
+    position: absolute;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-top: 1.0417vw;
+    margin-left: 11.3vw;
+}
+
+.size-slider {
+    background-image: url(./img/size_empty.png);
+    background-size: 100% 100%;
+    width: 12.2396vw;
+    margin-top: .5208vw;
+    position: relative;
+}
+
+.size-slider-track {
+    width: 100%;
+    height: .3125vw;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: .1563vw;
+    position: relative;
+    cursor: pointer;
+}
+
+.size-slider-fill {
+    height: 100%;
+    background-image: url(./img/sizebar_fill.png);
+    background-size: 100% 100%;
+    border-radius: .1563vw;
+    width: 33.33%;
+    transition: width 0.1s ease;
+}
+
+.size-slider-thumb {
+    position: absolute;
+    top: 50%;
+    left: 33.33%;
+    transform: translate(-50%, -50%);
+    background-image: url(./img/sizebar_thumb.png);
+    background-size: 100% 100%;
+    width: .5208vw;
+    height: .5208vw;
+    aspect-ratio: 1/1;
+    cursor: grab;
+    transition: left 0.1s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.size-slider-thumb:active {
+    cursor: grabbing;
+}
+
+.size-slider-value {
+    position: absolute;
+    top: -1.3021vw;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Cinematic Mode Bars */
+.cinematic-bar {
+    position: fixed;
+    left: 0;
+    width: 100vw;
+    background: #000;
+    z-index: 99999;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 0;
+    pointer-events: none;
+}
+
+.cinematic-bar-top {
+    top: 0;
+}
+
+.cinematic-bar-bottom {
+    bottom: 0;
+}
+
+body.cinematic-mode .cinematic-bar {
+    height: 8.3333vw;
+}
+
+/* Cinematic mode container styles - HUD visibility is controlled by Lua */
+/* HUD menu should still be visible in cinematic mode when opened */
+body.cinematic-mode .hud-menu-container.show {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Color Picker Wrapper */
+.color-picker-wrapper {
+    background-image: url(./img/hud_visibility_checkbox.png);
+    background-size: 100% 100%;
+    height: 2.6042vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: .7813vw;
+    padding-right: .7813vw;
+}
+
+
+.color-picker-text {
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .8333vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.color-picker-preview {
+    display: flex;
+    align-items: center;
+    gap: .2604vw;
+    position: relative;
+    cursor: pointer;
+}
+
+.color-code {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.color-square {
+    width: .7813vw;
+    height: .7813vw;
+    border-radius: .1042vw;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.color-input {
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    width: 1.5625vw;
+    height: 1.5625vw;
+    cursor: pointer;
+    border: none;
+}
+
+/* Compass Container */
+.compass {
+    background-image: url(img/compass_bg.png);
+    background-size: 100% 100%;
+    position: absolute;
+    top: 1.5vw;
+    left: 41vw;
+    width: 18.2292vw;
+    height: 1.8229vw;
+    overflow: hidden;
+    /* Hide the scrolling parts outside */
+    display: block;
+    /* Changed from flex to block to hold absolute children */
+}
+
+/* Center Selection Overlay (Static) */
+.compass-overlay-selector {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url(img/compass_select.png);
+    background-size: 100% 100%;
+    width: 3.125vw;
+    height: 1.0417vw;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Strip Container */
+.compass-strip-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* Mask logic to fade out edges - replacing the transparency classes */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+/* The Moving Strip */
+.compass-strip {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 100%;
+    left: 50%;
+    /* Start from center */
+    will-change: transform;
+}
+
+/* Individual Items (15 degree chunks) */
+.compass-item {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Text numbers/cardinals */
+.compass-item-text {
+    font-family: "EB Garamond";
+    color: #FFF;
+    /* Base color, center overlay might tint it or we rely on contrast */
+    font-size: .5208vw;
+    font-weight: 600;
+    text-align: center;
+    width: 3vw;
+    /* Fixed width for consistent spacing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.compass-item-text.cardinal {
+    font-weight: 700;
+    font-size: .65vw;
+    color: #FFF;
+}
+
+/* Separator Line PNG */
+.compass-item-line {
+    background-image: url(img/compass_left_to_right_gradient_2.png);
+    /* Using one of the lines as standard separator */
+    background-size: 100% 100%;
+    width: 2.3438vw;
+    height: .5208vw;
+    flex-shrink: 0;
+    opacity: 0.7;
+}

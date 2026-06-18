@@ -1,0 +1,37 @@
+[
+  {
+    "key":         "pigmask",
+    "Label":       "Pig Mask",
+    "Gender":      "male",
+    "Category":    "Head",
+    "Model":       "s_mask_pig01x",
+    "AttachDelay": 3.05,
+    "Attach": {
+      "Male": { "BoneID": 21030, "BoneName": "skel_head", "PX": 0.0750, "PY": 0.0550, "PZ": 0.0000, "Pitch": 75.0000, "Roll": -90.0000, "Yaw": 45.0000, "fixedRot": true, "Anim": "equip_neck" }
+    }
+  },
+  {
+    "key":         "asdasd",
+    "Label":       "asdasda",
+    "Gender":      "female",
+    "Category":    "Hand",
+    "Model":       "s_tal_goldbracelet01x",
+    "AttachDelay": 4.3,
+    "AnimCut":     6.72,
+    "Attach": {
+      "Female": { "BoneID": 34606, "BoneName": "skel_l_hand", "PX": 0.0000, "PY": 0.0000, "PZ": 0.0000, "Pitch": 0.0000, "Roll": 0.0000, "Yaw": 0.0000, "fixedRot": true, "Anim": "wrist_idle" }
+    }
+  },
+  {
+    "key":         "braceletx",
+    "Label":       "Golden Bracelett",
+    "Gender":      "female",
+    "Category":    "Hand",
+    "Model":       "p_si_bracelet01x",
+    "AttachDelay": 5.88,
+    "AnimCut":     7.05,
+    "Attach": {
+      "Female": { "BoneID": 34606, "BoneName": "skel_l_hand", "PX": 0.0000, "PY": 0.0000, "PZ": 0.0000, "Pitch": -4.0000, "Roll": 73.0000, "Yaw": -3.0000, "fixedRot": true, "Anim": "wrist_idle" }
+    }
+  }
+]

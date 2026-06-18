@@ -1,0 +1,61 @@
+fx_version 'cerulean'
+game 'rdr3'
+
+rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
+
+lua54 'yes'
+
+server_scripts {
+    'server.lua'
+}
+
+files {
+    'html/img/items/*.png'
+}
+
+server_exports {
+    'vorp_inventoryApi',
+    'registerUsableItem',
+    'RegisterUsableItem',
+    'getItem',
+    'GetItem',
+    'getItemContainingMetadata',
+    'getItemCount',
+    'GetItemCount',
+    'addItem',
+    'AddItem',
+    'subItem',
+    'SubItem',
+    'removeItem',
+    'RemoveItem',
+    'subItemById',
+    'SubItemById',
+    'setItemMetadata',
+    'SetItemMetadata',
+    'canCarryItem',
+    'CanCarryItem',
+    'canCarryItems',
+    'CanCarryItems',
+    'getUserInventoryItems',
+    'GetUserInventoryItems',
+    'getUserInventory',
+    'GetUserInventory',
+    'getInventory',
+    'GetInventory',
+    'getUserInventoryWeapons',
+    'GetUserInventoryWeapons',
+    'getItemDB',
+    'GetItemDB',
+    'closeInventory',
+    'CloseInventory',
+    'closeInv',
+    'CloseInv',
+    'openInventory',
+    'OpenInventory',
+    'addWeapon',
+    'AddWeapon',
+    'subWeapon',
+    'SubWeapon',
+    'canCarryWeapons',
+    'CanCarryWeapons'
+}

@@ -1,0 +1,3 @@
+-- jo_libs adapter removed in v3.36.0
+-- jo_libs now reads murphy_clothing data via exports (GetPlayerClothes)
+-- Set Config.framework to your actual framework ("vorp", "rsg-core", "REDEMRP2k23")

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixitfy Trade</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<body>
+    <div class="input-container">
+        <div class="input-top-border"></div>
+        <div class="input-left-border"></div>
+        <div class="input-right-border"></div>
+        <div class="input-bottom-border"></div>
+        <span class="input-title">How Many ?</span>
+        <input type="number" name="count" id="iteminputcount" value="1" min="1" max="9999">
+        <span class="confirm-btn"></span>
+        <span class="cancel-btn"></span>
+    </div>
+    <div class="allplayers">
+        <!-- <div class="player" style="left: 44%;top:22%">
+            <iconify-icon icon="game-icons:lovers"></iconify-icon>
+            <span id="playerid">ID:44</span>
+        </div> -->
+    </div>
+    <div class="container">
+        <div class="information-container">
+            <div class="info-title">Elephant Rifle</div>
+            <iconify-icon id="info-icon" icon="akar-icons:info-fill"></iconify-icon>
+            <div class="info-desc">Produced by Louis Cunnigham | Fixitfy</div>
+        </div>
+        <div class="player-inventory-container" id="draggableContainer">
+            <span class="inventory-title">
+                <iconify-icon id="invicon" icon="solar:box-bold-duotone"></iconify-icon>
+                Inventory
+            </span>
+            <span class="progressbar-count">185/200</span>
+            <div class="progress">
+                <div class="progress-value" id="progressBar"></div>
+            </div>
+            <!-- <div class="player-cash">
+                <iconify-icon id="icon" icon="tdesign:money"></iconify-icon>
+                250.0
+            </div>
+            <div class="player-gold">
+                <iconify-icon id="icon" icon="game-icons:gold-bar"></iconify-icon>
+                0.0
+            </div> -->
+            <div class="inventory-container" id="inventory-container">
+                <div class="top"></div>
+                <div class="left"></div>
+                <div class="itembox" id="draggable-item">
+                    <div class="itempng"></div>
+                    <span class="itemcount">100</span>
+                </div>
+                <div class="itembox" id="draggable-item">
+                    <div class="itempng"></div>
+                    <span class="itemcount">5</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="trade-container" id="draggableContainer">
+            <span class="trade-title">TRADE SYSTEM</span>
+            <span class="you-title">You</span>
+            <span class="other-title">Other</span>
+            <!-- <div class="player-trade-border">
+                <div class="trade-top-border"></div>
+                <div class="trade-left-border"></div>
+                <div class="trade-bottom-border"></div>
+                <div class="trade-right-border"></div>
+            </div> -->
+            <div class="player-trade-container" id="player-trade-container">
+                <!-- <div class="trade-itembox">
+                    <div class="tradeitempng"></div>
+                    <span class="tradeitemcount">100</span>
+                </div> -->
+            </div>
+            <div class="trade-cash-container">
+                <img id="trade-cash-icon" src="/ui/assets/img/itemtype_cash.png" alt="" srcset="">
+                <!-- <iconify-icon id="trade-cash-icon" icon="tdesign:money"></iconify-icon> -->
+                <span class="player-cash">1250.0</span>
+                <input type="text" name="count" class="cashcount" id="inputcount" value="0">
+            </div>
+            <div class="trade-gold-container">
+                <img id="trade-cash-icon" src="/ui/assets/img/itemtype_gold.png" alt="" srcset="">
+                <span class="player-gold">100.0</span>
+                <input type="text" name="count" class="goldcount" id="inputcount" value="0">
+            </div>
+
+            <button type="button" value="Accept" id="tradeconfirm">Accept</button>
+            <div class="trade-ready">
+                <!-- <img src="/ui/assets/img/tick.png" alt="" srcset=""> -->
+            </div>
+            <!-- <div class="other-trade-border">
+                <div class="other-top-border"></div>
+                <div class="other-left-border"></div>
+                <div class="other-bottom-border"></div>
+                <div class="other-right-border"></div>
+            </div> -->
+            <div class="other-trade-container">
+                <!-- <div class="trade-itembox">
+                    <div class="tradeitempng"></div>
+                    <span class="tradeitemcount">100</span>
+                </div> -->
+            </div>
+            <div class="other-cash-container">
+                <img id="trade-cash-icon" src="/ui/assets/img/itemtype_cash.png" alt="" srcset="">
+                <!-- <iconify-icon id="trade-cash-icon" icon="tdesign:money"></iconify-icon> -->
+                <input type="text" name="count" class="targetcash" id="inputcount" disabled placeholder="0.0">
+            </div>
+            <div class="other-gold-container">
+                <img id="trade-cash-icon" src="/ui/assets/img/itemtype_gold.png" alt="" srcset="">
+                <!-- <iconify-icon id="trade-cash-icon" icon="game-icons:gold-bar"></iconify-icon> -->
+                <input type="text" name="count" class="targetgold" id="inputcount" disabled placeholder="0.0">
+            </div>
+            <input type="button" value="Ready!" id="otherconfirm">
+            <div class="other-ready"></div>
+        </div>
+    </div>
+</body>
+<script src="assets/main.js" type="text/javascript"></script>   
+</html>

@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=announcebg20" />
+  <!-- Local first (NUI may not reach CDN); CDN fallback -->
+  <script src="vendor/chart.umd.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'"></script>
+</head>
+<body>
+  <div
+    id="adm-screen-announce-root"
+    class="adm-screen-announce-root adm-screen-announce-root--hidden"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <div id="adm-screen-announce-card" class="adm-screen-announce adm-screen-announce--default">
+      <div class="adm-screen-announce__textwrap" id="adm-screen-announce-textwrap">
+        <div class="adm-screen-announce__content-row">
+          <span
+            class="adm-screen-announce__title-icon"
+            id="adm-screen-announce-title-icon"
+            data-icon="announce-default"
+            aria-hidden="true"
+          ></span>
+          <span class="adm-screen-announce__divider" aria-hidden="true"></span>
+          <div class="adm-screen-announce__main" id="adm-screen-announce-main">
+            <h2 class="adm-screen-announce__title adm-view--hidden" id="adm-screen-announce-title"></h2>
+            <p class="adm-screen-announce__body" id="adm-screen-announce-body"></p>
+          </div>
+        </div>
+        <p class="adm-screen-announce__staff adm-view--hidden" id="adm-screen-announce-eyebrow"></p>
+      </div>
+    </div>
+  </div>
+  <div id="adm-app" class="adm-app adm-app--hidden" aria-hidden="true">
+    <aside class="adm-sidebar" aria-label="Main navigation">
+      <nav class="adm-sidebar__nav">
+        <section class="adm-nav-group" aria-label="Operations">
+          <p class="adm-nav-group__title">Operations</p>
+          <button type="button" class="adm-nav-item adm-nav-item--active" data-view="players">
+            <span class="adm-nav-item__icon" data-icon="users"></span>
+            <span class="adm-nav-item__label">Players</span>
+          </button>
+          <button type="button" class="adm-nav-item adm-nav-item--hidden" id="adm-nav-reports" data-view="reports">
+            <span class="adm-nav-item__icon" data-icon="flag"></span>
+            <span class="adm-nav-item__label">Reports</span>
+            <span class="adm-nav-item__badge adm-view--hidden" id="adm-reports-nav-badge" aria-hidden="true">0</span>
+          </button>
+          <button type="button" class="adm-nav-item adm-nav-item--hidden" id="adm-nav-adminchat" data-view="adminchat">
+            <span class="adm-nav-item__icon" data-icon="messages"></span>
+            <span class="adm-nav-item__label">Staff chat</span>
+            <span class="adm-nav-item__badge adm-view--hidden" id="adm-chat-badge" aria-hidden="true">0</span>
+          </button>
+          <button type="button" class="adm-nav-item" data-view="dashboard">
+            <span class="adm-nav-item__icon" data-icon="dashboard"></span>
+            <span class="adm-nav-item__label">Dashboard</span>
+          </button>
+          <button type="button" class="adm-nav-item" id="adm-nav-livemap" data-view="livemap">
+            <span class="adm-nav-item__icon" data-icon="layers"></span>
+            <span class="adm-nav-item__label">Live map</span>
+          </button>
+        </section>
+
+        <section class="adm-nav-group" aria-label="Tools">
+          <p class="adm-nav-group__title">Tools</p>
+          <button type="button" class="adm-nav-item" data-view="teleports">
+            <span class="adm-nav-item__icon" data-icon="crosshair"></span>
+            <span class="adm-nav-item__label">Teleports</span>
+          </button>
+          <button type="button" class="adm-nav-item" data-view="commands">
+            <span class="adm-nav-item__icon" data-icon="bolt"></span>
+            <span class="adm-nav-item__label">Commands</span>
+          </button>
+          <button type="button" class="adm-nav-item" data-view="coords">
+            <span class="adm-nav-item__icon" data-icon="map-pin"></span>
+            <span class="adm-nav-item__label">Coordinates</span>
+          </button>
+          <button type="button" class="adm-nav-item" data-view="developer">
+            <span class="adm-nav-item__icon" data-icon="code"></span>
+            <span class="adm-nav-item__label">Developer</span>
+          </button>
+          <button type="button" class="adm-nav-item adm-nav-item--hidden" id="adm-nav-items" data-view="items">
+            <span class="adm-nav-item__icon" data-icon="layers"></span>
+            <span class="adm-nav-item__label">Items</span>
+          </button>
+          <button type="button" class="adm-nav-item adm-nav-item--hidden" id="adm-nav-weapons" data-view="weapons">
+            <span class="adm-nav-item__icon" data-icon="crosshair"></span>
+            <span class="adm-nav-item__label">Weapons</span>
+          </button>
+        </section>
+
+        <section class="adm-nav-group" aria-label="Administration">
+          <p class="adm-nav-group__title">Administration</p>
+          <button type="button" class="adm-nav-item" data-view="admins">
+            <span class="adm-nav-item__icon" data-icon="user-cog"></span>
+            <span class="adm-nav-item__label">Admins</span>
+          </button>
+          <button type="button" class="adm-nav-item" id="adm-btn-banned" data-view="bans">
+            <span class="adm-nav-item__icon" data-icon="ban"></span>
+            <span class="adm-nav-item__label">Banned Players</span>
+          </button>
+          <button type="button" class="adm-nav-item adm-nav-item--hidden" id="adm-nav-permissions" data-view="permissions">
+            <span class="adm-nav-item__icon" data-icon="key"></span>
+            <span class="adm-nav-item__label">Permissions</span>
+          </button>
+          <button type="button" class="adm-nav-item" data-view="settings">
+            <span class="adm-nav-item__icon" data-icon="settings"></span>
+            <span class="adm-nav-item__label">General Server Settings</span>
+          </button>
+        </section>
+      </nav>
+    </aside>
+
+    <div class="adm-main">
+      <div id="adm-new-report-toast" class="adm-new-report-toast adm-view--hidden" role="status" aria-live="polite">
+        <span class="adm-new-report-toast__icon" data-icon="flag" aria-hidden="true"></span>
+        <div class="adm-new-report-toast__body">
+          <strong class="adm-new-report-toast__title">New report</strong>
+          <p class="adm-new-report-toast__text" id="adm-new-report-toast-text"></p>
+        </div>
+        <button type="button" class="adm-btn adm-btn--sm adm-btn--primary" id="adm-new-report-toast-goto">View reports</button>
+        <button type="button" class="adm-new-report-toast__dismiss" id="adm-new-report-toast-close" aria-label="Close">&times;</button>
+      </div>
+      <header class="adm-header">
+        <div class="adm-header__brand">
+          <div class="adm-sidebar__logo-wrap" id="adm-sidebar-logo-wrap">
+            <img id="adm-sidebar-logo-img" class="adm-sidebar__logo-img adm-view--hidden" alt="" />
+            <span class="adm-sidebar__logo-fallback" aria-hidden="true"></span>
+          </div>
+          <div class="adm-sidebar__brand-text">
+            <span class="adm-sidebar__title" id="adm-sidebar-title">Admin</span>
+            <span class="adm-sidebar__subtitle" id="adm-server-name">Server</span>
+          </div>
+        </div>
+        <div class="adm-header__welcome">
+          <h1 class="adm-header__greeting" id="adm-greeting">Howdy, Admin</h1>
+          <p class="adm-header__datetime" id="adm-datetime"></p>
+        </div>
+        <div class="adm-header__actions">
+          <span class="adm-header__rank" id="adm-staff-rank"></span>
+        </div>
+      </header>
+
+      <main class="adm-content">
+        <section id="view-dashboard" class="adm-view adm-view--hidden">
+          <div class="adm-dashboard">
+            <div class="adm-dashboard__intro">
+              <div>
+                <h2 class="adm-dashboard__heading">Server overview</h2>
+              </div>
+              <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-dashboard-refresh">
+                <span class="adm-btn__icon" data-icon="refresh" aria-hidden="true"></span>
+                Refresh
+              </button>
+            </div>
+            <div class="adm-dashboard__stats" id="adm-dashboard-stats">
+              <article class="adm-dash-stat">
+                <span class="adm-dash-stat__label">Players online</span>
+                <span class="adm-dash-stat__value" id="adm-dash-stat-online">—</span>
+                <span class="adm-dash-stat__hint" id="adm-dash-stat-online-hint"></span>
+              </article>
+              <article class="adm-dash-stat">
+                <span class="adm-dash-stat__label">Average ping</span>
+                <span class="adm-dash-stat__value" id="adm-dash-stat-ping">—</span>
+                <span class="adm-dash-stat__hint">ms (current session)</span>
+              </article>
+              <article class="adm-dash-stat">
+                <span class="adm-dash-stat__label">Panel uptime</span>
+                <span class="adm-dash-stat__value" id="adm-dash-stat-uptime">—</span>
+                <span class="adm-dash-stat__hint">since resource start</span>
+              </article>
+              <article class="adm-dash-stat">
+                <span class="adm-dash-stat__label">Open reports</span>
+                <span class="adm-dash-stat__value" id="adm-dash-stat-reports">—</span>
+                <span class="adm-dash-stat__hint" id="adm-dash-stat-reports-hint">status «open»</span>
+              </article>
+            </div>
+            <p id="adm-dashboard-error" class="adm-dashboard__error adm-view--hidden"></p>
+            <div class="adm-dashboard__charts">
+              <div class="adm-chart-card adm-chart-card--peak">
+                <div class="adm-chart-card__head">
+                  <h3 class="adm-chart-card__title">Peak players per hour</h3>
+                  <span class="adm-chart-card__badge" id="adm-dash-global-peak">—</span>
+                </div>
+                <p class="adm-chart-card__lead">Last 24 hours · highest concurrent players per hour · updates every minute</p>
+                <div class="adm-chart-hourly-frame">
+                  <div class="adm-chart-card__canvas-wrap adm-chart-card__canvas-wrap--hourly">
+                    <canvas id="adm-chart-hourly-peaks" aria-label="Peak players per hour"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="adm-chart-card" id="adm-chart-card-reports-status">
+                <h3 class="adm-chart-card__title">Reports by status</h3>
+                <div class="adm-chart-card__canvas-wrap adm-chart-card__canvas-wrap--donut">
+                  <canvas id="adm-chart-reports-status" aria-label="Reports chart"></canvas>
+                </div>
+              </div>
+              <div class="adm-chart-card adm-chart-card--wide" id="adm-chart-card-reports-trend">
+                <h3 class="adm-chart-card__title">New reports <span class="adm-chart-card__subtitle">(last 7 days)</span></h3>
+                <div class="adm-chart-card__canvas-wrap">
+                  <canvas id="adm-chart-reports-trend" aria-label="Reports trend"></canvas>
+                </div>
+              </div>
+            </div>
+            <p id="adm-dashboard-reports-locked" class="adm-dashboard__locked adm-view--hidden">
+              Report statistics hidden: you need the <code>viewreports</code> permission.
+            </p>
+          </div>
+        </section>
+
+        <section id="view-livemap" class="adm-view adm-view--hidden">
+          <div class="adm-livemap">
+            <div class="adm-livemap__intro">
+              <div>
+                <h2 class="adm-livemap__title">Live map</h2>
+              </div>
+              <div class="adm-livemap__intro-actions">
+                <div class="adm-livemap-zoom" id="adm-livemap-zoom-controls" role="group" aria-label="Map zoom">
+                  <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm adm-livemap-zoom__btn" id="adm-livemap-zoom-out" title="Zoom −">−</button>
+                  <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm adm-livemap-zoom__btn" id="adm-livemap-zoom-reset" title="Reset view">↺</button>
+                  <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm adm-livemap-zoom__btn" id="adm-livemap-zoom-in" title="Zoom +">+</button>
+                </div>
+                <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-livemap-refresh">
+                  <span class="adm-btn__icon" data-icon="refresh" aria-hidden="true"></span>
+                  Refresh
+                </button>
+              </div>
+            </div>
+            <div class="adm-livemap__frame" id="adm-livemap-frame" role="region" aria-label="Player map">
+              <div class="adm-livemap__surface" id="adm-livemap-surface">
+                <div class="adm-livemap-surface__layer" id="adm-livemap-layer"></div>
+              </div>
+              <div id="adm-livemap-popover" class="adm-livemap-popover adm-view--hidden" role="dialog" aria-hidden="true">
+                <div class="adm-livemap-popover__inner">
+                  <div class="adm-livemap-popover__avatar" id="adm-livemap-pop-avatar"></div>
+                  <div class="adm-livemap-popover__text">
+                    <strong id="adm-livemap-pop-name">—</strong>
+                    <span class="adm-livemap-popover__id" id="adm-livemap-pop-id">ID —</span>
+                  </div>
+                  <div class="adm-livemap-popover__row">
+                    <button type="button" class="adm-btn adm-btn--primary adm-btn--sm" id="adm-livemap-btn-goto" data-livemap-act="goto">
+                      <span class="adm-btn__icon" data-icon="map-pin" aria-hidden="true"></span>
+                      Go to player
+                    </button>
+                    <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-livemap-btn-spec" data-livemap-act="spectate">
+                      <span class="adm-btn__icon" data-icon="crosshair" aria-hidden="true"></span>
+                      Spectate
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-players" class="adm-view">
+          <div class="adm-toolbar">
+            <div class="adm-search-wrap adm-search-wrap--grow">
+              <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+              <input type="search" class="adm-input adm-input--search" id="adm-search-players" placeholder="Name, ID or location..." autocomplete="off" />
+            </div>
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-btn-refresh-players">
+              <span class="adm-btn__icon" data-icon="refresh" aria-hidden="true"></span>
+              Refresh
+            </button>
+          </div>
+
+          <div class="adm-stats">
+            <article class="adm-stat-card adm-stat-card--green">
+              <div class="adm-stat-card__icon-wrap">
+                <span class="adm-stat-card__icon" data-icon="online"></span>
+              </div>
+              <div class="adm-stat-card__body">
+                <span class="adm-stat-card__label">Online Players</span>
+                <div class="adm-stat-card__value-row">
+                  <span class="adm-stat-card__value" id="adm-stat-online">0</span>
+                  <span class="adm-stat-card__dot" aria-hidden="true"></span>
+                </div>
+              </div>
+            </article>
+            <article class="adm-stat-card adm-stat-card--muted">
+              <div class="adm-stat-card__icon-wrap">
+                <span class="adm-stat-card__icon" data-icon="offline"></span>
+              </div>
+              <div class="adm-stat-card__body">
+                <span class="adm-stat-card__label">Offline Players</span>
+                <span class="adm-stat-card__value" id="adm-stat-offline">0</span>
+              </div>
+            </article>
+            <article class="adm-stat-card adm-stat-card--blue">
+              <div class="adm-stat-card__icon-wrap">
+                <span class="adm-stat-card__icon" data-icon="total"></span>
+              </div>
+              <div class="adm-stat-card__body">
+                <span class="adm-stat-card__label">Total Players</span>
+                <span class="adm-stat-card__value" id="adm-stat-total">0</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="adm-table-card">
+            <div class="adm-table-scroll">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Player</th>
+                    <th scope="col">Job</th>
+                    <th scope="col">Money</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="adm-table__th-action">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adm-tbody-players"></tbody>
+              </table>
+            </div>
+            <p class="adm-table-empty" id="adm-players-empty">No players match your search.</p>
+          </div>
+        </section>
+
+        <section id="view-admins" class="adm-view adm-view--hidden">
+          <p class="adm-staff-warn adm-view--hidden" id="adm-staff-warn"></p>
+          <div class="adm-toolbar">
+            <div class="adm-search-wrap">
+              <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+              <input type="search" class="adm-input adm-input--search" id="adm-search-staff" placeholder="Search admin..." autocomplete="off" />
+            </div>
+          </div>
+          <div class="adm-stats adm-stats--staff">
+            <article class="adm-stat-card adm-stat-card--green">
+              <div class="adm-stat-card__icon-wrap">
+                <span class="adm-stat-card__icon" data-icon="online"></span>
+              </div>
+              <div class="adm-stat-card__body">
+                <span class="adm-stat-card__label">Staff online</span>
+                <div class="adm-stat-card__value-row">
+                  <span class="adm-stat-card__value" id="adm-staff-stat-online">0</span>
+                  <span class="adm-stat-card__dot" aria-hidden="true"></span>
+                </div>
+              </div>
+            </article>
+            <article class="adm-stat-card adm-stat-card--muted">
+              <div class="adm-stat-card__icon-wrap">
+                <span class="adm-stat-card__icon" data-icon="offline"></span>
+              </div>
+              <div class="adm-stat-card__body">
+                <span class="adm-stat-card__label">Staff offline</span>
+                <span class="adm-stat-card__value" id="adm-staff-stat-offline">0</span>
+              </div>
+            </article>
+            <article class="adm-stat-card adm-stat-card--blue">
+              <div class="adm-stat-card__icon-wrap">
+                <span class="adm-stat-card__icon" data-icon="total"></span>
+              </div>
+              <div class="adm-stat-card__body">
+                <span class="adm-stat-card__label">Total staff</span>
+                <span class="adm-stat-card__value" id="adm-staff-stat-total">0</span>
+              </div>
+            </article>
+          </div>
+          <div class="adm-table-card adm-table-card--staff">
+            <div class="adm-table-card__head adm-table-card__head--staff">
+              <div class="adm-table-card__head-main">
+                <h2 class="adm-table-card__title">Staff team</h2>
+                <p class="adm-table-card__sub">Discord-linked roster, rank, last join and online status.</p>
+              </div>
+              <div class="adm-table-card__head-actions">
+                <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-btn-refresh-staff">
+                  <span data-icon="refresh"></span> Refresh
+                </button>
+              </div>
+            </div>
+            <div class="adm-staff-panel-body">
+              <div id="adm-staff-grid" class="adm-staff-grid" role="list" aria-label="Staff administrators"></div>
+              <p class="adm-table-empty" id="adm-staff-empty">No administrators found.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-permissions" class="adm-view adm-view--hidden">
+          <div class="adm-perm-shell">
+            <div id="adm-perm-editor">
+            <header class="adm-perm-hero">
+              <div class="adm-perm-hero__main">
+                <h2 class="adm-perm-title">Permission matrix</h2>
+                <p class="adm-perm-sub" id="adm-perm-strict-note"></p>
+              </div>
+              <div class="adm-perm-hero__actions">
+                <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-btn-refresh-permissions">
+                  <span data-icon="refresh"></span> Refresh
+                </button>
+              </div>
+            </header>
+
+            <div class="adm-perm-controls">
+              <div class="adm-perm-search">
+                <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+                <input
+                  type="search"
+                  class="adm-input adm-input--search"
+                  id="adm-search-permissions"
+                  placeholder="Filter by action name or key..."
+                  autocomplete="off"
+                />
+              </div>
+              <div class="adm-perm-quick-panel">
+                <span class="adm-perm-quick-label">Batch</span>
+                <div class="adm-perm-quick">
+                  <select class="adm-select" id="adm-perm-role-quick" aria-label="Role for quick action">
+                    <option value="">Role...</option>
+                  </select>
+                  <select class="adm-select" id="adm-perm-command-quick" aria-label="Permission for quick action">
+                    <option value="">Permission...</option>
+                  </select>
+                  <select class="adm-select" id="adm-perm-quick-effect" aria-label="Quick action effect">
+                    <option value="allow">Allow</option>
+                    <option value="deny">Deny</option>
+                  </select>
+                  <button type="button" class="adm-btn adm-btn--primary adm-btn--sm" id="adm-perm-role-apply">Apply</button>
+                </div>
+            </div>
+          </div>
+
+          <p class="adm-perm-error adm-view--hidden" id="adm-perm-error"></p>
+          <div class="adm-table-card adm-perm-matrix-card" id="adm-perm-card">
+            <div class="adm-table-scroll adm-perm-scroll">
+              <table class="adm-table adm-perm-table" id="adm-perm-table" aria-label="Permission matrix by role">
+                <thead id="adm-perm-thead"></thead>
+                <tbody id="adm-perm-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+            </div>
+          <div id="adm-perm-denied" class="adm-placeholder adm-view--hidden">
+            <h2 class="adm-placeholder__title">No access</h2>
+            <p class="adm-placeholder__text">Only the configured role (e.g. Founder) can edit the permission matrix on Discord.</p>
+          </div>
+          </div>
+        </section>
+
+        <section id="view-reports" class="adm-view adm-view--hidden">
+          <div id="adm-reports-denied" class="adm-placeholder adm-view--hidden">
+            <h2 class="adm-placeholder__title">No access</h2>
+            <p class="adm-placeholder__text">You do not have permission to view reports (<code>viewreports</code>).</p>
+          </div>
+          <div id="adm-reports-main" class="adm-view--hidden">
+            <div class="adm-toolbar">
+              <div class="adm-search-wrap">
+                <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+                <input type="search" class="adm-input adm-input--search" id="adm-search-reports" placeholder="Search title or reporter..." autocomplete="off" />
+              </div>
+              <select class="adm-select" id="adm-filter-reports" aria-label="Filter by status">
+                <option value="all">All statuses</option>
+                <option value="open">Open</option>
+                <option value="claimed">Claimed</option>
+                <option value="resolved">Resolved</option>
+              </select>
+              <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-btn-refresh-reports">
+                <span data-icon="refresh"></span> Refresh
+              </button>
+            </div>
+
+            <div class="adm-stats">
+              <article class="adm-stat-card adm-stat-card--blue">
+                <div class="adm-stat-card__icon-wrap">
+                  <span class="adm-stat-card__icon" data-icon="total"></span>
+                </div>
+                <div class="adm-stat-card__body">
+                  <span class="adm-stat-card__label">Reports (list)</span>
+                  <span class="adm-stat-card__value" id="adm-reports-stat-total">0</span>
+                </div>
+              </article>
+              <article class="adm-stat-card adm-stat-card--green">
+                <div class="adm-stat-card__icon-wrap">
+                  <span class="adm-stat-card__icon" data-icon="online"></span>
+                </div>
+                <div class="adm-stat-card__body">
+                  <span class="adm-stat-card__label">Open</span>
+                  <div class="adm-stat-card__value-row">
+                    <span class="adm-stat-card__value" id="adm-reports-stat-open">0</span>
+                  </div>
+                </div>
+              </article>
+              <article class="adm-stat-card adm-stat-card--muted">
+                <div class="adm-stat-card__icon-wrap">
+                  <span class="adm-stat-card__icon" data-icon="flag"></span>
+                </div>
+                <div class="adm-stat-card__body">
+                  <span class="adm-stat-card__label">Claimed</span>
+                  <span class="adm-stat-card__value" id="adm-reports-stat-claimed">0</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="adm-table-card">
+              <div class="adm-table-scroll">
+                <table class="adm-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Reporter</th>
+                      <th scope="col">Created</th>
+                      <th scope="col">Status</th>
+                      <th scope="col" class="adm-table__th-action">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adm-tbody-reports"></tbody>
+                </table>
+              </div>
+              <p class="adm-table-empty" id="adm-reports-empty">No reports found.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-teleports" class="adm-view adm-view--hidden">
+          <div class="adm-teleports-head">
+            <div class="adm-teleports-head__title">
+              <h2 class="adm-dashboard__heading">Teleports</h2>
+            </div>
+            <div class="adm-teleports-toolbar" role="toolbar" aria-label="Teleport list actions">
+              <button type="button" class="adm-btn adm-teleports-create-btn" id="adm-teleports-create">
+                <span class="adm-teleports-create-btn__icon" data-icon="teleport-add" aria-hidden="true"></span>
+                Create teleport
+              </button>
+              <button type="button" class="adm-btn adm-teleports-edit-btn" id="adm-teleports-edit">
+                <span class="adm-teleports-edit-btn__icon" data-icon="pencil" aria-hidden="true"></span>
+                Edit
+              </button>
+            </div>
+          </div>
+          <div id="adm-teleport-create-box" class="adm-teleport-create adm-view--hidden">
+            <label class="adm-label" for="adm-teleport-create-name">Teleport name</label>
+            <div class="adm-teleport-create__row">
+              <input id="adm-teleport-create-name" class="adm-input" type="text" maxlength="60" placeholder="e.g. Sheriff station" />
+              <button type="button" class="adm-btn adm-btn--primary" id="adm-teleport-create-save">Save</button>
+              <button type="button" class="adm-btn adm-btn--ghost" id="adm-teleport-create-cancel">Cancel</button>
+            </div>
+          </div>
+          <div id="adm-teleports-grid" class="adm-teleports-grid" role="list"></div>
+          <p id="adm-teleports-empty" class="adm-table-empty adm-view--hidden">No locations configured.</p>
+        </section>
+
+        <section id="view-commands" class="adm-view adm-view--hidden">
+          <div class="adm-dashboard__intro">
+            <div>
+              <h2 class="adm-dashboard__heading">Quick commands</h2>
+            </div>
+          </div>
+          <div id="adm-commands-grid" class="adm-commands-grid" role="list"></div>
+          <div
+            id="adm-commands-announce"
+            class="adm-commands-announce adm-view--hidden"
+            role="region"
+            aria-labelledby="adm-commands-announce-heading"
+          >
+            <h3 class="adm-commands-announce__heading" id="adm-commands-announce-heading">Screen announcement</h3>
+            <p class="adm-commands-announce__hint">Full-screen banner at the top center for every player.</p>
+            <div class="adm-commands-announce__row">
+              <div class="adm-commands-announce__field adm-commands-announce__field--grow">
+                <label class="adm-label" for="adm-announce-title">Title (optional)</label>
+                <input
+                  type="text"
+                  id="adm-announce-title"
+                  class="adm-input"
+                  maxlength="48"
+                  placeholder="e.g. Town event"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="adm-commands-announce__field">
+                <label class="adm-label" for="adm-announce-duration">Duration</label>
+                <select id="adm-announce-duration" class="adm-select adm-select--block">
+                  <option value="5000">5 s</option>
+                  <option value="8000" selected>8 s</option>
+                  <option value="12000">12 s</option>
+                  <option value="15000">15 s</option>
+                  <option value="20000">20 s</option>
+                  <option value="30000">30 s</option>
+                  <option value="45000">45 s</option>
+                  <option value="60000">60 s</option>
+                </select>
+              </div>
+              <div class="adm-commands-announce__field">
+                <label class="adm-label" for="adm-announce-style">Style</label>
+                <select id="adm-announce-style" class="adm-select adm-select--block">
+                  <option value="default">Default</option>
+                  <option value="info">Info</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+            </div>
+            <label class="adm-label" for="adm-announce-message">Message</label>
+            <textarea
+              id="adm-announce-message"
+              class="adm-textarea"
+              rows="3"
+              maxlength="280"
+              placeholder="Announcement text shown to all players…"
+            ></textarea>
+            <button type="button" class="adm-btn adm-btn--primary adm-commands-announce__send" id="adm-announce-send">
+              <span class="adm-btn__icon" data-icon="flag" aria-hidden="true"></span>
+              Send to everyone
+            </button>
+          </div>
+        </section>
+
+        <section id="view-coords" class="adm-view adm-view--hidden adm-coords-page">
+          <div class="adm-dashboard__intro adm-coords-page__intro">
+            <div class="adm-coords-page__intro-text">
+              <h2 class="adm-dashboard__heading">Coordinates</h2>
+            </div>
+            <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm adm-coords-page__refresh" id="adm-coords-refresh">
+              <span class="adm-btn__icon" data-icon="refresh" aria-hidden="true"></span>
+              Refresh now
+            </button>
+          </div>
+
+          <div class="adm-coords-live" aria-live="polite">
+            <span class="adm-coords-live__title">Current position</span>
+            <div class="adm-coords-live__chips">
+              <div class="adm-coords-chip">
+                <span class="adm-coords-chip__label">X</span>
+                <span class="adm-coords-chip__value" id="adm-coords-vx">—</span>
+              </div>
+              <div class="adm-coords-chip">
+                <span class="adm-coords-chip__label">Y</span>
+                <span class="adm-coords-chip__value" id="adm-coords-vy">—</span>
+              </div>
+              <div class="adm-coords-chip">
+                <span class="adm-coords-chip__label">Z</span>
+                <span class="adm-coords-chip__value" id="adm-coords-vz">—</span>
+              </div>
+              <div class="adm-coords-chip">
+                <span class="adm-coords-chip__label">H</span>
+                <span class="adm-coords-chip__value" id="adm-coords-vh">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-coords">
+            <p class="adm-coords-section-label">Formats to paste</p>
+            <div class="adm-coords-grid">
+              <article class="adm-coords-card">
+                <header class="adm-coords-card__head">
+                  <span class="adm-coords-card__tag">Lua</span>
+                  <h3 class="adm-coords-card__title">Assignments</h3>
+                </header>
+                <p class="adm-coords-card__hint">Variables x, y, z and heading (h)</p>
+                <pre class="adm-coords-code" tabindex="0"><code id="adm-coords-fmt-assign"></code></pre>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--sm adm-btn--block" data-coords-copy="assign">Copy</button>
+              </article>
+              <article class="adm-coords-card">
+                <header class="adm-coords-card__head">
+                  <span class="adm-coords-card__tag">Lua</span>
+                  <h3 class="adm-coords-card__title">Table</h3>
+                </header>
+                <p class="adm-coords-card__hint">Table with x, y, z, h</p>
+                <pre class="adm-coords-code" tabindex="0"><code id="adm-coords-fmt-lua"></code></pre>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--sm adm-btn--block" data-coords-copy="lua">Copy</button>
+              </article>
+              <article class="adm-coords-card">
+                <header class="adm-coords-card__head">
+                  <span class="adm-coords-card__tag">vector3</span>
+                  <h3 class="adm-coords-card__title">Position</h3>
+                </header>
+                <p class="adm-coords-card__hint">x, y, z only</p>
+                <pre class="adm-coords-code" tabindex="0"><code id="adm-coords-fmt-vec3"></code></pre>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--sm adm-btn--block" data-coords-copy="vec3">Copy</button>
+              </article>
+              <article class="adm-coords-card">
+                <header class="adm-coords-card__head">
+                  <span class="adm-coords-card__tag">vector4</span>
+                  <h3 class="adm-coords-card__title">Position + heading</h3>
+                </header>
+                <p class="adm-coords-card__hint">x, y, z and rotation (h)</p>
+                <pre class="adm-coords-code" tabindex="0"><code id="adm-coords-fmt-vec4"></code></pre>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--sm adm-btn--block" data-coords-copy="vec4">Copy</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-developer" class="adm-view adm-view--hidden">
+          <div class="adm-dashboard__intro">
+            <div>
+              <h2 class="adm-dashboard__heading">Developer</h2>
+            </div>
+          </div>
+          <div class="adm-ws">
+            <div class="adm-ws-grid">
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">Admin horse</h3>
+                <p class="adm-ws-hint">List from <code>Config.AdminHorse</code>; spawns in front of your ped and mounts.</p>
+                <label class="adm-label" for="adm-dev-horse-select">Horse</label>
+                <select id="adm-dev-horse-select" class="adm-select adm-select--block">
+                  <option value="">Loading…</option>
+                </select>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-dev-apply-horse">Spawn horse</button>
+              </article>
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">Animation tester</h3>
+                <p class="adm-ws-hint">Dictionary, clip, flag and duration (ms).</p>
+                <label class="adm-label" for="adm-dev-anim-dict">Dictionary</label>
+                <input type="text" id="adm-dev-anim-dict" class="adm-input adm-input--block" placeholder="ai_gestures@..." autocomplete="off" />
+                <label class="adm-label" for="adm-dev-anim-clip">Clip</label>
+                <input type="text" id="adm-dev-anim-clip" class="adm-input adm-input--block" placeholder="clip_name" autocomplete="off" />
+                <div class="adm-ws-inline">
+                  <div>
+                    <label class="adm-label" for="adm-dev-anim-flag">Flag</label>
+                    <input type="number" id="adm-dev-anim-flag" class="adm-input adm-input--block" value="15" min="0" />
+                  </div>
+                  <div>
+                    <label class="adm-label" for="adm-dev-anim-length">Duration (ms)</label>
+                    <input type="number" id="adm-dev-anim-length" class="adm-input adm-input--block" value="10000" min="0" step="100" />
+                  </div>
+                </div>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-dev-apply-anim">Play</button>
+              </article>
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">Entity hash</h3>
+                <p class="adm-ws-hint">Model name (string) → <code>joaat</code> copied to clipboard.</p>
+                <label class="adm-label" for="adm-dev-hash-model">Model name</label>
+                <input type="text" id="adm-dev-hash-model" class="adm-input adm-input--block" placeholder="a_c_deer_01" autocomplete="off" />
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-dev-apply-hash">Calculate &amp; copy</button>
+              </article>
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">Door IDs</h3>
+                <p class="adm-ws-hint">ID overlay near doors in <code>Config.DoorHashes</code>.</p>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-dev-apply-doors">Toggle visibility</button>
+              </article>
+              <article class="adm-ws-panel adm-ws-panel--wide">
+                <h3 class="adm-ws-panel__title">Spawn ped / animal</h3>
+                <p class="adm-ws-hint">Model (name), outfit, offset from ped, freeze and state.</p>
+                <label class="adm-label" for="adm-dev-ped-model">Model</label>
+                <input type="text" id="adm-dev-ped-model" class="adm-input adm-input--block" placeholder="a_c_wolf_medium" autocomplete="off" />
+                <div class="adm-ws-inline">
+                  <div>
+                    <label class="adm-label" for="adm-dev-ped-outfit">Outfit</label>
+                    <input type="number" id="adm-dev-ped-outfit" class="adm-input adm-input--block" value="0" min="0" />
+                  </div>
+                  <div>
+                    <label class="adm-label" for="adm-dev-ped-dist">Distance</label>
+                    <input type="number" id="adm-dev-ped-dist" class="adm-input adm-input--block" value="5" min="0" step="0.5" />
+                  </div>
+                </div>
+                <div class="adm-ws-inline">
+                  <div>
+                    <label class="adm-label" for="adm-dev-ped-freeze">Freeze</label>
+                    <select id="adm-dev-ped-freeze" class="adm-select adm-select--block">
+                      <option value="false">No</option>
+                      <option value="true">Yes</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="adm-label" for="adm-dev-ped-dead">Dead</label>
+                    <select id="adm-dev-ped-dead" class="adm-select adm-select--block">
+                      <option value="false">No</option>
+                      <option value="true">Yes</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-dev-apply-ped">Spawn ped</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-settings" class="adm-view adm-view--hidden">
+          <div class="adm-dashboard__intro">
+            <div>
+              <h2 class="adm-dashboard__heading">Server settings</h2>
+            </div>
+          </div>
+          <div class="adm-ws">
+            <div class="adm-ws-grid">
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">World time</h3>
+                <div class="adm-ws-row">
+                  <span class="adm-ws-label">Now</span>
+                  <div class="adm-ws-readonly" id="adm-ws-cur-time">—</div>
+                </div>
+                <label class="adm-label" for="adm-ws-new-day">Weekday</label>
+                <select id="adm-ws-new-day" class="adm-select adm-select--block">
+                  <option value="0">Sunday</option>
+                  <option value="1">Monday</option>
+                  <option value="2">Tuesday</option>
+                  <option value="3">Wednesday</option>
+                  <option value="4">Thursday</option>
+                  <option value="5">Friday</option>
+                  <option value="6">Saturday</option>
+                </select>
+                <div class="adm-ws-inline">
+                  <div>
+                    <label class="adm-label" for="adm-ws-new-hour">Hour</label>
+                    <input type="number" id="adm-ws-new-hour" class="adm-input adm-input--block" min="0" max="23" value="12" />
+                  </div>
+                  <div>
+                    <label class="adm-label" for="adm-ws-new-min">Min</label>
+                    <input type="number" id="adm-ws-new-min" class="adm-input adm-input--block" min="0" max="59" value="0" />
+                  </div>
+                  <div>
+                    <label class="adm-label" for="adm-ws-new-sec">Sec</label>
+                    <input type="number" id="adm-ws-new-sec" class="adm-input adm-input--block" min="0" max="59" value="0" />
+                  </div>
+                </div>
+                <label class="adm-label" for="adm-ws-time-transition">Transition (ms)</label>
+                <input type="number" id="adm-ws-time-transition" class="adm-input adm-input--block" min="0" step="500" value="5000" />
+                <label class="adm-label adm-ban-perm-label">
+                  <input type="checkbox" id="adm-ws-time-freeze" />
+                  Freeze time
+                </label>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-ws-apply-time">Apply time</button>
+              </article>
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">Time scale</h3>
+                <p class="adm-ws-hint">Game seconds / real seconds ratio. <span class="adm-ws-hint__note">0 = server real time.</span></p>
+                <div class="adm-ws-row">
+                  <span class="adm-ws-label">Current scale</span>
+                  <span class="adm-ws-readonly" id="adm-ws-cur-timescale">—</span>
+                </div>
+                <label class="adm-label" for="adm-ws-new-timescale">New scale</label>
+                <input type="number" id="adm-ws-new-timescale" class="adm-input adm-input--block" min="0" step="1" value="30" />
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-ws-apply-timescale">Apply scale</button>
+              </article>
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">Weather</h3>
+                <div class="adm-ws-row">
+                  <span class="adm-ws-label">Current weather</span>
+                  <span class="adm-ws-readonly adm-ws-readonly--weather" id="adm-ws-cur-weather">—</span>
+                </div>
+                <label class="adm-label" for="adm-ws-new-weather">Type</label>
+                <select id="adm-ws-new-weather" class="adm-select adm-select--block"></select>
+                <label class="adm-label" for="adm-ws-weather-transition">Transition (s)</label>
+                <input type="number" id="adm-ws-weather-transition" class="adm-input adm-input--block" min="0" step="1" value="5" />
+                <label class="adm-label adm-ban-perm-label">
+                  <input type="checkbox" id="adm-ws-weather-freeze" />
+                  Freeze weather
+                </label>
+                <label class="adm-label adm-ban-perm-label">
+                  <input type="checkbox" id="adm-ws-weather-snow" />
+                  Permanent ground snow
+                </label>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-ws-apply-weather">Apply weather</button>
+              </article>
+              <article class="adm-ws-panel adm-ws-panel--blood-moon">
+                <h3 class="adm-ws-panel__title">Blood Moon</h3>
+                <p class="adm-ws-hint adm-ws-hint--blood-moon">
+                  Applies heavy <strong>fog</strong> to <strong>everyone on the server</strong>. If
+                  <strong>weathersync</strong> is running, weather stays <strong>frozen</strong> on fog until you use
+                  <strong>Restore normal weather</strong> below or change it from the <strong>Weather</strong> panel above.
+                </p>
+                <div class="adm-bm-actions">
+                  <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-bm-apply">Apply Blood Moon</button>
+                  <button type="button" class="adm-btn adm-btn--ghost adm-btn--block" id="adm-bm-restore">Restore normal weather</button>
+                </div>
+              </article>
+              <article class="adm-ws-panel">
+                <h3 class="adm-ws-panel__title">Wind</h3>
+                <div class="adm-ws-status-grid">
+                  <div class="adm-ws-row">
+                    <span class="adm-ws-label">Direction</span>
+                    <span class="adm-ws-readonly" id="adm-ws-cur-wind-dir">—</span>
+                  </div>
+                  <div class="adm-ws-row">
+                    <span class="adm-ws-label">Speed</span>
+                    <span class="adm-ws-readonly" id="adm-ws-cur-wind-speed">—</span>
+                  </div>
+                </div>
+                <div class="adm-ws-inline">
+                  <div>
+                    <label class="adm-label" for="adm-ws-new-wind-dir">Direction (0–359)</label>
+                    <input type="number" id="adm-ws-new-wind-dir" class="adm-input adm-input--block" min="0" max="359" value="0" />
+                  </div>
+                  <div>
+                    <label class="adm-label" for="adm-ws-new-wind-speed">Speed</label>
+                    <input type="number" id="adm-ws-new-wind-speed" class="adm-input adm-input--block" min="0" max="1000" value="0" />
+                  </div>
+                </div>
+                <label class="adm-label adm-ban-perm-label">
+                  <input type="checkbox" id="adm-ws-wind-freeze" />
+                  Freeze wind
+                </label>
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--block" id="adm-ws-apply-wind">Apply wind</button>
+              </article>
+              <article class="adm-ws-panel adm-ws-panel--wide">
+                <h3 class="adm-ws-panel__title">Sync</h3>
+                <div class="adm-ws-sync-layout">
+                  <p class="adm-ws-hint adm-ws-hint--sync">Interval between time and weather syncs to clients (milliseconds).</p>
+                  <div class="adm-ws-sync-fields">
+                    <div class="adm-ws-field">
+                      <label class="adm-label" for="adm-ws-sync-delay">Delay (ms)</label>
+                      <input type="number" id="adm-ws-sync-delay" class="adm-input adm-input--block" min="500" step="100" value="5000" />
+                    </div>
+                    <button type="button" class="adm-btn adm-btn--primary adm-btn--sync" id="adm-ws-apply-sync">Apply delay</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-bans" class="adm-view adm-view--hidden">
+          <div id="adm-bans-denied" class="adm-placeholder adm-view--hidden">
+            <h2 class="adm-placeholder__title">No access</h2>
+            <p class="adm-placeholder__text">You need <code>ban</code> (ban/edit) or <code>unban</code> (view list and unban) for this section.</p>
+          </div>
+          <div id="adm-bans-main" class="adm-view--hidden">
+            <div class="adm-toolbar">
+              <div class="adm-search-wrap">
+                <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+                <input
+                  type="search"
+                  class="adm-input adm-input--search"
+                  id="adm-search-bans"
+                  placeholder="Search name, license, reason..."
+                  autocomplete="off"
+                />
+              </div>
+              <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" id="adm-btn-ban-offline">
+                <span data-icon="ban"></span> Ban offline
+              </button>
+              <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-btn-refresh-bans">
+                <span data-icon="refresh"></span> Refresh
+              </button>
+            </div>
+            <div class="adm-stats">
+              <article class="adm-stat-card adm-stat-card--blue">
+                <div class="adm-stat-card__icon-wrap">
+                  <span class="adm-stat-card__icon" data-icon="ban"></span>
+                </div>
+                <div class="adm-stat-card__body">
+                  <span class="adm-stat-card__label">Bans (list)</span>
+                  <span class="adm-stat-card__value" id="adm-bans-stat-total">0</span>
+                </div>
+              </article>
+            </div>
+            <div class="adm-table-card">
+              <div class="adm-table-scroll">
+                <table class="adm-table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="adm-table__th-avatar"></th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Expires</th>
+                      <th scope="col">Reason</th>
+                      <th scope="col">Banned by</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adm-tbody-bans"></tbody>
+                </table>
+              </div>
+              <p class="adm-table-empty" id="adm-bans-empty">No bans found.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-adminchat" class="adm-view adm-view--hidden">
+          <div class="adm-admin-chat">
+            <div class="adm-admin-chat__head adm-dashboard__intro">
+              <div>
+                <h2 class="adm-dashboard__heading">Staff chat</h2>
+              </div>
+            </div>
+            <div id="adm-adminchat-denied" class="adm-placeholder adm-view--hidden">
+              <p>You do not have permission to use staff chat.</p>
+            </div>
+            <div id="adm-adminchat-main" class="adm-view--hidden">
+              <div class="adm-report-chat adm-admin-chat__panel">
+                <div class="adm-report-chat__scroll" id="adm-staff-chat-scroll" aria-live="polite"></div>
+                <div class="adm-report-chat__composer adm-staff-compose">
+                  <label class="adm-visually-hidden" for="adm-staff-chat-input">Message to staff</label>
+                  <div class="adm-staff-compose__bar">
+                    <textarea
+                      id="adm-staff-chat-input"
+                      class="adm-staff-compose__input"
+                      rows="1"
+                      maxlength="500"
+                      placeholder="Message to staff…"
+                    ></textarea>
+                    <button type="button" class="adm-staff-compose__send" id="adm-staff-chat-send" title="Send">
+                      <span class="adm-staff-compose__send-text">Send</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-items" class="adm-view adm-view--hidden adm-view--items">
+          <div class="adm-items-sticky-head">
+            <div class="adm-items-intro">
+              <h2 class="adm-dashboard__heading">Server items</h2>
+            </div>
+            <div class="adm-toolbar adm-toolbar--items adm-items-toolbar">
+              <div class="adm-items-toolbar__search">
+                <div class="adm-search-wrap adm-search-wrap--grow">
+                  <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+                  <input
+                    type="search"
+                    class="adm-input adm-input--search"
+                    id="adm-search-items"
+                    placeholder="Search by name, ID, or description…"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+              <div class="adm-items-toolbar__meta-wrap">
+                <span class="adm-items-meta" id="adm-items-meta" aria-live="polite"></span>
+              </div>
+            </div>
+          </div>
+          <div id="adm-items-grid" class="adm-items-grid" role="list"></div>
+          <div id="adm-items-load-wrap" class="adm-items-load-wrap adm-view--hidden">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-items-load-more">
+              Load more
+            </button>
+            <span class="adm-items-load-hint" id="adm-items-load-hint"></span>
+          </div>
+        </section>
+
+        <section id="view-weapons" class="adm-view adm-view--hidden adm-view--items">
+          <div class="adm-items-sticky-head">
+            <div class="adm-items-intro">
+              <h2 class="adm-dashboard__heading">Server weapons</h2>
+            </div>
+            <div class="adm-toolbar adm-toolbar--items adm-items-toolbar">
+              <div class="adm-items-toolbar__search">
+                <div class="adm-search-wrap adm-search-wrap--grow">
+                  <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+                  <input
+                    type="search"
+                    class="adm-input adm-input--search"
+                    id="adm-search-weapons"
+                    placeholder="Search by name or ID..."
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+              <div class="adm-items-toolbar__meta-wrap">
+                <span class="adm-items-meta" id="adm-weapons-meta" aria-live="polite"></span>
+              </div>
+            </div>
+          </div>
+          <div id="adm-weapons-grid" class="adm-items-grid" role="list"></div>
+          <div id="adm-weapons-load-wrap" class="adm-items-load-wrap adm-view--hidden">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-weapons-load-more">
+              Load more
+            </button>
+            <span class="adm-items-load-hint" id="adm-weapons-load-hint"></span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Give item to player (same catalog as Items) -->
+    <div id="adm-give-item-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--player-actions adm-modal--give-item" role="dialog" aria-modal="true" aria-labelledby="adm-give-item-title">
+        <div class="adm-modal__head adm-modal__head--player adm-give-item__head">
+          <div class="adm-modal__head-text">
+            <h3 id="adm-give-item-title" class="adm-modal__title">Give item</h3>
+            <p id="adm-give-item-subtitle" class="adm-modal__subtitle"></p>
+          </div>
+          <button type="button" class="adm-modal__close adm-modal__close--fab" id="adm-give-item-close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="adm-modal__body adm-modal__body--player-actions adm-give-item__body">
+          <div class="adm-give-item-shell">
+            <div class="adm-give-item-intro">
+              <p class="adm-give-item-lead">
+                Search, set quantity on the card, then <strong>Give</strong>. The server validates permissions.
+              </p>
+            </div>
+            <div class="adm-give-item-search-panel">
+              <div class="adm-toolbar adm-toolbar--items adm-give-item-toolbar">
+                <div class="adm-search-wrap adm-search-wrap--grow">
+                  <span class="adm-search-icon" data-icon="search" aria-hidden="true"></span>
+                  <input
+                    type="search"
+                    class="adm-input adm-input--search"
+                    id="adm-give-item-search"
+                    placeholder="Search by name, ID, or description…"
+                    autocomplete="off"
+                  />
+                </div>
+                <span class="adm-items-meta adm-give-item-meta" id="adm-give-item-meta" aria-live="polite"></span>
+              </div>
+            </div>
+            <div class="adm-give-item-catalog">
+              <div id="adm-give-item-grid" class="adm-items-grid adm-items-grid--give-modal" role="list"></div>
+              <div id="adm-give-item-load-wrap" class="adm-items-load-wrap adm-give-item-load-wrap adm-view--hidden">
+                <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="adm-give-item-load-more">Load more</button>
+                <span class="adm-items-load-hint" id="adm-give-item-load-hint"></span>
+              </div>
+            </div>
+          </div>
+          <div class="adm-give-item-footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-give-item-back">
+              <span class="adm-give-item-footer__back-icon" aria-hidden="true">←</span>
+              Back to player actions
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Set job (target) -->
+    <div id="adm-setjob-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true" aria-labelledby="adm-setjob-title">
+        <div class="adm-modal__head">
+          <h3 id="adm-setjob-title" class="adm-modal__title">Set job</h3>
+          <button type="button" class="adm-modal__close" id="adm-setjob-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <p class="adm-setjob-hint" id="adm-setjob-hint"></p>
+          <label class="adm-label" for="adm-setjob-job">Job (core)</label>
+          <select id="adm-setjob-job" class="adm-select adm-select--block"></select>
+          <label class="adm-label" for="adm-setjob-grade">Grade</label>
+          <select id="adm-setjob-grade" class="adm-select adm-select--block"></select>
+          <div class="adm-modal__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-setjob-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--primary" id="adm-setjob-confirm">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Money (target) -->
+    <div id="adm-finance-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true" aria-labelledby="adm-finance-title">
+        <div class="adm-modal__head">
+          <h3 id="adm-finance-title" class="adm-modal__title">Player money</h3>
+          <button type="button" class="adm-modal__close" id="adm-finance-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <p class="adm-setjob-hint" id="adm-finance-hint"></p>
+          <label class="adm-label" for="adm-finance-type">Wallet</label>
+          <select id="adm-finance-type" class="adm-select adm-select--block">
+            <option value="bank">Bank</option>
+            <option value="valbank">Valentine</option>
+            <option value="rhobank">Rhodes</option>
+            <option value="blkbank">Blackwater</option>
+            <option value="armbank">Armadillo</option>
+            <option value="cash">Cash on hand</option>
+            <option value="bloodmoney">Blood money</option>
+          </select>
+          <label class="adm-label" for="adm-finance-amount">Amount</label>
+          <input id="adm-finance-amount" class="adm-input" type="number" min="1" step="1" placeholder="e.g. 100" />
+          <div class="adm-modal__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-finance-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-finance-remove">Remove</button>
+            <button type="button" class="adm-btn adm-btn--primary" id="adm-finance-give">Give</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remove job (only jobs the player has; multijob: choose) -->
+    <div id="adm-removejob-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true" aria-labelledby="adm-removejob-title">
+        <div class="adm-modal__head">
+          <h3 id="adm-removejob-title" class="adm-modal__title">Remove job</h3>
+          <button type="button" class="adm-modal__close" id="adm-removejob-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <p class="adm-setjob-hint" id="adm-removejob-hint"></p>
+          <p id="adm-removejob-empty" class="adm-removejob-empty adm-view--hidden"></p>
+          <label class="adm-label" for="adm-removejob-select">Job to remove</label>
+          <select id="adm-removejob-select" class="adm-select adm-select--block"></select>
+          <div class="adm-modal__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-removejob-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-removejob-confirm">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation (e.g. clear inventory) -->
+    <div id="adm-danger-confirm-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true" aria-labelledby="adm-danger-confirm-title">
+        <div class="adm-modal__head">
+          <h3 id="adm-danger-confirm-title" class="adm-modal__title">Confirm</h3>
+          <button type="button" class="adm-modal__close" id="adm-danger-confirm-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <p id="adm-danger-confirm-text" class="adm-danger-confirm__text"></p>
+          <div class="adm-modal__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-danger-confirm-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-danger-confirm-ok">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player actions modal -->
+    <div id="adm-modal-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--player-actions adm-modal--player-profile" role="dialog" aria-modal="true" aria-labelledby="adm-modal-title">
+        <div class="adm-modal__head adm-modal__head--player">
+          <div class="adm-modal__head-text">
+            <h3 id="adm-modal-title" class="adm-modal__title">Player actions</h3>
+            <p id="adm-modal-subtitle" class="adm-modal__subtitle"></p>
+            <div id="adm-modal-meta" class="adm-modal__meta" aria-label="Identification"></div>
+          </div>
+          <button type="button" class="adm-modal__close adm-modal__close--fab" id="adm-modal-close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="adm-modal__body adm-modal__body--player-actions" id="adm-modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Kick modal -->
+    <div id="adm-kick-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true">
+        <div class="adm-modal__head">
+          <h3 class="adm-modal__title">Kick player</h3>
+          <button type="button" class="adm-modal__close" id="adm-kick-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <label class="adm-label" for="adm-kick-reason">Reason</label>
+          <textarea id="adm-kick-reason" class="adm-textarea" rows="3" placeholder="Reason for kick..." required></textarea>
+          <div class="adm-modal__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-kick-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-kick-confirm">Kick</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ban modal -->
+    <div id="adm-ban-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true">
+        <div class="adm-modal__head">
+          <h3 class="adm-modal__title">Ban player</h3>
+          <button type="button" class="adm-modal__close" id="adm-ban-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <label class="adm-label" for="adm-ban-type">Type</label>
+          <select id="adm-ban-type" class="adm-select adm-select--block">
+            <option value="temporary">Temporary</option>
+            <option value="permanent">Permanent</option>
+          </select>
+          <label class="adm-label" for="adm-ban-duration">Duration</label>
+          <select id="adm-ban-duration" class="adm-select adm-select--block">
+            <option value="3600">1 hour</option>
+            <option value="86400">1 day</option>
+            <option value="604800">1 week</option>
+            <option value="2678400">1 month</option>
+            <option value="99999999999">Permanent (temp table)</option>
+          </select>
+          <label class="adm-label" for="adm-ban-reason">Reason</label>
+          <textarea id="adm-ban-reason" class="adm-textarea" rows="3" placeholder="Reason..." required></textarea>
+          <div class="adm-modal__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-ban-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-ban-confirm">Ban</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ban detail / edit -->
+    <div id="adm-ban-detail-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--report" role="dialog" aria-modal="true" aria-labelledby="adm-ban-detail-title">
+        <div class="adm-modal__head adm-modal__head--player adm-report-modal__head">
+          <div class="adm-ban-detail__head-row">
+            <img id="adm-ban-detail-avatar" class="adm-ban-detail__avatar" src="" alt="" width="56" height="56" />
+            <div class="adm-report-modal__head-text">
+              <h3 id="adm-ban-detail-title" class="adm-modal__title">Ban</h3>
+              <p id="adm-ban-detail-sub" class="adm-ban-detail__sub"></p>
+            </div>
+          </div>
+          <button type="button" class="adm-modal__close" id="adm-ban-detail-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body adm-report-modal__body">
+          <dl class="adm-report-meta">
+            <div><dt>License</dt><dd id="adm-ban-meta-license">—</dd></div>
+            <div><dt>Discord</dt><dd id="adm-ban-meta-discord">—</dd></div>
+            <div><dt>IP</dt><dd id="adm-ban-meta-ip">—</dd></div>
+          </dl>
+          <div class="adm-report-block adm-report-block--panel">
+            <h4 class="adm-report-block__title">Reason</h4>
+            <textarea id="adm-ban-input-reason" class="adm-textarea" rows="3" placeholder="Ban reason"></textarea>
+          </div>
+          <div class="adm-report-block adm-report-block--panel">
+            <h4 class="adm-report-block__title">Expiry</h4>
+            <label class="adm-label adm-ban-perm-label">
+              <input type="checkbox" id="adm-ban-check-permanent" />
+              Permanent ban
+            </label>
+            <input type="datetime-local" id="adm-ban-input-expire" class="adm-input adm-input--block adm-ban-datetime" />
+          </div>
+          <div class="adm-ban-actions">
+            <button type="button" class="adm-btn adm-btn--primary" id="adm-ban-btn-save">Save changes</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-ban-btn-remove">Remove ban</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ban offline (player not in session) -->
+    <div id="adm-ban-offline-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true" aria-labelledby="adm-ban-offline-title">
+        <div class="adm-modal__head">
+          <h3 id="adm-ban-offline-title" class="adm-modal__title">Ban offline player</h3>
+          <button type="button" class="adm-modal__close" id="adm-ban-offline-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <p class="adm-ban-offline__hint">
+            Enter the character <strong>citizenid</strong> (char id) from the <code>players</code> table. The server will fetch license, character name, and metadata when available.
+          </p>
+          <label class="adm-label" for="adm-ban-offline-citizenid">Citizen ID (char id) <span class="adm-label__req">*</span></label>
+          <input
+            type="text"
+            id="adm-ban-offline-citizenid"
+            class="adm-input adm-input--block"
+            placeholder="e.g. 12 or ABC12345"
+            autocomplete="off"
+            required
+          />
+          <label class="adm-label" for="adm-ban-offline-reason">Reason <span class="adm-label__req">*</span></label>
+          <textarea id="adm-ban-offline-reason" class="adm-textarea" rows="3" placeholder="Ban reason" required></textarea>
+          <label class="adm-label adm-ban-perm-label">
+            <input type="checkbox" id="adm-ban-offline-permanent" />
+            Permanent ban
+          </label>
+          <label class="adm-label" for="adm-ban-offline-expire">Expires at</label>
+          <input type="datetime-local" id="adm-ban-offline-expire" class="adm-input adm-input--block adm-ban-datetime" />
+          <div class="adm-modal__footer adm-ban-offline__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-ban-offline-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-ban-offline-confirm">Ban</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report detail (same pattern as player actions: table + modal) -->
+    <div id="adm-report-detail-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--report" role="dialog" aria-modal="true" aria-labelledby="adm-report-detail-title">
+        <div class="adm-modal__head adm-modal__head--player adm-report-modal__head">
+          <div class="adm-report-modal__head-text">
+            <h3 id="adm-report-detail-title" class="adm-modal__title">Report</h3>
+            <div class="adm-report-detail__badges">
+              <span class="adm-badge adm-badge--default" id="adm-report-badge-type">—</span>
+              <span class="adm-badge adm-badge--default" id="adm-report-badge-status">—</span>
+            </div>
+          </div>
+          <button type="button" class="adm-modal__close" id="adm-report-detail-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body adm-report-modal__body">
+          <dl class="adm-report-meta">
+            <div><dt>Reporter</dt><dd id="adm-report-meta-reporter">—</dd></div>
+            <div><dt>Created</dt><dd id="adm-report-meta-created">—</dd></div>
+            <div id="adm-report-meta-assigned-wrap" class="adm-view--hidden"><dt>Assigned to</dt><dd id="adm-report-meta-assigned">—</dd></div>
+            <div id="adm-report-meta-reported-wrap" class="adm-view--hidden"><dt>Reported player</dt><dd id="adm-report-meta-reported">—</dd></div>
+          </dl>
+          <div class="adm-report-block adm-report-block--panel">
+            <h4 class="adm-report-block__title">Description</h4>
+            <p class="adm-report-block__text" id="adm-report-description"></p>
+          </div>
+          <div id="adm-report-image-wrap" class="adm-report-block adm-report-block--panel adm-view--hidden">
+            <h4 class="adm-report-block__title">Image</h4>
+            <a class="adm-report-link" id="adm-report-image-link" href="#" target="_blank" rel="noopener">Open link</a>
+          </div>
+          <div id="adm-report-messages-wrap" class="adm-report-block adm-report-block--panel adm-view--hidden">
+            <h4 class="adm-report-block__title">Thread</h4>
+            <div class="adm-report-chat" role="log" aria-label="Report messages">
+              <div class="adm-report-chat__scroll" id="adm-report-messages-list"></div>
+              <div class="adm-report-chat__composer adm-view--hidden" id="adm-report-chat-composer">
+                <label class="adm-visually-hidden" for="adm-report-chat-input">Message to player</label>
+                <textarea
+                  id="adm-report-chat-input"
+                  class="adm-textarea adm-report-chat__input"
+                  rows="2"
+                  maxlength="500"
+                  placeholder="Type a message… (Enter to send, Shift+Enter for new line)"
+                  autocomplete="off"
+                ></textarea>
+                <button type="button" class="adm-btn adm-btn--primary adm-report-chat__send" id="adm-report-chat-send">Send</button>
+              </div>
+            </div>
+          </div>
+          <div id="adm-report-nearby-wrap" class="adm-report-block adm-report-block--panel adm-view--hidden">
+            <h4 class="adm-report-block__title">Nearby players (creation)</h4>
+            <ul class="adm-report-nearby" id="adm-report-nearby-list"></ul>
+          </div>
+          <div class="adm-report-actions" id="adm-report-actions">
+            <div class="adm-report-actions__head">
+              <span class="adm-report-actions__title">Quick actions</span>
+            </div>
+            <div class="adm-report-actions__grid">
+              <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm adm-report-action-btn adm-view--hidden" id="adm-report-btn-claim">Assign to me</button>
+              <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm adm-report-action-btn adm-view--hidden" id="adm-report-btn-release">Release</button>
+              <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm adm-report-action-btn adm-view--hidden" id="adm-report-btn-resolve">Mark resolved</button>
+              <button type="button" class="adm-btn adm-btn--danger adm-btn--sm adm-report-action-btn adm-report-action-btn--danger adm-view--hidden" id="adm-report-btn-delete">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report delete -->
+    <div id="adm-report-delete-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--sm" role="dialog" aria-modal="true">
+        <div class="adm-modal__head">
+          <h3 class="adm-modal__title">Delete report</h3>
+          <button type="button" class="adm-modal__close" id="adm-report-delete-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="adm-modal__body">
+          <label class="adm-label" for="adm-report-delete-reason">Reason (required)</label>
+          <textarea id="adm-report-delete-reason" class="adm-textarea" rows="3" placeholder="Reason for deletion..." required></textarea>
+          <div class="adm-modal__footer">
+            <button type="button" class="adm-btn adm-btn--ghost" id="adm-report-delete-cancel">Cancel</button>
+            <button type="button" class="adm-btn adm-btn--danger" id="adm-report-delete-confirm">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- /report — player shell: main content + integrated staff sidebar -->
+  <div id="adm-player-report-app" class="adm-app adm-app--player-report adm-app--hidden" aria-hidden="true">
+    <div class="adm-player-report__shell">
+      <header class="adm-pr-header">
+        <div class="adm-pr-header__left">
+          <span class="adm-sidebar__logo" aria-hidden="true"></span>
+          <div>
+            <h1 class="adm-pr-header__title">Reports</h1>
+            <p class="adm-pr-header__sub" id="adm-pr-server-name">Server</p>
+          </div>
+        </div>
+        <div class="adm-pr-header__actions" role="toolbar" aria-label="Report actions">
+          <button
+            type="button"
+            class="adm-btn adm-btn--ghost adm-pr-header__mine"
+            id="pr-btn-mine"
+            aria-label="View my reports and staff messages"
+          >
+            <span class="adm-pr-header__mine-icon" data-icon="logs" aria-hidden="true"></span>
+            <span class="adm-pr-header__mine-text">My reports</span>
+          </button>
+          <button type="button" class="adm-sidebar__close adm-pr-header__close" id="adm-pr-btn-close" aria-label="Close reports menu (Esc)">
+            Esc
+          </button>
+        </div>
+      </header>
+      <div class="adm-player-report__body">
+        <div class="adm-player-report__main">
+          <main class="adm-pr-main">
+          <section id="pr-view-home" class="adm-pr-view">
+            <div class="adm-pr-home__stack">
+              <div class="adm-pr-form-panel">
+                <h2 class="adm-pr-form-title" id="pr-form-heading">New report</h2>
+                <form id="pr-form" class="adm-pr-form" novalidate>
+                  <label class="adm-label" for="pr-input-title">Title</label>
+                  <input type="text" id="pr-input-title" class="adm-input adm-input--block" maxlength="100" autocomplete="off" />
+                  <label class="adm-label" for="pr-input-desc">Description</label>
+                  <textarea id="pr-input-desc" class="adm-textarea" rows="5" maxlength="500"></textarea>
+                  <label class="adm-label" for="pr-input-image">Image URL (optional)</label>
+                  <input type="url" id="pr-input-image" class="adm-input adm-input--block" placeholder="https://..." inputmode="url" autocomplete="url" />
+                  <p class="adm-pr-error adm-view--hidden" id="pr-form-error" role="alert" aria-live="assertive"></p>
+                  <div class="adm-pr-form__submit-wrap">
+                    <button type="submit" class="adm-btn adm-btn--primary adm-btn--block adm-pr-form__submit" id="pr-form-submit" aria-label="Submit report to staff">
+                      Submit report
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <p class="adm-pr-cooldown adm-view--hidden" id="pr-cooldown-msg" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+
+          <section id="pr-view-list" class="adm-pr-view adm-view--hidden">
+          <div class="adm-pr-list-toolbar">
+            <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="pr-back-list">← Home</button>
+            <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="pr-refresh-list">
+              <span data-icon="refresh" aria-hidden="true"></span>
+              Refresh
+            </button>
+          </div>
+          <div class="adm-table-card">
+            <div class="adm-table-scroll">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="adm-table__th-action">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="pr-tbody-list"></tbody>
+              </table>
+            </div>
+            <p class="adm-table-empty" id="pr-list-empty">You have no open reports yet.</p>
+          </div>
+          </section>
+          </main>
+        </div>
+        <aside class="adm-player-report__staff-sidebar" id="adm-pr-staff-rail" aria-label="Staff online">
+          <div class="adm-pr-staff-rail__inner">
+            <h2 class="adm-pr-staff-rail__title">Staff online</h2>
+            <p class="adm-pr-staff-rail__hint" id="pr-rail-staff-loading">Loading…</p>
+            <ul class="adm-pr-staff-rail__list adm-view--hidden" id="pr-rail-staff-list" aria-live="polite"></ul>
+            <p class="adm-pr-staff-rail__empty adm-view--hidden" id="pr-rail-staff-empty">No staff online right now.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report detail (player) -->
+  <div id="pr-detail-overlay" class="adm-modal-overlay adm-modal-overlay--hidden" aria-hidden="true">
+      <div class="adm-modal adm-modal--report" role="dialog" aria-labelledby="pr-detail-title">
+      <div class="adm-modal__head adm-modal__head--player adm-report-modal__head">
+        <div class="adm-report-modal__head-text">
+          <h3 id="pr-detail-title" class="adm-modal__title">Report</h3>
+          <div class="adm-report-detail__badges">
+            <span class="adm-badge adm-badge--default" id="pr-detail-badge-type">—</span>
+            <span class="adm-badge adm-badge--default" id="pr-detail-badge-status">—</span>
+          </div>
+        </div>
+        <button type="button" class="adm-modal__close" id="pr-detail-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="adm-modal__body adm-report-modal__body">
+        <dl class="adm-report-meta">
+          <div><dt>Status</dt><dd id="pr-detail-status-text">—</dd></div>
+          <div><dt>Created</dt><dd id="pr-detail-created">—</dd></div>
+        </dl>
+        <div class="adm-report-block adm-report-block--panel">
+          <h4 class="adm-report-block__title">Description</h4>
+          <p class="adm-report-block__text" id="pr-detail-description"></p>
+        </div>
+        <div id="pr-detail-image-wrap" class="adm-report-block adm-report-block--panel adm-view--hidden">
+          <h4 class="adm-report-block__title">Image</h4>
+          <div class="adm-pr-detail-img-row">
+            <a class="adm-report-link" id="pr-detail-image-link" href="#" target="_blank" rel="noopener">Open</a>
+            <button type="button" class="adm-btn adm-btn--ghost adm-btn--sm" id="pr-detail-copy-url">Copy URL</button>
+          </div>
+        </div>
+        <div id="pr-detail-messages-wrap" class="adm-report-block adm-report-block--panel adm-view--hidden">
+          <h4 class="adm-report-block__title">Staff thread</h4>
+          <div class="adm-report-chat" role="log" aria-label="Report chat">
+            <div class="adm-report-chat__scroll" id="pr-detail-messages-list"></div>
+            <div class="adm-report-chat__composer adm-view--hidden" id="pr-chat-composer">
+              <label class="adm-visually-hidden" for="pr-chat-input">Message</label>
+              <textarea
+                id="pr-chat-input"
+                class="adm-textarea adm-report-chat__input"
+                rows="2"
+                maxlength="500"
+                placeholder="Message staff… (Enter to send, Shift+Enter for new line)"
+                autocomplete="off"
+              ></textarea>
+              <button type="button" class="adm-btn adm-btn--primary adm-report-chat__send" id="pr-chat-send">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="adm-sprite" aria-hidden="true">
+    <defs>
+      <symbol id="i-dashboard" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 13h6V4H4v9zm10 7h6V11h-6v9zm-10 0h6v-5H4v5zm10-13v5h6V4h-6z"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+      <symbol id="i-user-cog" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm7 1h6m-3-3v6"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 22V4l16-2v16M4 15l16 2"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.75" />
+        <path fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" d="M12 11v6M12 8h.01" />
+      </symbol>
+      <!-- Anúncio: traços simples (CEF/NUI estável) — sino, carta, raio -->
+      <symbol id="i-announce-default" viewBox="0 0 24 24">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.65"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"
+        />
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.65"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M10.3 21a1.94 1.94 0 0 0 3.4 0"
+        />
+      </symbol>
+      <symbol id="i-announce-info" viewBox="0 0 24 24">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.65"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5.25 7.75h13.5c.55 0 1 .45 1 1v8.5c0 .55-.45 1-1 1H5.25c-.55 0-1-.45-1-1V8.75c0-.55.45-1 1-1z"
+        />
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.65"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5.25 7.75L12 12.35l6.75-4.6"
+        />
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.15"
+          stroke-linecap="round"
+          opacity="0.45"
+          d="M8.25 14.25h7.5M8.25 16.25h5"
+        />
+      </symbol>
+      <symbol id="i-announce-urgent" viewBox="0 0 24 24">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"
+        />
+      </symbol>
+      <symbol id="i-crosshair" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 22v-4M12 6V2M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></symbol>
+      <symbol id="i-messages" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></symbol>
+      <symbol id="i-logs" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
+      <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M4.93 4.93l14.14 14.14"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="m21 21-4.35-4.35"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+      <symbol id="i-online" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M22 12h-4M6 12H2M12 6V2M12 22v-4"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+      <symbol id="i-offline" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M18 6L6 18M6 6l12 12"/></symbol>
+      <symbol id="i-total" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></symbol>
+      <symbol id="i-key" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></symbol>
+      <symbol id="i-map-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-4.35 7-10a7 7 0 1 0-14 0c0 5.65 7 10 7 10z"/><circle cx="12" cy="11" r="2.5" fill="none" stroke="currentColor" stroke-width="1.75"/></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 2l10 6-10 6L2 8l10-6zM2 14l10 6 10-6M2 18l10 6 10-6"/></symbol>
+      <symbol id="i-package" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M21 8v8a2 2 0 0 1-1 1.73l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.73l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8zM3.3 7l8.7 5 8.7-5M12 12v10"/></symbol>
+      <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="7" ry="3" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M5 5v6c0 1.66 3.13 3 7 3s7-1.34 7-3V5M5 11v6c0 1.66 3.13 3 7 3s7-1.34 7-3v-6"/></symbol>
+      <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M6 9h.01M18 15h.01"/></symbol>
+      <symbol id="i-eye-off" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"/></symbol>
+      <symbol id="i-teleport-add" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 21.2c3.4-2.9 6.5-6.8 6.5-11.4a6.5 6.5 0 1 0-13 0c0 4.6 3.1 8.5 6.5 11.4z"/>
+        <circle cx="12" cy="9.8" r="2.35" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" d="M18.25 3.25V6M16.5 4.625h3.5"/>
+      </symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" d="M12 20h9"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4 11.5-11.5z"/>
+      </symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14zM10 11v6M14 11v6"/></symbol>
+    </defs>
+  </svg>
+
+  <script src="app.js"></script>
+</body>
+</html>

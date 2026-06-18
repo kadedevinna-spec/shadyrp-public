@@ -1,0 +1,380 @@
+-- SyncedCamps = {}
+-- charid = nil
+
+-- Citizen.CreateThread(function()
+--     TriggerServerEvent("murphy_camp:askcamps")
+-- end)
+
+-- RegisterNetEvent("murphy_camp:refreshcamps", function()
+--     TriggerServerEvent("murphy_camp:askcamps", true)
+-- end)
+
+
+-- RegisterNetEvent("murphy_camp:getrefreshcamps", function(newTable, playerid)
+--     charid = playerid
+--     if next(newTable) == nil then SyncedCamps = {} end
+
+--     for campId, campData in pairs(SyncedCamps) do
+--         if not newTable[campId] then
+--             SyncedCamps[campId].delete = true
+--         else
+--             for propsid, propsdata in pairs(campData.props) do
+--                 if not newTable[campId]["props"][propsid] then
+--                     -- SyncedCamps[campId]["props"][propsid] = nil
+--                     SyncedCamps[campId]["props"][propsid].delete = true
+--                 end
+--             end
+--             if not newTable[campId].campfire then
+--                 SyncedCamps[campId].campfire = nil
+--             end
+--         end
+--     end
+
+
+--     for campId, newCampData in pairs(newTable) do
+--         if not SyncedCamps[campId] then
+--             SyncedCamps[campId] = newTable[campId]
+--         else
+--             ---- campfire comparaison
+--             local newcoords = vector3(newCampData.campfire.coords.x, newCampData.campfire.coords.y,
+--                 newCampData.campfire.coords.z)
+--             local oldcoords = vector3(SyncedCamps[campId].campfire.coords.x, SyncedCamps[campId].campfire.coords.y,
+--                 SyncedCamps[campId].campfire.coords.z)
+--             if newcoords ~= oldcoords then
+--                 SyncedCamps[campId].campfire.coords = newCampData.campfire.coords
+--             end
+--             local newrota = newCampData.campfire.rota
+--             local oldrota = SyncedCamps[campId].campfire.rota
+--             if newrota ~= oldrota then
+--                 SyncedCamps[campId].campfire.rota = newCampData.campfire.rota
+--             end
+--             if newCampData.campfire.model ~= SyncedCamps[campId].campfire.model then
+--                 SyncedCamps[campId].campfire.model = newCampData.campfire.model
+--             end
+
+--             --- props comparaison
+--             for propsID, newpropsData in pairs(newCampData.props) do
+--                 if not SyncedCamps[campId]["props"][propsID] then
+--                     SyncedCamps[campId]["props"][propsID] = newpropsData
+--                 else
+--                     local newpropcoords = vector3(newpropsData.coords.x, newpropsData.coords.y, newpropsData.coords.z)
+--                     local oldpropcoords = vector3(SyncedCamps[campId]["props"][propsID].coords.x,
+--                         SyncedCamps[campId]["props"][propsID].coords.y, SyncedCamps[campId]["props"][propsID].coords.z)
+--                     if newpropcoords ~= oldpropcoords then
+--                         SyncedCamps[campId]["props"][propsID].coords = newpropsData.coords
+--                     end
+--                     local newproprota = newpropsData.rota
+--                     local oldproprota = SyncedCamps[campId]["props"][propsID].rota
+--                     if newproprota ~= oldproprota then
+--                         SyncedCamps[campId]["props"][propsID].rota = newpropsData.rota
+--                     end
+--                     if newpropsData.model ~= SyncedCamps[campId]["props"][propsID].model then
+--                         SyncedCamps[campId]["props"][propsID].model = newpropsData.model
+--                     end
+--                 end
+--             end
+--             if newTable[campId].fuel ~= SyncedCamps[campId].fuel then
+--                 SyncedCamps[campId].fuel = newTable[campId].fuel
+--             end
+--             if newTable[campId].guests ~= SyncedCamps[campId].guests then
+--                 SyncedCamps[campId].guests = newTable[campId].guests
+--             end
+--         end
+--     end
+-- end)
+
+-- RegisterNetEvent("murphy_camp:getcamps", function(table, playerid)
+--     SyncedCamps = table
+--     charid = playerid
+-- end)
+
+
+
+-- Citizen.CreateThread(function()
+--     while true do
+--         Citizen.Wait(0)
+--         local playerPos = GetEntityCoords(PlayerPedId())
+--         for k, v in pairs(SyncedCamps) do
+--             if not v.delete then
+--                 local campfirecoords = vector3(v.campfire.coords.x, v.campfire.coords.y, v.campfire.coords.z)
+--                 if not v.campfire.blip then
+--                     if tostring(charid) == tostring(v.charid) then
+--                         v.campfire.blip = Createblip(campfirecoords, Translate[2], "blip_campfire")
+--                     elseif GetAccess(charid, v.charid, v.guests) then
+--                         v.campfire.blip = Createblip(campfirecoords, Translate[3], "blip_campfire")
+--                     end
+--                 elseif v.campfire.blip then
+--                     if not GetAccess(charid, v.charid, v.guests) then
+--                         RemoveBlip(v.campfire.blip)
+--                     end
+--                 end
+
+--                 if #(playerPos - campfirecoords) < Config.DisplayDistance then
+--                     if v.campfire.entity == nil then
+--                         local prop = nil
+--                         local campfirerota = v.campfire.rota
+--                         if v.campfire.propset then
+--                             v.campfire.entity = {}
+--                             for index, model in pairs(v.campfire.model) do
+--                                 if index > 1 then
+--                                     prop = _Propset:new(model, campfirecoords, false, true, campfirerota)
+--                                 else
+--                                     prop = _Propset:new(model, campfirecoords, false, false, campfirerota)
+--                                 end
+
+--                                 -- prop.move(campfirecoords)
+
+--                                 -- prop.rotate(campfirerota)
+--                                 -- for _, entity in pairs (prop.entities) do
+--                                 --     SetEntityCompletelyDisableCollision(entity, false, false)
+--                                 --     -- Citizen.InvokeNative(0x7DFB49BCDB73089A,entity,true)
+--                                 --     SetEntityAlpha(entity, 170, false)
+--                                 -- end
+--                                 table.insert(v.campfire.entity, prop.id)
+--                             end
+--                         else
+--                             prop = _Prop:new(v.campfire.model, campfirecoords, false)
+--                             SetEntityCoords(prop.id, campfirecoords)
+--                             SetEntityHeading(prop.id, campfirerota)
+--                             FreezeEntityPosition(prop.id, true)
+--                             v.campfire.entity = prop.id
+--                         end
+--                         -- while DoesEntityExist(prop.id) == 0 do Wait (100) end
+
+--                         InitFirePrompt(charid, k, v)
+
+--                         local veg_radius = 3.0
+--                         local veg_Flags = 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 +
+--                             256               -- implement to all debris, grass, bush, etc...
+--                         local veg_ModType = 1 -- 1 | VMT_Cull
+--                         v.campfire.veg = Citizen.InvokeNative(0xFA50F79257745E74, campfirecoords, veg_radius, veg_ModType,
+--                             veg_Flags, 0);    -- ADD_VEG_MODIFIER_SPHERE
+--                     else
+--                         if v.campfire.accessgranted then
+--                             if v.campfire.fuel ~= v.fuel then
+--                                 exports.murphy_interact:RemoveInteraction(v.campfire.interacthandle)
+--                                 v.campfire.accessgranted = false
+--                                 InitFirePrompt(charid, k, v)
+--                             end
+--                         end
+--                         if GetAccess(charid, v.charid, v.guests) and not v.campfire.accessgranted then
+--                             exports.murphy_interact:RemoveInteraction(v.campfire.interacthandle)
+--                             InitFirePrompt(charid, k, v)
+--                         end
+--                     end
+--                     for key, data in pairs(v.props) do
+--                         if data.entity == nil then
+--                             local furniturecoords = vector3(data.coords.x, data.coords.y, data.coords.z)
+--                             local furniturerota = data.rota
+--                             local furnituremodel = data.model
+--                             local furniture
+--                             if data.propset == false then
+--                                 local furniture = _Prop:new(furnituremodel, furniturecoords, false)
+--                                 data.entity = furniture.id
+--                                 SetEntityCoords(furniture.id, furniturecoords)
+--                                 SetEntityRotation(furniture.id, furniturerota)
+--                                 FreezeEntityPosition(furniture.id, true)
+--                                 local interacthandle = InitPropsPrompt(furnituremodel, furniture.id, key, data, k, v)
+--                                 local minDim, maxDim = GetModelDimensions(GetEntityModel(interacthandle))
+--                                 local objectSize = #(maxDim - minDim) /
+--                                     2                                              -- Approximation de la taille de l'objet
+--                                 local veg_radius = math.max(objectSize * 1.5, 2.0) -- Ajuster le radius avec un minimum de 2.0
+--                                 local veg_Flags = 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 +
+--                                     256                                            -- implement to all debris, grass, bush, etc...
+--                                 local veg_ModType = 1                              -- 1 | VMT_Cull
+--                                 data.veg = Citizen.InvokeNative(0xFA50F79257745E74, GetEntityCoords(interacthandle),
+--                                     veg_radius, veg_ModType, veg_Flags, 0);        -- ADD_VEG_MODIFIER_SPHERE
+--                             elseif data.propset == true then
+--                                 data.entity = {}
+--                                 for index, model in pairs(furnituremodel) do
+--                                     if index > 1 then
+--                                         furniture = _Propset:new(model, furniturecoords, false, true, furniturerota)
+--                                     else
+--                                         furniture = _Propset:new(model, furniturecoords, false, false, furniturerota)
+--                                     end
+--                                     -- furniture.move(furniturecoords)
+--                                     -- furniture.rotate(furniturerota)
+--                                     table.insert(data.entity, furniture.id)
+--                                 end
+--                                 local interacthandle = InitPropsPrompt(furnituremodel[1], data.entity[1], key, data, k, v)
+--                                 local veg_radius = 3.5
+--                                 local veg_Flags = 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 +
+--                                     256                                     -- implement to all debris, grass, bush, etc...
+--                                 local veg_ModType = 1                       -- 1 | VMT_Cull
+--                                 data.veg = Citizen.InvokeNative(0xFA50F79257745E74, GetEntityCoords(interacthandle),
+--                                     veg_radius, veg_ModType, veg_Flags, 0); -- ADD_VEG_MODIFIER_SPHERE
+--                             end
+--                             data.currentcoords = data.coords
+--                         else
+--                             if data.coords ~= data.currentcoords then
+--                                 exports.murphy_interact:RemoveInteraction(data.interacthandle, data.interacthandle)
+--                                 if type(data.entity) == "table" then
+--                                     for _, entity in pairs(data.entity) do
+--                                         DeletePropset(entity, false, false)
+--                                     end
+--                                 else
+--                                     SetEntityAsMissionEntity(data.entity)
+--                                     DeleteObject(data.entity)
+--                                 end
+--                                 if data.murphy_craft then
+--                                     TriggerEvent("murphy_craft:RemoveCraftTable", data.murphy_craft)
+--                                 end
+--                                 if data.stable then
+--                                     TriggerEvent('dust_stable:removeStable', k)
+--                                 end
+--                                 data.entity = nil
+--                             end
+--                             if data.delete == true then
+--                                 exports.murphy_interact:RemoveInteraction(data.interacthandle, data.interacthandle)
+--                                 if type(data.entity) == "table" then
+--                                     for _, entity in pairs(data.entity) do
+--                                         DeletePropset(entity, false, false)
+--                                     end
+--                                 else
+--                                     SetEntityAsMissionEntity(data.entity)
+--                                     DeleteObject(data.entity)
+--                                 end
+--                                 data.entity = nil
+--                                 if data.murphy_craft then
+--                                     TriggerEvent("murphy_craft:RemoveCraftTable", data.murphy_craft)
+--                                 end
+
+--                                 if data.stable then
+--                                     TriggerEvent('dust_stable:removeStable', k)
+--                                 end
+--                                 v.props[key] = nil
+--                             end
+--                             if GetAccess(charid, v.charid, v.guests) and not data.accessgranted then
+--                                 exports.murphy_interact:RemoveInteraction(data.interacthandle)
+--                                 local furnituremodel = data.model
+--                                 if type(furnituremodel) == "table" then
+--                                     InitPropsPrompt(furnituremodel[1], data.entity[1], key, data, k, v)
+--                                 else
+--                                     InitPropsPrompt(furnituremodel, data.entity, key, data, k, v)
+--                                 end
+--                             end
+--                         end
+--                     end
+--                     if #(playerPos - campfirecoords) < 20.0 then
+--                         if tostring(charid) == tostring(v.charid) then
+--                             if not v.campfire.playerinteract then
+--                                 v.campfire.playerinteract = true
+--                                 exports.murphy_interact:addGlobalPlayerInteraction({
+--                                     distance = 6.0,
+--                                     interactDst = 3.0,
+--                                     offset = vec3(0.0, 0.0, 0.3),
+--                                     id = 'murphy_camp:guest',
+--                                     options = {
+--                                         name = 'interact:actionPlayer',
+--                                         label = Translate[8],
+--                                         action = function(entity, _, _, serverId)
+--                                             TriggerServerEvent("murphy_camp:inviteguests", k, serverId)
+--                                         end,
+--                                     }
+--                                 })
+--                             end
+--                         end
+--                     else
+--                         exports.murphy_interact:RemoveGlobalPlayerInteraction('murphy_camp:guest')
+--                         v.campfire.playerinteract = false
+--                     end
+--                 else
+--                     RemoveEverything(k, v)
+--                 end
+--             else
+--                 RemoveBlip(v.campfire.blip)
+--                 if data.murphy_craft then
+--                     TriggerEvent("murphy_craft:RemoveCraftTable", data.murphy_craft)
+--                 end
+--                 if v.campfire.stable then
+--                     TriggerEvent('dust_stable:removeStable', k)
+--                 end
+--                 RemoveEverything(k, v)
+--                 SyncedCamps[k] = nil
+--             end
+--         end
+--     end
+-- end)
+
+
+-- local notif = {}
+-- Citizen.CreateThread(function()
+--     while true do
+--         Citizen.Wait(1000)
+--         local playerPos = GetEntityCoords(PlayerPedId())
+--         for k, v in pairs(SyncedCamps) do
+--             local campfirecoords = vector3(v.campfire.coords.x, v.campfire.coords.y, v.campfire.coords.z)
+--             if #(playerPos - campfirecoords) < 10.0 then
+--                 if v.campfire.accessgranted then
+--                     if v.campfire.fuel and notif[k] == nil then
+--                         notif[k] = true
+--                         ShowTopNotif(Translate[2], Translate[31][1] .. v.campfire.fuel .. Translate[31][2], 10000)
+--                         Citizen.SetTimeout(30*60*1000, function()
+--                             notif[k] = nil
+--                         end)
+--                     end
+--                 end
+--             end
+--         end
+--     end
+-- end)
+
+-- Wait(1000)
+-- if Config.Campfiresmoke then
+--     --- SMOKE ON CAMPFIRE
+--     Citizen.CreateThread(function()
+--         while true do
+--             Citizen.Wait(1000)
+--             local playerPos = GetEntityCoords(PlayerPedId())
+--             for k, v in pairs(SyncedCamps) do
+--                 local campfirecoords = vector3(v.campfire.coords.x, v.campfire.coords.y, v.campfire.coords.z)
+--                 if #(playerPos - campfirecoords) < 2000.0 then
+--                     if v.delete then
+--                         if v.campfire.ptfx then
+--                             if Citizen.InvokeNative(0x9DD5AFF561E88F2A, v.campfire.ptfx) then    -- DoesParticleFxLoopedExist
+--                                 Citizen.InvokeNative(0x459598F579C98929, v.campfire.ptfx, false) -- RemoveParticleFx
+--                             end
+--                             v.campfire.ptfx = nil
+--                         end
+--                     else
+--                         if v.campfire.ptfx == nil then
+--                             local current_ptfx_dictionary = "scr_campfires"
+--                             local current_ptfx_name = "ent_amb_campfire_smoke_distance"
+--                             local scale = 0.4
+--                             for _, prop in pairs(v.props) do
+--                                 if scale < 3.0 then
+--                                     scale = scale + 0.05
+--                                 end
+--                             end
+--                             if not Citizen.InvokeNative(0x65BB72F29138F5D6, GetHashKey(current_ptfx_dictionary)) then                         -- HasNamedPtfxAssetLoaded
+--                                 Citizen.InvokeNative(0xF2B2353BBC0D4E8F, GetHashKey(current_ptfx_dictionary))                                 -- RequestNamedPtfxAsset
+--                                 local counter = 0
+--                                 while not Citizen.InvokeNative(0x65BB72F29138F5D6, GetHashKey(current_ptfx_dictionary)) and counter <= 300 do -- while not HasNamedPtfxAssetLoaded
+--                                     Citizen.Wait(0)
+--                                 end
+--                             end
+--                             if Citizen.InvokeNative(0x65BB72F29138F5D6, GetHashKey(current_ptfx_dictionary)) then -- HasNamedPtfxAssetLoaded
+--                                 Citizen.InvokeNative(0xA10DB07FC234DD12, current_ptfx_dictionary)                 -- UseParticleFxAsset
+
+--                                 current_ptfx_handle_id = Citizen.InvokeNative(0xBA32867E86125D3A, current_ptfx_name,
+--                                     campfirecoords.x, campfirecoords.y, campfirecoords.z, 0.0, 0.0, 0.0, scale, 0, 0, 0,
+--                                     true)
+--                                 v.campfire.ptfx = current_ptfx_handle_id
+--                                 --current_ptfx_handle_id =  Citizen.InvokeNative(0x8F90AB32E1944BDE,current_ptfx_name,PlayerPedId(),ptfx_offcet_x,ptfx_offcet_y,ptfx_offcet_z,ptfx_rot_x,ptfx_rot_y,ptfx_rot_z,ptfx_scale,ptfx_axis_x,ptfx_axis_y,ptfx_axis_z)    -- StartNetworkedParticleFxLoopedOnEntity
+--                             else
+--                                 print("cant load ptfx dictionary!")
+--                             end
+--                         end
+--                     end
+--                 else
+--                     if v.campfire.ptfx then
+--                         if Citizen.InvokeNative(0x9DD5AFF561E88F2A, v.campfire.ptfx) then    -- DoesParticleFxLoopedExist
+--                             Citizen.InvokeNative(0x459598F579C98929, v.campfire.ptfx, false) -- RemoveParticleFx
+--                         end
+--                         v.campfire.ptfx = nil
+--                     end
+--                 end
+--             end
+--         end
+--     end)
+-- end

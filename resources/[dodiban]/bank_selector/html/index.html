@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Heist Selector</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="bankSelector" class="bank-selector-overlay">
+        <div class="bank-selector-container">
+            <div class="header">
+                <h1 class="title">SELECT TARGET BANK</h1>
+                <button class="close-btn" id="closeBtn">&times;</button>
+            </div>
+            
+            <div class="banks-grid" id="banksGrid">
+                <!-- Banks will be populated by JavaScript -->
+            </div>
+            
+            <div class="footer">
+                <div class="lobby-section" id="lobbySection" style="display: none;">
+                    <div class="lobby-warning">
+                        <p class="lobby-message">⚠️ You need to be in a lobby to select a bank</p>
+                        <button class="create-lobby-btn" id="createLobbyBtn">CREATE LOBBY</button>
+                    </div>
+                </div>
+                <div class="instructions" id="instructionsSection">
+                    <p>Click on a bank to select your target</p>
+                    <p class="warning">Choose wisely - each bank has different security levels</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="photo-modal-overlay">
+        <div class="photo-modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">RECONNAISSANCE PHOTOS</h2>
+                <p class="modal-subtitle">Click on photos to examine them closely</p>
+                <button class="close-photo-modal" id="closePhotoModal">&times;</button>
+            </div>
+            
+            <div class="photos-table" id="photosTable">
+                <!-- Photos will be scattered here -->
+            </div>
+            
+            <div class="modal-footer">
+                <div class="instructions">
+                    <p>Study the photos carefully before proceeding</p>
+                    <button class="proceed-btn" id="proceedBtn">PROCEED WITH HEIST</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Examine View with Stack -->
+    <div id="photoExamineView" class="photo-examine-overlay">
+        <div class="photo-examine-container">
+            <div class="stack-title">
+                <h2 id="stackTitle">RECONNAISSANCE DETAILS</h2>
+                <div id="stackSubtitle">Hover over photos to examine</div>
+            </div>
+            
+            <div id="photoStack" class="photo-stack">
+                <!-- Photos will be populated by JavaScript -->
+            </div>
+            
+            <div class="photo-info">
+                <h3 class="photo-title" id="photoTitle"></h3>
+                <p class="photo-description" id="photoDescription"></p>
+            </div>
+            <button class="back-btn" id="backToTable">← BACK TO TABLE</button>
+        </div>
+    </div>
+
+    <!-- Bank Card Template -->
+    <template id="bankCardTemplate">
+        <div class="bank-card" data-bank-id="">
+            <div class="bank-image">
+                <img src="" alt="Bank Image">
+                <div class="difficulty-badge">
+                    <span class="difficulty-text"></span>
+                </div>
+            </div>
+            
+            <div class="bank-info">
+                <h3 class="bank-name"></h3>
+                <p class="bank-description"></p>
+                
+                <div class="bank-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Reward:</span>
+                        <span class="detail-value reward-amount"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Players Required:</span>
+                        <span class="detail-value required-players"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Security Level:</span>
+                        <span class="detail-value security-level"></span>
+                    </div>
+                    <div class="detail-row cooldown-row" style="display: none;">
+                        <span class="detail-label">Cooldown:</span>
+                        <span class="detail-value cooldown-time"></span>
+                    </div>
+                </div>
+                
+                <div class="bank-status">
+                    <span class="status-text">Available</span>
+                </div>
+            </div>
+            
+            <div class="select-overlay">
+                <button class="select-btn">SELECT BANK</button>
+            </div>
+        </div>
+    </template>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

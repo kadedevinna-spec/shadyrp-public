@@ -1,0 +1,27 @@
+{
+    "639": {
+        "1": {
+            "icon": "game-icons:wooden-chair",
+            "label": "Sit on bench",
+            "name": "GENERIC_SEAT_BENCH_SCENARIO"
+        },
+        "2": {
+            "icon": "fa:bath",
+            "label": "Scrub left arm",
+            "name": "left_arm_scrub_medium"
+        },
+        "3": {
+            "icon": "fa:bath",
+            "label": "Scrub right arm",
+            "name": "right_arm_scrub_medium"
+        }
+    },
+    "CMF72747": {
+        "1": {
+            "name": "GENERIC_SEAT_BENCH_SCENARIO",
+            "label": "Sit on bench",
+            "icon": "game-icons:wooden-chair"
+        }
+    },
+    "OVE14711": []
+}

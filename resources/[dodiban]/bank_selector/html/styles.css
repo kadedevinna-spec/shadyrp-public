@@ -1,0 +1,874 @@
+:root {
+    /* Fonte principal do sistema */
+    --dial-font-family: 'Courier New', monospace;
+    --dial-font-fallback: Arial, sans-serif;
+    
+    /* Cores principais */
+    --dial-bg-primary: rgba(15, 15, 15, 0.9);
+    --dial-bg-overlay: rgba(0, 0, 0, 0.1);
+    --dial-border-primary: #666;
+    --dial-border-secondary: #444;
+    --dial-border-accent: #555;
+
+    /* Cores de texto */
+    --dial-text-primary: #ccc;
+    --dial-text-secondary: #999;
+    --dial-text-white: #fff;
+    --dial-text-found: #c44;
+    --dial-text-current: #aaa;
+
+    /* Cores de background dos elementos */
+    --dial-digit-bg: rgba(25, 25, 25, 0.9);
+    --dial-digit-found-bg: rgba(40, 25, 25, 0.9);
+    --dial-digit-current-bg: rgba(35, 35, 35, 0.9);
+    --dial-digit-found-border: #800;
+
+    /* Sombras e efeitos */
+    --dial-shadow-primary: 0 4px 12px rgba(0, 0, 0, 0.8);
+    --dial-shadow-digit-found: 0 0 8px rgba(136, 68, 68, 0.3);
+    --dial-shadow-digit-current: 0 0 6px rgba(255, 255, 255, 0.2);
+    --dial-shadow-text: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--dial-font-family), var(--dial-font-fallback);
+    background: transparent;
+    overflow: hidden;
+    user-select: none;
+}
+
+.bank-selector-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bank-selector-overlay.show {
+    opacity: 1;
+}
+
+.bank-selector-container {
+    background: var(--dial-bg-primary);
+    border: 2px solid var(--dial-border-primary);
+    border-radius: 12px;
+    box-shadow: var(--dial-shadow-primary);
+    width: 90%;
+    max-width: 1200px;
+    max-height: 85vh;
+    overflow: hidden;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.bank-selector-overlay.show .bank-selector-container {
+    transform: scale(1);
+}
+
+/* Header */
+.header {
+    background: var(--dial-digit-bg);
+    border-bottom: 2px solid var(--dial-border-secondary);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    color: var(--dial-text-white);
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: var(--dial-shadow-text);
+    letter-spacing: 2px;
+}
+
+.close-btn {
+    background: var(--dial-digit-found-bg);
+    border: 2px solid var(--dial-digit-found-border);
+    color: var(--dial-text-found);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: var(--dial-text-found);
+    color: var(--dial-text-white);
+    box-shadow: var(--dial-shadow-digit-found);
+}
+
+/* Banks Grid */
+.banks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.banks-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.banks-grid::-webkit-scrollbar-track {
+    background: var(--dial-digit-bg);
+}
+
+.banks-grid::-webkit-scrollbar-thumb {
+    background: var(--dial-border-primary);
+    border-radius: 4px;
+}
+
+.banks-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--dial-border-accent);
+}
+
+/* Bank Card */
+.bank-card {
+    background: var(--dial-digit-bg);
+    border: 2px solid var(--dial-border-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.bank-card:hover {
+    border-color: var(--dial-border-primary);
+    box-shadow: var(--dial-shadow-digit-current);
+    transform: translateY(-5px);
+}
+
+.bank-card.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.bank-card.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.bank-image {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+
+.bank-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.bank-card:hover .bank-image img {
+    transform: scale(1.05);
+}
+
+.difficulty-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: var(--dial-shadow-text);
+}
+
+.difficulty-badge.easy {
+    background: var(--dial-digit-current-bg);
+    color: var(--dial-text-white);
+    border: 1px solid var(--dial-border-accent);
+}
+
+.difficulty-badge.medium {
+    background: var(--dial-digit-bg);
+    color: var(--dial-text-current);
+    border: 1px solid var(--dial-border-primary);
+}
+
+.difficulty-badge.hard {
+    background: var(--dial-digit-found-bg);
+    color: var(--dial-text-found);
+    border: 1px solid var(--dial-digit-found-border);
+}
+
+.difficulty-badge.expert {
+    background: var(--dial-digit-found-bg);
+    color: var(--dial-text-found);
+    border: 1px solid var(--dial-digit-found-border);
+}
+
+/* Bank Info */
+.bank-info {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bank-name {
+    color: var(--dial-text-white);
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-shadow: var(--dial-shadow-text);
+}
+
+.bank-description {
+    color: var(--dial-text-secondary);
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.bank-details {
+    flex: 1;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--dial-border-secondary);
+}
+
+.detail-label {
+    color: var(--dial-text-secondary);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.detail-value {
+    color: var(--dial-text-primary);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.reward-amount {
+    color: var(--dial-text-current);
+}
+
+.required-players {
+    color: var(--dial-text-primary);
+}
+
+.security-level {
+    color: var(--dial-text-found);
+}
+
+.cooldown-time {
+    color: var(--dial-text-secondary);
+}
+
+/* Bank Status */
+.bank-status {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.status-text {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.status-text.available {
+    color: var(--dial-text-current);
+    background: var(--dial-digit-current-bg);
+    border: 1px solid var(--dial-border-accent);
+}
+
+.status-text.cooldown {
+    color: var(--dial-text-secondary);
+    background: var(--dial-digit-bg);
+    border: 1px solid var(--dial-border-secondary);
+}
+
+.status-text.unavailable {
+    color: var(--dial-text-found);
+    background: var(--dial-digit-found-bg);
+    border: 1px solid var(--dial-digit-found-border);
+}
+
+/* Select Overlay */
+.select-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--dial-digit-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bank-card:hover .select-overlay {
+    opacity: 1;
+}
+
+.bank-card.disabled .select-overlay {
+    opacity: 0;
+}
+
+.select-btn {
+    background: var(--dial-digit-current-bg);
+    border: 2px solid var(--dial-border-primary);
+    color: var(--dial-text-white);
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-family: var(--dial-font-family);
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: var(--dial-shadow-text);
+}
+
+.select-btn:hover {
+    background: var(--dial-border-primary);
+    box-shadow: var(--dial-shadow-digit-current);
+    transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+    background: var(--dial-digit-bg);
+    border-top: 2px solid var(--dial-border-secondary);
+    padding: 20px 30px;
+}
+
+/* Lobby Section */
+.lobby-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.lobby-warning {
+    background: var(--dial-digit-found-bg);
+    border: 2px solid var(--dial-digit-found-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.lobby-message {
+    color: var(--dial-text-found);
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: var(--dial-shadow-text);
+}
+
+.create-lobby-btn {
+    background: var(--dial-digit-current-bg);
+    border: 2px solid var(--dial-border-primary);
+    color: var(--dial-text-white);
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-family: var(--dial-font-family);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: var(--dial-shadow-text);
+}
+
+.create-lobby-btn:hover {
+    background: var(--dial-border-primary);
+    box-shadow: var(--dial-shadow-digit-current);
+    transform: scale(1.05);
+}
+
+.instructions {
+    text-align: center;
+}
+
+.instructions p {
+    color: var(--dial-text-primary);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.instructions .warning {
+    color: var(--dial-text-found);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* Photo Modal Styles */
+.photo-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(1px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo-modal-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+.photo-modal-container {
+    background: var(--dial-bg-primary);
+    border: 2px solid var(--dial-border-primary);
+    border-radius: 12px;
+    box-shadow: var(--dial-shadow-primary);
+    width: 95%;
+    max-width: 1400px;
+    height: 85vh;
+    overflow: hidden;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-modal-overlay.show .photo-modal-container {
+    transform: scale(1);
+}
+
+.modal-header {
+    background: var(--dial-digit-bg);
+    border-bottom: 2px solid var(--dial-border-secondary);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    color: var(--dial-text-white);
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: var(--dial-shadow-text);
+    letter-spacing: 2px;
+}
+
+.modal-subtitle {
+    color: var(--dial-text-secondary);
+    font-size: 14px;
+    position: absolute;
+    top: 55px;
+    left: 30px;
+}
+
+.close-photo-modal {
+    background: var(--dial-digit-found-bg);
+    border: 2px solid var(--dial-digit-found-border);
+    color: var(--dial-text-found);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.close-photo-modal:hover {
+    background: var(--dial-text-found);
+    color: var(--dial-text-white);
+    box-shadow: var(--dial-shadow-digit-found);
+}
+
+/* Photos Table - Mesa com fotos espalhadas */
+.photos-table {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(135deg, var(--dial-digit-bg) 0%, var(--dial-bg-primary) 100%);
+    background-image: 
+        radial-gradient(circle at 15% 25%, rgba(102, 102, 102, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 75% 20%, rgba(85, 85, 85, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 30% 80%, rgba(68, 68, 68, 0.1) 0%, transparent 35%),
+        radial-gradient(circle at 85% 75%, rgba(102, 102, 102, 0.08) 0%, transparent 50%);
+    overflow: visible;
+    padding: 50px;
+    min-height: 700px;
+    max-height: 80vh;
+}
+
+.photos-table::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.photo-scattered {
+    display: inline-block;
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border: 5px solid #fff;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
+    user-select: none;
+    cursor: pointer;
+    opacity: 0;
+    animation: photoAppear 0.8s ease-out forwards;
+    transition: transform 0.1s ease-out;
+}
+
+.photo-scattered:hover {
+    z-index: 10;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.photo-scattered img {
+    display: block;
+    width: 300px;
+    height: 240px;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+/* Animação para as fotos aparecerem */
+@keyframes photoAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.6) rotate(0deg);
+        filter: blur(5px) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0));
+    }
+    30% {
+        opacity: 0.7;
+        transform: translateY(-20px) scale(0.8) rotate(var(--photo-rotation, 0deg));
+        filter: blur(2px) drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.2));
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(5px) scale(1.05) rotate(var(--photo-rotation, 0deg));
+        filter: blur(0px) drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.3));
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px) scale(1) rotate(var(--photo-rotation, 0deg));
+        filter: drop-shadow(3px 6px 12px rgba(0, 0, 0, 0.4));
+    }
+}
+
+.photo-scattered .photo-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 60px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: var(#000000);
+    background: #fff;
+    text-shadow: none;
+    letter-spacing: 0.5px;
+}
+
+.modal-footer {
+    background: var(--dial-digit-bg);
+    border-top: 2px solid var(--dial-border-secondary);
+    padding: 20px 30px;
+    text-align: center;
+}
+
+.modal-footer .instructions p {
+    color: var(--dial-text-secondary);
+    margin-bottom: 15px;
+}
+
+.proceed-btn {
+    background: var(--dial-digit-current-bg);
+    border: 2px solid var(--dial-border-primary);
+    color: var(--dial-text-white);
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-family: var(--dial-font-family);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: var(--dial-shadow-text);
+}
+
+.proceed-btn:hover {
+    background: var(--dial-border-primary);
+    box-shadow: var(--dial-shadow-digit-current);
+    transform: scale(1.05);
+}
+
+/* Photo Examine View with Stack */
+.photo-examine-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo-examine-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+.photo-examine-container {
+    position: relative;
+    max-width: 95vw;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 40px 40px 40px;
+}
+
+.stack-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.stack-title h2 {
+    color: var(--dial-text-white);
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: var(--dial-shadow-text);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.stack-title div {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dial-text-secondary);
+    line-height: 24px;
+}
+
+/* Photo Stack Styles */
+.photo-stack {
+    width: 500px;
+    margin: 0 auto;
+    position: relative;
+    height: 350px;
+}
+
+.photo-stack .stack-photo {
+    width: 480px;
+    height: 320px;
+    position: absolute;
+    display: block;
+    border: 8px solid #f0f0f0;
+    border-radius: 4px;
+    background: #f0f0f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: margin 0.5s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.photo-stack .stack-photo img {
+    width: 480px;
+    height: 320px;
+    object-fit: cover;
+}
+
+.photo-stack .stack-photo:first-of-type {
+    margin-top: -10px;
+    margin-left: -30px;
+    z-index: 2;
+    transform: rotate(-3deg);
+}
+
+.photo-stack .stack-photo:nth-of-type(2) {
+    margin-top: -10px;
+    margin-left: -15px;
+    z-index: 1;
+}
+
+.photo-stack .stack-photo:last-of-type {
+    transform: rotate(3deg);
+}
+
+.photo-stack:hover .stack-photo:first-of-type {
+    margin-left: -520px;
+    margin-top: 10px;
+}
+
+.photo-stack:hover .stack-photo:nth-of-type(2) {
+    margin-top: -5px;
+}
+
+.photo-stack:hover .stack-photo:last-of-type {
+    margin-left: 500px;
+    margin-top: 10px;
+}
+
+.photo-stack .stack-photo:first-of-type:hover,
+.photo-stack .stack-photo:last-of-type:hover {
+    margin-top: -5px !important;
+}
+
+.photo-stack .stack-photo:nth-of-type(2):hover {
+    margin-top: -10px !important;
+}
+
+.photo-info {
+    background: var(--dial-bg-primary);
+    border: 2px solid var(--dial-border-primary);
+    border-radius: 8px;
+    padding: 25px;
+    margin-top: 50px;
+    text-align: center;
+    min-width: 500px;
+    max-width: 700px;
+    box-shadow: var(--dial-shadow-primary);
+}
+
+.photo-title {
+    color: var(--dial-text-white);
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: var(--dial-shadow-text);
+    letter-spacing: 1px;
+}
+
+.photo-description {
+    color: var(--dial-text-secondary);
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.back-btn {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background: var(--dial-digit-bg);
+    border: 2px solid var(--dial-border-primary);
+    color: var(--dial-text-white);
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-family: var(--dial-font-family);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: var(--dial-shadow-text);
+    z-index: 3001;
+    box-shadow: var(--dial-shadow-primary);
+}
+
+.back-btn:hover {
+    background: var(--dial-border-primary);
+    box-shadow: var(--dial-shadow-digit-current);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .bank-selector-container {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .banks-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .title {
+        font-size: 22px;
+    }
+    
+    .bank-image {
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+    
+    .close-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+    
+    .bank-info {
+        padding: 15px;
+    }
+    
+    .bank-name {
+        font-size: 18px;
+    }
+}

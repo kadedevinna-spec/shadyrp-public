@@ -1,0 +1,12 @@
+[
+    {
+        "Close_button" : "Close",
+        "Accept_button" : "Accept"
+    },
+    {
+        "Header_title" : "ACTIVE JOB",
+        "Objectives_title" : "Objectives",
+        "Reward_text" : "Reward",
+        "Abandon_button" : "Abandon"
+    }
+  ]

@@ -1,0 +1,28 @@
+fx_version 'cerulean'
+game 'rdr3'
+
+rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
+
+lua54 'yes'
+
+name 'mosquito_vorp_core'
+description 'Private VORP core compatibility provider for Mosquito blacksmithing on RSG.'
+version '1.0.0'
+
+provide 'vorp_core'
+
+client_scripts {
+    'client.lua'
+}
+
+server_scripts {
+    'server.lua'
+}
+
+server_exports {
+    'GetCore'
+}
+
+client_exports {
+    'GetCore'
+}

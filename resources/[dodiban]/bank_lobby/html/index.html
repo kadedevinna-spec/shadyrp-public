@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Lobby</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="member-details.css">
+</head>
+<body>
+    <div id="lobbyContainer" class="lobby-container hidden">
+        <div class="lobby-panel">
+            <!-- Header -->
+            <div class="lobby-header">
+                <h2 class="lobby-title">LOBBY</h2>
+                <div class="lobby-info">
+                    <span id="lobbyId" class="lobby-id"></span>
+                    <span id="memberCount" class="member-count"></span>
+                </div>
+                <div class="header-buttons">
+                    <button class="config-btn" onclick="openProfileModal()" title="Profile Settings">
+                        ⚙️
+                    </button>
+                    <button id="closeBtn" class="close-btn">&times;</button>
+                </div>
+            </div>
+
+            <!-- Members List -->
+            <div class="lobby-members">
+                <div class="members-header">
+                    <h3>Members</h3>
+                </div>
+                <div id="membersList" class="members-list">
+                    <!-- Members will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="lobby-actions">
+                <div class="invite-section">
+                    <button id="openInviteModal" class="action-btn invite-btn">Invite Player</button>
+                </div>
+                <button id="leaveBtn" class="action-btn leave-btn">Leave Lobby</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div id="inviteModal" class="modal-container hidden">
+        <div class="modal-overlay"></div>
+        <div class="invite-modal western-paper-modal">
+            <div class="modal-header">
+                <h3>Invite Player</h3>
+                <button id="closeInviteModal" class="close-modal-btn">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="search-section">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="searchInput" placeholder="Search by Name or ID..." class="search-input">
+                        <div class="search-icon">🔍</div>
+                    </div>
+                </div>
+                
+                <div class="results-section">
+                    <div id="searchResultsList" class="results-list">
+                        <div class="search-hint">Type a player name or ID to search</div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button id="inviteSelectedBtn" class="modal-btn invite-btn" disabled>Send Invite</button>
+                    <button id="cancelInviteBtn" class="modal-btn cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Details Modal -->
+    <div id="memberDetailsModalContainer" class="member-details-modal-container hidden">
+        <div class="member-details-modal-overlay" onclick="closeMemberDetailsModal()"></div>
+        <div class="member-details-modal">
+            <!-- Profile Banner -->
+            <div class="member-details-banner">
+                <img id="memberDetailsBannerImg" src="images/default_profile.png" alt="Profile Banner" />
+                <div class="member-details-banner-overlay"></div>
+                <button class="close-member-details-modal-btn" onclick="closeMemberDetailsModal()">&times;</button>
+            </div>
+            
+            <div class="member-details-modal-body">
+                <!-- Enhanced Profile Section -->
+                <div class="member-details-profile-section">
+                    <div class="member-details-profile-image">
+                        <img id="memberDetailsProfileImg" src="images/default_profile.png" alt="Profile" />
+                    </div>
+                    <div class="member-details-info">
+                        <div class="member-details-name" id="memberDetailsName">Player Name</div>
+                        <div class="member-details-id" id="memberDetailsId">ID: 123</div>
+                        <div class="member-details-role" id="memberDetailsRole">Member</div>
+                    </div>
+                </div>
+                
+                <!-- Bio Section -->
+                <div class="member-details-bio-section">
+                    <h4>About</h4>
+                    <p id="memberDetailsBio">No bio available.</p>
+                </div>
+                
+                <!-- Admin Actions -->
+                <div class="member-details-actions" id="memberDetailsActions">
+                    <!-- Admin actions will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Configuration Modal -->
+    <div id="profileModalContainer" class="profile-modal-container hidden">
+        <div class="profile-modal-overlay" onclick="closeProfileModal()"></div>
+        <div class="profile-modal">
+            <div class="profile-modal-header">
+                <h3>Profile Settings</h3>
+                <button class="close-profile-modal-btn" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <div class="profile-modal-body">
+                <div class="profile-image-section">
+                    <div class="current-profile-image">
+                        <img id="currentProfileImg" src="images/default_profile.png" alt="Current Profile" />
+                    </div>
+                    
+                    <!-- Preset Image Selection -->
+                    <div class="preset-images-section">
+                        <h4>Choose Profile Image:</h4>
+                        <div class="preset-images-grid" id="presetImagesGrid">
+                            <!-- Preset images will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-info-section">
+                    <div class="profile-field">
+                        <label for="profileName">Display Name:</label>
+                        <input type="text" id="profileName" class="profile-input" placeholder="Enter your display name" maxlength="50" />
+                    </div>
+                    <div class="profile-field">
+                        <label for="profileBio">Bio:</label>
+                        <textarea id="profileBio" class="profile-textarea" placeholder="Tell us about yourself..." maxlength="200" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-modal-footer">
+                <button class="profile-btn cancel-profile-btn" onclick="closeProfileModal()">Cancel</button>
+                <button class="profile-btn save-profile-btn" onclick="saveProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Notifications -->
+    <div id="notificationContainer" class="notification-container">
+        <!-- Notifications will be dynamically added here -->
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="customConfirmModal" class="custom-confirm-modal-container hidden">
+        <div class="custom-confirm-modal-overlay"></div>
+        <div class="custom-confirm-modal">
+            <div class="custom-confirm-modal-header">
+                <h3 id="confirmModalTitle">Confirm Action</h3>
+            </div>
+            <div class="custom-confirm-modal-body">
+                <p id="confirmModalMessage">Are you sure?</p>
+            </div>
+            <div class="custom-confirm-modal-footer">
+                <button id="confirmModalCancel" class="confirm-btn cancel-btn">Cancel</button>
+                <button id="confirmModalConfirm" class="confirm-btn confirm-btn-action">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

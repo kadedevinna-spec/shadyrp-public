@@ -1,0 +1,507 @@
+/* ================================ */
+/*         PROFILE MODAL SYSTEM     */
+/* ================================ */
+
+/* Header Buttons Container */
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.config-btn {
+    background: var(--dial-digit-current-bg);
+    border: 1px solid var(--dial-border-accent);
+    color: var(--dial-text-primary);
+    width: 35px;
+    height: 35px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.config-btn:hover {
+    background: var(--dial-border-accent);
+    color: var(--dial-text-white);
+    box-shadow: var(--dial-shadow-digit-current);
+    transform: rotate(90deg) translateY(-1px);
+}
+
+/* Profile Modal Container */
+.profile-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.profile-modal-container:not(.hidden) {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+}
+
+.profile-modal-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.profile-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Profile Modal */
+.profile-modal {
+    background: var(--dial-bg-primary);
+    border: 2px solid var(--dial-border-primary);
+    border-radius: 8px;
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    width: 480px;
+    max-width: 90vw;
+    position: relative;
+    transform: scale(0.7) rotateY(-15deg);
+    opacity: 0;
+    filter: sepia(0.3) brightness(0.8);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+}
+
+.profile-modal-container:not(.hidden) .profile-modal {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+    filter: sepia(0) brightness(1);
+}
+
+/* Paper texture overlay */
+.profile-modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(139, 69, 19, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(139, 69, 19, 0.04) 0%, transparent 50%);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Profile Modal Header */
+.profile-modal-header {
+    background: var(--dial-digit-bg);
+    border-bottom: 1px solid var(--dial-border-secondary);
+    padding: 24px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-modal-header h3 {
+    color: var(--dial-text-white);
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: var(--dial-shadow-text);
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.close-profile-modal-btn {
+    background: transparent;
+    border: 1px solid var(--dial-border-secondary);
+    color: var(--dial-text-secondary);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-profile-modal-btn:hover {
+    background: var(--dial-text-found);
+    border-color: var(--dial-text-found);
+    color: var(--dial-text-white);
+    transform: rotate(90deg);
+}
+
+/* Profile Modal Body */
+.profile-modal-body {
+    padding: 32px 28px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* Profile Image Section */
+.profile-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.current-profile-image {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--dial-border-accent);
+    overflow: hidden;
+    background: var(--dial-digit-bg);
+    box-shadow: 
+        0 0 16px rgba(0, 0, 0, 0.3),
+        inset 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.current-profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
+/* Preset Images Section */
+.preset-images-section {
+    width: 100%;
+    text-align: center;
+}
+
+.preset-images-section h4 {
+    color: var(--dial-text-primary);
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.preset-images-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    justify-content: center;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.preset-image-option {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--dial-border-secondary);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--dial-digit-bg);
+    position: relative;
+}
+
+.preset-image-option:hover {
+    border-color: var(--dial-border-accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.preset-image-option.selected {
+    border-color: var(--dial-text-white);
+    border-width: 3px;
+    box-shadow: 
+        0 0 16px rgba(255, 255, 255, 0.3),
+        inset 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.preset-image-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: all 0.3s ease;
+}
+
+.preset-image-option:hover img {
+    filter: brightness(1.1);
+}
+
+
+
+/* Profile Info Section */
+.profile-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-field label {
+    color: var(--dial-text-primary);
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profile-input,
+.profile-textarea {
+    background: var(--dial-digit-bg);
+    border: 2px solid var(--dial-border-secondary);
+    border-radius: 6px;
+    padding: 12px 16px;
+    color: var(--dial-text-primary);
+    font-family: var(--dial-font-family), var(--dial-font-fallback);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+    resize: none;
+}
+
+.profile-input::placeholder,
+.profile-textarea::placeholder {
+    color: var(--dial-text-secondary);
+    font-style: italic;
+}
+
+.profile-input:focus,
+.profile-textarea:focus {
+    border-color: var(--dial-border-accent);
+    box-shadow: 
+        0 0 0 3px rgba(85, 85, 85, 0.15),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--dial-digit-current-bg);
+}
+
+/* Character Counter */
+.profile-field {
+    position: relative;
+}
+
+.profile-input[maxlength]:after,
+.profile-textarea[maxlength]:after {
+    content: attr(maxlength);
+    position: absolute;
+    bottom: -18px;
+    right: 0;
+    font-size: 11px;
+    color: var(--dial-text-secondary);
+}
+
+/* Profile Modal Footer */
+.profile-modal-footer {
+    background: var(--dial-digit-bg);
+    border-top: 1px solid var(--dial-border-secondary);
+    padding: 20px 28px;
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-btn {
+    background: var(--dial-digit-current-bg);
+    border: 2px solid var(--dial-border-accent);
+    color: var(--dial-text-primary);
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-family: var(--dial-font-family), var(--dial-font-fallback);
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.profile-btn:hover::before {
+    left: 100%;
+}
+
+.profile-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.save-profile-btn {
+    background: var(--dial-border-accent);
+    color: var(--dial-text-white);
+    border-color: var(--dial-border-accent);
+    min-width: 140px;
+}
+
+.save-profile-btn:hover {
+    background: var(--dial-text-white);
+    color: var(--dial-bg-primary);
+    border-color: var(--dial-text-white);
+}
+
+.cancel-profile-btn {
+    background: transparent;
+    border-color: var(--dial-border-secondary);
+    color: var(--dial-text-secondary);
+    min-width: 100px;
+}
+
+.cancel-profile-btn:hover {
+    background: var(--dial-text-found);
+    border-color: var(--dial-text-found);
+    color: var(--dial-text-white);
+}
+
+/* Loading State */
+.profile-btn.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+    color: transparent; /* Hide text during loading */
+}
+
+.profile-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--dial-text-white);
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: profileSpinner 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes profileSpinner {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 520px) {
+    .profile-modal {
+        width: 95vw;
+        margin: 10px;
+    }
+    
+    .profile-modal-header {
+        padding: 20px 24px;
+    }
+    
+    .profile-modal-header h3 {
+        font-size: 18px;
+    }
+    
+    .profile-modal-body {
+        padding: 28px 24px;
+        gap: 24px;
+    }
+    
+    .current-profile-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .preset-images-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 260px;
+        gap: 6px;
+    }
+    
+    .preset-image-option {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .profile-modal-footer {
+        padding: 16px 24px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .profile-btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .header-buttons {
+        gap: 8px;
+    }
+    
+    .config-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+    .profile-modal-body {
+        padding: 24px 20px;
+        gap: 20px;
+    }
+    
+    .current-profile-image {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .preset-images-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 180px;
+        gap: 4px;
+    }
+    
+    .preset-image-option {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .profile-input,
+    .profile-textarea {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,1596 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+body {
+    overflow: hidden;
+    user-select: none;
+}
+
+body.inventory-open {
+    background-image: url("./img/vignate_effect.png");
+    background-size: 100% 100%;
+}
+
+.inventory-main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    gap: 5.2083vw;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.inventory-main.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.inventory {
+    margin-left: 5.2083vw;
+    background-image: url("./img/inv_background.png");
+    background-size: 100% 100%;
+    width: 21.3542vw;
+    height: min(45.0521vw, 85vh);
+    display: flex;
+    flex-direction: column;
+    padding: 1.0417vw;
+    box-sizing: border-box;
+    gap: 1.0417vw;
+    transform: translateX(-2.6042vw);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inventory-main.active .inventory {
+    transform: translateX(0);
+}
+
+.inventory .label,
+.inventory .slot-group,
+.other-inventorys .label,
+.other-inventorys .slot-group,
+.menus {
+    opacity: 0;
+    transform: translateY(1.0417vw);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out, background 0.3s ease;
+    transition-delay: 0.1s;
+}
+
+.inventory-main.active .inventory .label,
+.inventory-main.active .inventory .slot-group,
+.inventory-main.active .other-inventorys .label,
+.inventory-main.active .other-inventorys .slot-group,
+.inventory-main.active .menus {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.label {
+    background-image: url("./img/label_background.png");
+    background-size: 100% 100%;
+    width: 19.2708vw;
+    height: min(4.1667vw, 7.8vh);
+    display: flex;
+    padding: 0.7813vw;
+    box-sizing: border-box;
+    gap: 0.7813vw;
+}
+
+.label-icon {
+    background-image: url("./img/label_icon_bg.png");
+    background-size: 100% 100%;
+    width: 2.6042vw;
+    height: 2.6042vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.label-icon div {
+    width: 1.3021vw;
+    height: 1.3021vw;
+    margin-top: -0.0521vw;
+    margin-left: -0.1042vw;
+    background-image: url("./img/inv_icon.png");
+    background-size: 100% 100%;
+}
+
+.label-texts {
+    margin-top: 0.0521vw;
+}
+
+.label-title {
+    color: #0B0B0B;
+    font-family: "EB Garamond";
+    font-size: 1.0417vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.label-desc {
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.details {
+    display: flex;
+    gap: 0.5469vw;
+}
+
+.money {
+    background-image: url("./img/details_bg.png");
+    background-size: 100% 100%;
+    width: 6.0677vw;
+    height: min(1.8229vw, 3.4vh);
+    display: flex;
+    align-items: center;
+    gap: 0.2604vw;
+}
+
+.money-icon {
+    background-image: url("./img/dolar_icon.png");
+    background-size: 100% 100%;
+    width: 0.9375vw;
+    height: 0.9375vw;
+    margin-left: 0.5208vw;
+}
+
+.money-currency {
+    display: flex;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.gold {
+    background-image: url("./img/details_bg.png");
+    background-size: 100% 100%;
+    width: 6.0677vw;
+    height: min(1.8229vw, 3.4vh);
+    display: flex;
+    align-items: center;
+    gap: 0.2604vw;
+}
+
+.gold-icon {
+    background-image: url("./img/gold_icon.png");
+    background-size: 100% 100%;
+    width: 1.1979vw;
+    height: 0.7292vw;
+    margin-left: 0.5208vw;
+}
+
+.gold-currency {
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.id {
+    background-image: url("./img/details_bg.png");
+    background-size: 100% 100%;
+    width: 6.0677vw;
+    height: min(1.8229vw, 3.4vh);
+    display: flex;
+    align-items: center;
+    gap: 0.2604vw;
+}
+
+.id-icon {
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-left: 0.5208vw;
+}
+
+.id-text {
+    display: flex;
+}
+
+.id-text-1 {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.id-text-2 {
+    color: rgb(255, 255, 255);
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-left: 0.1208vw;
+}
+
+.filter-group {
+    display: flex;
+    gap: 0.5208vw;
+    margin-top: -0.5208vw;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 0.5208vw;
+    background-image: url("./img/search_bg.png");
+    background-size: 100% 100%;
+    width: 11.4583vw;
+    height: min(1.8229vw, 3.4vh);
+}
+
+.search-icon {
+    margin-left: 0.625vw;
+    background-image: url("./img/search_icon.png");
+    background-size: 100% 100%;
+    width: 0.625vw;
+    height: 0.625vw;
+}
+
+.search-text input {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625vw;
+    box-sizing: border-box;
+    background-image: url("./img/filter_bg.png");
+    background-size: 100% 100%;
+    width: 7.2917vw;
+    height: min(1.8229vw, 3.4vh);
+}
+
+.filter-text {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.filter-icon {
+    background-image: url("./img/filter_icon.png");
+    background-size: 100% 100%;
+    width: 0.3646vw;
+    height: 0.625vw;
+    transform: rotate(-90deg);
+    transition: 0.3s ease;
+    opacity: 0.65;
+}
+
+.filter-icon:hover {
+    transform: rotate(0deg);
+    opacity: 1;
+}
+
+.filter-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.2vw;
+    padding: 0.3vw 0;
+    border-radius: 4px;
+}
+
+.filter-option {
+    padding: 0.3vw 0.625vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.filter-option:hover {
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.slot-group {
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5208vw;
+}
+
+.slot-label {
+    display: flex;
+    justify-content: space-between;
+}
+
+.weight-title {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.weight-amount-group {
+    display: flex;
+}
+
+.weight-amount-current {
+    color: #FFF;
+    text-align: right;
+    font-family: "EB Garamond";
+    font-size: 0.625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.weight-amount {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.slots {
+    display: flex;
+    gap: 0.2604vw;
+    width: calc(100% + 0.4vw);
+    padding-right: 0;
+    box-sizing: border-box;
+    max-height: min(31.23vw, 59vh);
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    border-radius: 10px;
+}
+
+.slots::-webkit-scrollbar {
+    width: 0.4vw;
+}
+
+.slots::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.slots::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0);
+    border-radius: 4px;
+}
+
+.slots::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0);
+}
+
+.slot {
+    background-image: url("./img/item_bg_1.png");
+    background-size: 100% 100%;
+    width: 3.6458vw;
+    height: 3.6458vw;
+    display: flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.item-details {
+    display: flex;
+    justify-content: space-between;
+    width: 3.125vw;
+}
+
+.item-weight {
+    display: flex;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+}
+
+.item-amount {
+    display: flex;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+}
+
+
+.item-name {
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    text-align: center;
+    transition: 0.3s ease;
+    width: 3.2vw;
+
+    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item div {
+    background-image: url("./img/item_example.png") lightgray -1.75px -1.75px / 112.5% 112.5% no-repeat;
+    background-size: 100% 100%;
+    width: 1.8229vw;
+    height: 1.8229vw;
+    transition: 0.3s ease;
+    filter: drop-shadow(0px 0px 14px #0b0b0b);
+}
+
+.ground-icon {
+    background-image: url("./img/ground_icon.png") !important;
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+}
+
+.item div:hover {
+    transform: scale(1.03);
+}
+
+.slot:hover {
+    background-image: url("./img/item_bg_2.png");
+    transform: scale(1.03);
+    filter: drop-shadow(0px 0px 14px #0b0b0b);
+}
+
+.slot:hover .item-weight {
+    color: #0B0B0B;
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.slot:hover .item-amount {
+    color: #0B0B0B;
+    text-align: right;
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.slot:hover .item-name {
+    color: #0B0B0B;
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.slot-empty {
+    background-image: url("./img/item_bg_1.png");
+    background-size: 100% 100%;
+    width: 3.6458vw;
+    height: 3.6458vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0.3125vw;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.slot-empty:hover {
+    background-image: url("./img/item_bg_3.png");
+    transform: scale(1.03);
+}
+
+
+/* other inventorys */
+
+.other-inventorys {
+    gap: 3.9063vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.horse-inventory {
+    background-image: url("./img/horse_inventory_background.png");
+    background-size: 100% 100%;
+    width: 21.3542vw;
+    height: min(16.6667vw, 31vh);
+    display: flex;
+    flex-direction: column;
+    padding: 1.0417vw;
+    box-sizing: border-box;
+    gap: 1.5625vw;
+}
+
+.horse-slots {
+    display: flex;
+    gap: 0.2604vw;
+    width: calc(100% + 0.4vw);
+    padding-right: 0;
+    box-sizing: border-box;
+    max-height: min(7.5521vw, 14vh);
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.horse-slots::-webkit-scrollbar {
+    width: 0.4vw;
+}
+
+.horse-slots::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.horse-slots::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0);
+    border-radius: 4px;
+}
+
+.horse-slots::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0);
+}
+
+.horse-icon {
+    background-image: url("./img/horse_icon.png") !important;
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+}
+
+.stash-icon {
+    background-image: url("./img/stash_icon.png") !important;
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+}
+
+.shop-icon {
+    background-image: url("./img/shop_icon.png") !important;
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+}
+
+.player-icon {
+    background-image: url("./img/player_icon.png") !important;
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+}
+
+.ground-inventory {
+    background-image: url("./img/ground_inventory_background.png");
+    background-size: 100% 100%;
+    width: 21.3542vw;
+    height: min(24.4792vw, 46vh);
+    display: flex;
+    flex-direction: column;
+    padding: 1.0417vw;
+    box-sizing: border-box;
+    gap: 1.5625vw;
+}
+
+.ground-slots {
+    display: flex;
+    gap: 0.2604vw;
+    width: calc(100% + 0.4vw);
+    padding-right: 0;
+    box-sizing: border-box;
+    max-height: min(15.3646vw, 29vh);
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.ground-slots::-webkit-scrollbar {
+    width: 0.4vw;
+}
+
+.ground-slots::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.ground-slots::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0);
+    border-radius: 4px;
+}
+
+.ground-slots::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0);
+}
+
+
+/* menus */
+
+.menus {
+    display: flex;
+    flex-direction: column;
+    gap: 26.0417vw;
+}
+
+.menu-2-group {
+    display: flex;
+    gap: 30vw;
+}
+
+.clothes-menu {
+    background-image: url("./img/menu_bg.png");
+    background-size: 100% 100%;
+    width: 3.125vw;
+    height: min(16.1458vw, 30vh);
+    display: flex;
+    flex-direction: column;
+    padding: 0.5208vw;
+    box-sizing: border-box;
+    gap: 0.5208vw;
+}
+
+.hat-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.hat-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.hat {
+    background-image: url("./img/hat_icon.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 0.7292vw;
+    transition: 0.3s ease;
+}
+
+.hat-icon:hover .hat {
+    background-image: url("./img/hat_icon_2.png");
+}
+
+.mask-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.mask-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.mask {
+    background-image: url("./img/mask_icon.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 0.7813vw;
+    transition: 0.3s ease;
+}
+
+.mask-icon:hover .mask {
+    background-image: url("./img/mack_icon_2.png");
+}
+
+.glasses-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.glasses-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.glasses {
+    background-image: url("./img/glasses_icon.png");
+    background-size: 100% 100%;
+    width: 1.1979vw;
+    height: 0.9896vw;
+    transition: 0.3s ease;
+}
+
+.glasses-icon:hover .glasses {
+    background-image: url("./img/glasses_icon_2.png");
+}
+
+.necklace-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.necklace-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.necklace {
+    background-image: url("./img/necklace_icon.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+    transition: 0.3s ease;
+}
+
+.necklace-icon:hover .necklace {
+    background-image: url("./img/necklace_icon_2.png");
+}
+
+.necktie-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.necktie-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.necktie {
+    background-image: url("./img/necktie_icon.png");
+    background-size: 100% 100%;
+    width: 0.4688vw;
+    height: 1.1458vw;
+    transition: 0.3s ease;
+}
+
+.necktie-icon:hover .necktie {
+    background-image: url("./img/necktie_icon_2.png");
+}
+
+.tshirt-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.tshirt-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.tshirt {
+    background-image: url("./img/tshirt_icon.png");
+    background-size: 100% 100%;
+    width: 0.4688vw;
+    height: 1.1458vw;
+    transition: 0.3s ease;
+}
+
+.tshirt-icon:hover .tshirt {
+    background-image: url("./img/tshirt_icon_2.png");
+}
+
+.tshirt-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.tshirt-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.tshirt {
+    background-image: url("./img/tshirt_icon.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.0417vw;
+    transition: 0.3s ease;
+}
+
+.tshirt-icon:hover .tshirt {
+    background-image: url("./img/tshirt_icon_2.png");
+}
+
+.vest-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.vest-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.vest {
+    background-image: url("./img/vest_icon.png");
+    background-size: 100% 100%;
+    width: 0.7813vw;
+    height: 1.0417vw;
+    transition: 0.3s ease;
+}
+
+.vest-icon:hover .vest {
+    background-image: url("./img/vest_icon_2.png");
+}
+
+.coat-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.coat-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.coat {
+    background-image: url("./img/coat_icon.png");
+    background-size: 100% 100%;
+    width: 1.1979vw;
+    height: 1.3021vw;
+    transition: 0.3s ease;
+}
+
+.coat-icon:hover .coat {
+    background-image: url("./img/coat_icon_2.png");
+}
+
+.poncho-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.poncho-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.poncho {
+    background-image: url("./img/poncho_icon.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.1979vw;
+    transition: 0.3s ease;
+}
+
+.poncho-icon:hover .poncho {
+    background-image: url("./img/poncho_icon_2.png");
+}
+
+.gloves-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.gloves-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.gloves {
+    background-image: url("./img/gloves_icon.png");
+    background-size: 100% 100%;
+    width: 1.25vw;
+    height: 1.3021vw;
+    transition: 0.3s ease;
+}
+
+.gloves-icon:hover .gloves {
+    background-image: url("./img/gloves_icon_2.png");
+}
+
+.belt-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.belt-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.belt {
+    background-image: url("./img/belt_icon.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 0.5208vw;
+    transition: 0.3s ease;
+}
+
+.belt-icon:hover .belt {
+    background-image: url("./img/belt_icon_2.png");
+}
+
+.pant-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.pant-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.pant {
+    background-image: url("./img/pant_icon.png");
+    background-size: 100% 100%;
+    width: 0.9375vw;
+    height: 1.3021vw;
+    transition: 0.3s ease;
+}
+
+.pant-icon:hover .pant {
+    background-image: url("./img/pant_icon_2.png");
+}
+
+.shoes-icon {
+    background-image: url("./img/box_bg_1.png");
+    background-size: 100% 100%;
+    width: 2.0833vw;
+    height: 2.0833vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.shoes-icon:hover {
+    background-image: url("./img/box_bg_2.png");
+}
+
+.shoes {
+    background-image: url("./img/shoes_icon.png");
+    background-size: 100% 100%;
+    width: 0.9896vw;
+    height: 1.1979vw;
+    transition: 0.3s ease;
+}
+
+.shoes-icon:hover .shoes {
+    background-image: url("./img/shoes_icon_2.png");
+}
+
+
+.menu-1 {
+    background-image: url("./img/menu_bg_2.png");
+    background-size: 100% 100%;
+    width: 36.4583vw;
+    height: min(3.125vw, 5.8vh);
+    display: flex;
+    padding: 0.5208vw;
+    box-sizing: border-box;
+    gap: 0.5208vw;
+}
+
+.menu-1-button {
+    background-image: url("./img/menu_button_1.png");
+    background-size: 100% 100%;
+    flex: 1;
+    height: min(2.0833vw, 3.9vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2604vw;
+    transition: 0.3s ease;
+}
+
+.menu-1-button:hover {
+    background-image: url("./img/menu_button_2.png");
+    transform: scale(1.02);
+}
+
+.button-icon {
+    background-image: url("./img/take_off_icon.png");
+    background-size: 100% 100%;
+    width: 0.8333vw;
+    height: 0.7292vw;
+    transition: 0.3s ease;
+}
+
+.menu-1-button:hover .button-icon {
+    background-image: url("./img/take_off_icon_2.png");
+}
+
+.button-tittle {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.8333vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+}
+
+.menu-1-button:hover .button-tittle {
+    color: #0B0B0B;
+}
+
+.menu-2-button {
+    background-image: url("./img/menu_button_1.png");
+    background-size: 100% 100%;
+    flex: 1;
+    height: min(2.0833vw, 3.9vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2604vw;
+    transition: 0.3s ease;
+}
+
+.menu-2-button:hover {
+    background-image: url("./img/menu_button_2.png");
+    transform: scale(1.02);
+}
+
+.button-icon-2 {
+    background-image: url("./img/close_icon.png");
+    background-size: 100% 100%;
+    width: 0.7292vw;
+    height: 0.7292vw;
+    transition: 0.3s ease;
+}
+
+.menu-2-button:hover .button-icon-2 {
+    background-image: url("./img/close_icon_2.png");
+    margin-top: 0.1042vw;
+}
+
+.button-tittle-2 {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.8333vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+}
+
+.menu-2-button:hover .button-tittle-2 {
+    color: #0B0B0B;
+}
+
+.menu-3-button {
+    background-image: url("./img/menu_button_1.png");
+    background-size: 100% 100%;
+    flex: 1;
+    height: min(2.0833vw, 3.9vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2604vw;
+    transition: 0.3s ease;
+}
+
+.menu-3-button:hover {
+    background-image: url("./img/menu_button_2.png");
+    transform: scale(1.02);
+}
+
+.button-icon-3 {
+    background-image: url("./img/camp_icon.png");
+    background-size: 100% 100%;
+    width: 1.0938vw;
+    height: 0.7292vw;
+    transition: 0.3s ease;
+}
+
+.menu-3-button:hover .button-icon-3 {
+    background-image: url("./img/camp_icon_2.png");
+}
+
+.button-tittle-3 {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: 0.8333vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+}
+
+.menu-3-button:hover .button-tittle-3 {
+    color: #0B0B0B;
+}
+
+/* item-action */
+
+.item-action {
+    margin-left: 45.8333vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5208vw;
+    position: absolute;
+    background-image: url("./img/item_action_bg.png");
+    background-size: 100% 100%;
+    width: 9.375vw;
+    min-height: min(11.4583vw, 21vh);
+    height: auto;
+    padding-top: 0.3125vw;
+    padding-bottom: 0.5208vw;
+    padding-left: 0.5208vw;
+    padding-right: 0.5208vw;
+    box-sizing: border-box;
+}
+
+.item-detail-title {
+    color: #F1EAD0;
+    font-family: "EB Garamond";
+    font-size: 0.625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-detail-desc {
+    color: rgba(255, 255, 255, 0.50);
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.item-metadata-container {
+    margin-top: 0.2604vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15vw;
+    max-height: 1vw;
+    /* Limit growth slightly to keep UI sane */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.2vw;
+}
+
+.item-metadata-container::-webkit-scrollbar {
+    width: 0.2vw;
+}
+
+.item-metadata-container::-webkit-scrollbar-thumb {
+    background: rgba(241, 234, 208, 0.3);
+    border-radius: 2px;
+}
+
+.metadata-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.2vw;
+    width: 100%;
+}
+
+.item-durability-title {
+    color: rgba(255, 255, 255, 0.50);
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    max-width: 8vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-durability-rate-group {
+    display: flex;
+    color: #F1EAD0;
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.item-amount-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2604vw;
+    margin-top: 0.5vh;
+}
+
+.item-amount-tittle {
+    color: rgba(255, 255, 255, 0.50);
+    font-family: "EB Garamond";
+    font-size: 0.5208vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.item-amount-group-2 {
+    display: flex;
+    gap: 0.2604vw;
+}
+
+.min {
+    background-image: url("./img/min.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+    transition: 0.3s ease;
+}
+
+.min:hover {
+    background-image: url("./img/min_2.png");
+    transform: scale(1.01);
+}
+
+.amount {
+    background-image: url("./img/amount_bg.png");
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5.2083vw;
+    height: 1.3021vw;
+}
+
+.amount input {
+    background: none;
+    border: none;
+    outline: none;
+    width: 4.1667vw;
+
+    color: rgba(255, 255, 255, 0.65);
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: 0.7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+}
+
+.amount input:hover {
+    color: rgba(255, 255, 255, 1.0);
+}
+
+.amount input[type="number"]::-webkit-inner-spin-button,
+.amount input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.add {
+    background-image: url("./img/add.png");
+    background-size: 100% 100%;
+    width: 1.3021vw;
+    height: 1.3021vw;
+    transition: 0.3s ease;
+}
+
+.add:hover {
+    background-image: url("./img/add_2.png");
+    transform: scale(1.01);
+}
+
+.use {
+    background-image: url("./img/use_bg.png");
+    background-size: 100% 100%;
+    display: flex;
+    width: 8.3333vw;
+    height: 1.5625vw;
+    transition: 0.3s ease;
+    align-items: center;
+    gap: 0.5208vw;
+    margin-top: 0.4167vw;
+}
+
+.use:hover {
+    background-image: url("./img/use_bg_2.png");
+    transform: scale(1.01);
+}
+
+.use-icon {
+    background-image: url("./img/use_icon_1.png");
+    background-size: 100% 100%;
+    width: 0.8333vw;
+    height: 0.8333vw;
+    transition: 0.3s ease;
+    margin-left: 0.4167vw;
+}
+
+.use:hover .use-icon {
+    background-image: url("./img/use_icon_2.png");
+    transform: scale(1.01);
+}
+
+.use-tittle {
+    color: rgba(255, 255, 255, 0.50);
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: 0.625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+    width: 4.6875vw;
+}
+
+.use:hover .use-tittle {
+    color: #0B0B0B;
+}
+
+.buy {
+    background-image: url("./img/use_bg.png");
+    background-size: 100% 100%;
+    display: flex;
+    width: 8.3333vw;
+    height: 1.5625vw;
+    transition: 0.3s ease;
+    align-items: center;
+    gap: 0.5208vw;
+    cursor: pointer;
+}
+
+.buy:hover {
+    background-image: url("./img/use_bg_2.png");
+    transform: scale(1.01);
+}
+
+.buy:hover .use-tittle {
+    color: #0B0B0B;
+}
+
+.give {
+    background-image: url("./img/use_bg.png");
+    background-size: 100% 100%;
+    display: flex;
+    width: 8.3333vw;
+    height: 1.5625vw;
+    transition: 0.3s ease;
+    align-items: center;
+    gap: 0.5208vw;
+    margin-top: -0.2604vw;
+}
+
+.give:hover {
+    background-image: url("./img/use_bg_2.png");
+    transform: scale(1.01);
+}
+
+.give.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    filter: grayscale(1);
+    cursor: not-allowed;
+}
+
+.menu-1-button.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(1);
+    cursor: not-allowed;
+}
+
+.give-icon {
+    background-image: url("./img/give_icon_1.png");
+    background-size: 100% 100%;
+    width: 0.8333vw;
+    height: 0.8333vw;
+    transition: 0.3s ease;
+    margin-left: 0.4167vw;
+}
+
+.give:hover .give-icon {
+    background-image: url("./img/give_icon_2.png");
+    transform: scale(1.01);
+}
+
+.give-tittle {
+    color: rgba(255, 255, 255, 0.50);
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: 0.625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease;
+    width: 4.6875vw;
+}
+
+.give:hover .give-tittle {
+    color: #0B0B0B;
+}
+
+/* Animations */
+.horse-inventory {
+    transform: translateX(2.6042vw);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inventory-main.active .horse-inventory {
+    transform: translateX(0);
+}
+
+.ground-inventory {
+    transform: translateX(2.6042vw);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inventory-main.active .ground-inventory {
+    transform: translateX(0);
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.context-menu {
+    animation: fadeInScale 0.15s ease-out forwards;
+}
+
+.slot:active {
+    transform: scale(0.98);
+
+}
+
+
+/* Layout tuning: larger top storage when two inventories are open; larger cleaner Ground when it is alone. */
+.other-inventorys {
+    gap: 1.3021vw !important;
+}
+
+/* Top panel: storage / stash / bank vault / horse / shop */
+.horse-inventory {
+    height: min(24.4792vw, 46vh) !important;
+    min-height: min(24.4792vw, 46vh) !important;
+    max-height: min(24.4792vw, 46vh) !important;
+}
+
+.horse-slots {
+    height: min(15.3646vw, 29vh) !important;
+    max-height: min(15.3646vw, 29vh) !important;
+}
+
+/* Bottom panel: ground when a second inventory is open */
+.ground-inventory {
+    height: min(16.6667vw, 31vh) !important;
+    min-height: min(16.6667vw, 31vh) !important;
+    max-height: min(16.6667vw, 31vh) !important;
+}
+
+.ground-slots {
+    height: min(7.5521vw, 14vh) !important;
+    max-height: min(7.5521vw, 14vh) !important;
+}
+
+/* Bigger, cleaner layout when only Ground inventory is open */
+.ground-only-layout {
+    justify-content: center !important;
+    align-items: flex-end !important;
+    height: 100% !important;
+    margin-right: 4vw !important;
+}
+
+.ground-inventory.ground-only {
+    width: 25vw !important;
+    height: min(39vw, 72vh) !important;
+    min-height: min(39vw, 72vh) !important;
+    max-height: min(39vw, 72vh) !important;
+    margin-top: 3vh !important;
+}
+
+.ground-inventory.ground-only .label {
+    width: 22.8vw !important;
+}
+
+.ground-slots.ground-only-slots {
+    height: min(29vw, 56vh) !important;
+    max-height: min(29vw, 56vh) !important;
+}

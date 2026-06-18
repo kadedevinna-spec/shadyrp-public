@@ -1,0 +1,2581 @@
+@import url('https://fonts.cdnfonts.com/css/chinese-rocks');
+
+
+@font-face {
+  font-family: crock;
+  src: url(../fonts/crock.ttf) format('truetype');
+}
+
+body {
+  width: 90%;
+  height: 75%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: 5%;
+  margin-top: -25%;
+
+}
+
+#banking {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+
+  margin-top: 30vw;
+
+  font-family: "crock", crock, serif;
+
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+
+  justify-content: center;
+
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently */
+}
+
+#banking_account_iban {
+  position: absolute;
+  display: inline-block;
+
+  font-family: "crock", crock, serif;
+  color: rgba(31, 31, 31, 0.747);
+
+  font-size: 0.8vw;
+
+  width: 13.9vw;
+  margin-top: 15.6vw;
+  margin-left: 38.15vw;
+  text-align: center;
+
+  -webkit-user-select: text;
+  /* Safari */
+  -khtml-user-select: text;
+  /* Konqueror HTML */
+  -moz-user-select: text;
+  /* Old versions of Firefox */
+  -ms-user-select: text;
+  /* Internet Explorer/Edge */
+  user-select: text;
+  /* Non-prefixed version, currently */
+}
+
+#banking_account_username {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+  color: rgba(31, 31, 31, 0.747);
+
+  font-size: 0.9vw;
+
+  width: 13.9vw;
+  margin-top: 19.8vw;
+  margin-left: 38.3vw;
+  text-align: center;
+}
+
+
+.banking_title {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+  color: #2e351ebf;
+
+  font-size: 0.9vw;
+
+  height: 1.3vw;
+  width: 13.8vw;
+
+  border-radius: 2%;
+  background-color: #6b74613f;
+  text-align: center;
+}
+
+.banking_buttons {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+  color: #2e351ee5;
+
+  font-size: 1vw;
+
+  height: 1.4vw;
+  width: 13.9vw;
+
+  margin-left: 38.15vw;
+  text-align: center;
+
+  border-radius: 2%;
+  background-color: #6b7461ad;
+  border: 1px solid rgba(129, 129, 129, 0.253);
+}
+
+#banking_transaction_previous {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 1vw;
+  height: 1vw;
+
+  margin-top: 24.8vw;
+  margin-left: 36.6vw;
+
+  background-color: rgba(31, 31, 31, 0.623);
+}
+
+#banking_transaction_current {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 13.9vw;
+  height: 1vw;
+
+  margin-top: 24.8vw;
+  margin-left: 38.3vw;
+
+  background-color: rgb(31, 31, 31);
+}
+
+#banking_transaction_next {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 1vw;
+  height: 1vw;
+
+  margin-top: 24.8vw;
+  margin-left: 52.8vw;
+
+  background-color: rgba(31, 31, 31, 0.623);
+}
+
+
+#banking_transaction_previous:hover,
+#banking_transaction_next:hover {
+  opacity: 0.9;
+}
+
+
+#banking_transaction_amount_input {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 13.9vw;
+  height: 1vw;
+
+  margin-top: 28.8vw;
+  margin-left: 38.3vw;
+
+  background-color: rgb(31, 31, 31);
+}
+
+#banking_transaction_iban_input {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 13.9vw;
+  height: 1vw;
+
+  margin-top: 24.8vw;
+  margin-left: 38.3vw;
+
+  background-color: rgb(31, 31, 31);
+}
+
+/* ------------------------- */
+/* Main Page */
+/* ------------------------- */
+
+#banking_account_money_balance {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+  color: rgba(31, 31, 31, 0.747);
+  font-size: 1.3vw;
+
+  width: 8vw;
+  margin-top: 27.4vw;
+  margin-left: 24.45vw;
+  text-align: center;
+}
+
+#banking_account_gold_balance {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgba(31, 31, 31, 0.747);
+  font-size: 1.3vw;
+
+  width: 8vw;
+  margin-top: 27.4vw;
+  margin-left: 57.65vw;
+  text-align: center;
+}
+
+#banking_transactions_button {
+  margin-top: 24.8vw;
+}
+
+#banking_management_button {
+  margin-top: 26.8vw;
+}
+
+#banking_billing_button {
+  margin-top: 28.8vw;
+}
+
+#banking_account_button {
+  margin-top: 30.8vw;
+}
+
+#banking_exit_button {
+  margin-top: 32.8vw;
+}
+
+#banking_transactions_button:hover,
+#banking_management_button:hover,
+#banking_billing_button:hover,
+#banking_account_button:hover,
+#banking_exit_button:hover {
+  opacity: 0.9;
+}
+
+
+#banking_mainpage_title {
+  margin-left: 38.25vw;
+  margin-top: 22.5vw;
+}
+
+/* Page Transaction Options */
+
+#banking_transaction_title_options_page {
+  margin-left: 38.25vw;
+  margin-top: 22.5vw;
+}
+
+#banking_transaction_deposit_options_page {
+  margin-top: 24.8vw;
+}
+
+#banking_transaction_withdraw_options_page {
+  margin-top: 26.8vw;
+}
+
+#banking_transaction_transfer_options_page {
+  margin-top: 28.8vw;
+}
+
+#banking_transaction_transactions_options_page {
+  margin-top: 30.8vw;
+}
+
+#banking_transaction_back_options_page {
+  margin-top: 32.8vw;
+}
+
+#banking_transaction_deposit_options_page:hover,
+#banking_transaction_withdraw_options_page:hover,
+#banking_transaction_transfer_options_page:hover,
+#banking_transaction_transactions_options_page:hover,
+#banking_transaction_back_options_page:hover {
+  opacity: 0.9;
+}
+
+/* Page Transaction Actions */
+
+#banking_transactions_title_action_page {
+
+  margin-left: 38.3vw;
+  margin-top: 22.8vw;
+}
+
+#banking_transaction_input_title {
+  margin-left: 38.3vw;
+  margin-top: 26.8vw;
+}
+
+#banking_transactions_back_action_page {
+  margin-top: 32.8vw;
+}
+
+#banking_transactions_back_action_page:hover {
+  opacity: 0.9;
+}
+
+
+
+/* Page Action Buttons Page */
+
+#banking_transaction_accept_button {
+  margin-top: 30.8vw;
+}
+
+#banking_billing_page_back_button,
+#banking_transactions_history_page_back_button {
+  margin-top: 32.8vw;
+}
+
+#banking_transactions_fees_description_action_page {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+  color: #7d291de5;
+
+  font-size: 0.65vw;
+
+  height: 1.4vw;
+  width: 20.9vw;
+
+  margin-left: 50.3vw;
+  margin-top: 36vw;
+
+  text-align: right;
+
+}
+
+/* History Records */
+
+.banking_transactions_history_page_text {
+  position: absolute;
+
+  font-weight: bold;
+  text-align: center;
+
+  height: 1vw;
+
+  font-family: "crock", crock, serif;
+
+  font-size: 0.7vw;
+  color: #2e351ee5;
+
+  margin-top: 22.5vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(129, 129, 129, 0.253);
+}
+
+#banking_transactions_reason_history_page {
+  width: 10vw;
+  margin-left: 28.6vw;
+}
+
+#banking_transactions_account_history_page {
+  width: 7vw;
+  margin-left: 39vw;
+}
+
+#banking_transactions_amount_history_page {
+  width: 5.55vw;
+  margin-left: 46.45vw;
+}
+
+#banking_transactions_date_history_page {
+  width: 8.9vw;
+  margin-left: 52.45vw;
+}
+
+#history_records {
+
+  position: absolute;
+
+  overflow-y: scroll;
+
+  width: 34.5vw;
+  height: 8vw;
+
+  margin-top: 24vw;
+  margin-left: 27.7vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(17, 17, 17, 0.397);
+}
+
+#history_records_main {
+  position: relative;
+  color: white;
+
+  width: 33.5vw;
+  height: 1.3vw;
+
+  flex: 0 0 auto;
+
+  margin-left: 0.5vw;
+  margin-top: 0.5vw;
+
+  /* background-size: 100%; */
+  background-color: rgba(6, 82, 117, 0.185);
+  box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+}
+
+.history_record_label {
+  position: absolute;
+
+  font-weight: bold;
+  text-align: center;
+
+  height: 1vw;
+
+  font-size: 0.7vw;
+  color: rgba(47, 47, 47, 0.883);
+
+  margin-top: -1.14vw;
+  padding-left: 0.3vw;
+
+  box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+  background-color: rgba(222, 184, 135, 0.493);
+}
+
+#history_records_reason {
+  width: 10vw;
+  margin-left: 0.7vw;
+}
+
+#history_records_account {
+  width: 7vw;
+  margin-left: 11.15vw;
+}
+
+#history_records_amount {
+  width: 5.55vw;
+  margin-left: 18.6vw;
+}
+
+#history_records_date {
+  width: 8.9vw;
+  margin-left: 24.6vw;
+}
+
+#history_records_pages_list {
+  position: absolute;
+  display: inline-block;
+
+  font-size: 0.7vw;
+
+  width: 10vw;
+  height: 1vw;
+
+  margin-top: 33.2vw;
+  margin-left: 27.5vw;
+}
+
+#history_records_pages_list_value {
+  position: relative;
+  display: inline-block;
+  font-family: "crock", crock, serif;
+
+  color: #2f332a;
+
+  font-size: 0.7vw;
+  font-weight: 750;
+
+  height: 1vw;
+  width: 1.2vw;
+
+  text-align: center;
+}
+
+#history_records_pages_list_value:hover {
+  opacity: 0.7;
+}
+
+/* Billing */
+
+.banking_billing_page_text {
+  position: absolute;
+
+  font-weight: bold;
+  text-align: center;
+
+  height: 1vw;
+
+  font-family: "crock", crock, serif;
+
+  font-size: 0.7vw;
+  color: #2e351ee5;
+
+  margin-top: 22.5vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(129, 129, 129, 0.253);
+}
+
+
+#banking_billing_page_action {
+  width: 4.2vw;
+
+  margin-left: 28.4vw;
+}
+
+#banking_billing_page_reason {
+  width: 6vw;
+  margin-left: 33vw;
+}
+
+#banking_billing_page_issuer {
+  width: 7vw;
+  margin-left: 39.35vw;
+}
+
+#banking_billing_page_account {
+  width: 3.2vw;
+  margin-left: 46.8vw;
+}
+
+#banking_billing_page_cost {
+  width: 4.3vw;
+  margin-left: 50.45vw;
+}
+
+#banking_billing_page_date {
+  width: 6.1vw;
+  margin-left: 55.2vw;
+}
+
+
+#billings {
+
+  position: absolute;
+
+  overflow-y: scroll;
+
+  width: 34.5vw;
+  height: 8vw;
+
+  margin-top: 24vw;
+  margin-left: 27.7vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(17, 17, 17, 0.397);
+}
+
+#billings_main {
+  position: relative;
+  color: white;
+
+  width: 33.5vw;
+  height: 1.3vw;
+
+  flex: 0 0 auto;
+
+  margin-left: 0.5vw;
+  margin-top: 0.5vw;
+
+  /* background-size: 100%; */
+  background-color: rgba(6, 82, 117, 0.185);
+  box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+}
+
+.billings_label {
+  position: absolute;
+
+  font-weight: bold;
+  text-align: center;
+
+  height: 1vw;
+
+  font-size: 0.7vw;
+  color: rgba(47, 47, 47, 0.883);
+
+  margin-top: -1.14vw;
+  padding-left: 0.15vw;
+
+  box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+  background-color: rgba(222, 184, 135, 0.493);
+}
+
+#billings_button {
+  width: 4vw;
+  margin-left: 0.7vw;
+  background-color: rgba(255, 255, 255, 0.649);
+}
+
+#billings_button:hover {
+  opacity: 0.7;
+}
+
+#billings_reason {
+  width: 6vw;
+  margin-left: 5.15vw;
+}
+
+#billings_issuer {
+  width: 7vw;
+  margin-left: 11.55vw;
+}
+
+#billings_account {
+  width: 3.2vw;
+  margin-left: 19vw;
+}
+
+#billings_cost {
+  width: 4.3vw;
+  margin-left: 22.65vw;
+}
+
+#billings_date {
+  width: 6.1vw;
+  margin-left: 27.4vw;
+  font-size: 0.65vw;
+}
+
+#billings_pages_list {
+  position: absolute;
+  display: inline-block;
+
+  font-size: 0.7vw;
+
+  width: 10vw;
+  height: 1vw;
+
+  margin-top: 33.2vw;
+  margin-left: 27.5vw;
+}
+
+#billings_pages_list_value {
+  position: relative;
+  display: inline-block;
+  font-family: "crock", crock, serif;
+
+  color: #2f332a;
+
+  font-size: 0.7vw;
+  font-weight: 750;
+
+  height: 1vw;
+  width: 1.2vw;
+
+  text-align: center;
+}
+
+#billings_pages_list_value:hover {
+  opacity: 0.7;
+}
+
+/* Account Management Page */
+
+#banking_account_management_page_title {
+  margin-left: 38.25vw;
+  margin-top: 22.5vw;
+}
+
+#banking_account_management_page_joint_members_button {
+  margin-top: 24.8vw;
+}
+
+#banking_account_management_page_joint_rename_title {
+
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+  color: #2e351ee5;
+
+  font-size: 1vw;
+
+  height: 1.4vw;
+  width: 13.9vw;
+
+  margin-left: 38.15vw;
+  margin-top: 26.8vw;
+  text-align: center;
+
+  border-radius: 2%;
+  background-color: #6b74611b;
+}
+
+#banking_account_management_page_joint_rename_button {
+  margin-top: 30.8vw;
+}
+
+#banking_account_management_page_joint_rename_input,
+#banking_account_management_members_page_add_input {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 13.9vw;
+  height: 1vw;
+
+  margin-left: 38.15vw;
+  margin-top: 29.1vw;
+
+  background-color: rgba(31, 31, 31, 0.821);
+}
+
+#banking_account_management_members_page_add_input {
+  margin-left: 27.8vw;
+  margin-top: 32.8vw;
+
+  font-size: 1.0vw;
+  height: 1.5vw;
+
+}
+
+#banking_account_management_members_page_add_button {
+  margin-left: 42.8vw;
+  margin-top: 32.8vw;
+  width: 10vw;
+}
+
+#banking_account_management_page_storage_button {
+  margin-top: 24.8vw;
+}
+
+#banking_account_management_page_job_button {
+  margin-top: 26.8vw;
+}
+
+#banking_account_management_page_job_title {
+  margin-left: 38.25vw;
+  margin-top: 28.8vw;
+
+  font-size: 0.7vw;
+  height: 1.0vw;
+}
+
+#banking_account_management_page_back_button {
+  margin-top: 32.8vw;
+}
+
+
+#banking_account_management_members_page_iban {
+  width: 8vw;
+  margin-left: 28.6vw;
+}
+
+#banking_account_management_members_page_username {
+  width: 11.05vw;
+  margin-left: 37vw;
+}
+
+#banking_account_management_members_page_action {
+  width: 12.9vw;
+  margin-left: 48.45vw;
+}
+
+
+#members {
+
+  position: absolute;
+
+  overflow-y: scroll;
+
+  width: 34.5vw;
+  height: 5vw;
+
+  margin-top: 26.9vw;
+  margin-left: 27.7vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(17, 17, 17, 0.397);
+}
+
+#members_iban {
+  width: 8vw;
+  margin-left: 0.85vw;
+}
+
+#banking_account_member_perms_page_panel_list_label {
+  width: 29vw;
+  margin-left: 0.85vw;
+
+  padding-left: 0.5vw;
+
+  text-align: left;
+}
+
+#members_username {
+  width: 11vw;
+  margin-left: 9.25vw;
+}
+
+#members_perms_button {
+  width: 7vw;
+  margin-left: 20.7vw;
+  font-size: 0.65vw;
+}
+
+#members_button {
+  width: 5vw;
+  margin-left: 28.15vw;
+  font-size: 0.65vw;
+}
+
+#members_button:hover,
+#members_perms_button:hover {
+  opacity: 0.7;
+}
+
+
+#banking_account_member_perms_page_panel {
+
+  position: absolute;
+
+  width: 34.5vw;
+  height: 7vw;
+
+  margin-top: 24.9vw;
+  margin-left: 27.7vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(17, 17, 17, 0.397);
+}
+
+#banking_account_member_perms_page_panel_list {
+
+  position: absolute;
+
+  overflow-y: scroll;
+
+  width: 34.5vw;
+  height: 7vw;
+
+  margin-top: 24.9vw;
+  margin-left: 27.7vw;
+
+}
+
+/* Switch styling */
+.switch {
+  position: absolute;
+  display: inline-block;
+  width: 2vw;
+  height: 1vw;
+
+  margin-left: 31.5vw;
+
+  margin-top: -1.2vw;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d61313a1;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 0.7vw;
+  width: 0.7vw;
+  left: 0.1vw;
+  top: 0.17vw;
+  background-color: rgba(222, 184, 135, 0.836);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: #4caf4fad;
+}
+
+input:checked+.slider::before {
+  transform: translateX(26px);
+}
+
+/* Label row */
+.option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Accounts Page */
+
+#banking_account_page_title,
+#banking_account_create_page_title,
+#banking_account_create_joint_page_title,
+#banking_account_management_members_page_title,
+#banking_account_member_perms_page_title {
+  margin-left: 38.3vw;
+  margin-top: 22.8vw;
+}
+
+#banking_account_page_create_joint_button,
+#banking_account_create_page_button,
+#banking_account_create_joint_page_button {
+  margin-top: 32.8vw;
+  margin-left: 28.3vw;
+
+  width: 12.5vw;
+  font-size: 0.9vw;
+}
+
+#banking_account_page_back_to_main_button {
+  margin-top: 32.8vw;
+  margin-left: 28.3vw;
+
+  width: 12.5vw;
+  font-size: 0.9vw;
+}
+
+#banking_account_page_back_button,
+#banking_account_create_page_exit_button,
+#banking_account_create_joint_page_back_button,
+#banking_account_management_members_page_back_button,
+#banking_account_member_perms_page_back_button {
+  margin-top: 32.8vw;
+  margin-left: 54.6vw;
+
+  font-size: 0.9vw;
+  width: 7vw;
+}
+
+
+#banking_account_create_page_description,
+#banking_account_create_joint_page_description {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  margin-top: 24.8vw;
+  margin-left: 28.3vw;
+
+  color: rgb(31, 31, 31);
+
+  font-size: 0.8vw;
+  text-align: center;
+
+  width: 33.3vw;
+  height: 7.5vw;
+  max-height: 7.5vw;
+
+  background-color: #6b74612d;
+
+  white-space: pre-wrap;
+}
+
+.banking_account_page_text {
+  position: absolute;
+
+  font-weight: bold;
+  text-align: center;
+
+  height: 1vw;
+
+  font-family: "crock", crock, serif;
+
+  font-size: 0.7vw;
+  color: #2e351ee5;
+
+  margin-top: 25.4vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(129, 129, 129, 0.253);
+}
+
+#banking_account_page_action {
+  width: 5vw;
+  margin-left: 28.3vw;
+}
+
+#banking_account_page_iban {
+  width: 10vw;
+  margin-left: 33.65vw;
+}
+
+#banking_account_page_name {
+  width: 11.2vw;
+  margin-left: 44vw;
+}
+
+#banking_account_page_members {
+  width: 6vw;
+  margin-left: 55.6vw;
+}
+
+.accounts_label,
+.members_label {
+  position: absolute;
+
+  font-weight: bold;
+  text-align: center;
+
+  height: 1vw;
+
+  font-size: 0.7vw;
+  color: rgba(47, 47, 47, 0.883);
+
+  margin-top: -1.14vw;
+  padding-left: 0.15vw;
+
+  box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+  background-color: rgba(222, 184, 135, 0.493);
+}
+
+#accounts {
+
+  position: absolute;
+
+  overflow-y: scroll;
+
+  width: 34.5vw;
+  height: 5vw;
+
+  margin-top: 26.9vw;
+  margin-left: 27.7vw;
+
+  background-color: #6b7461ad;
+  border: 1px solid rgba(17, 17, 17, 0.397);
+}
+
+#accounts_main,
+#members_main,
+#banking_account_member_perms_page_panel_list_main {
+  position: relative;
+  color: white;
+
+  width: 33.5vw;
+  height: 1.3vw;
+
+  flex: 0 0 auto;
+
+  margin-left: 0.5vw;
+  margin-top: 0.2vw;
+
+  /* background-size: 100%; */
+  background-color: rgba(6, 82, 117, 0.185);
+  box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+}
+
+#accounts_button {
+  width: 4.8vw;
+  margin-left: 0.7vw;
+  background-color: rgba(255, 255, 255, 0.649);
+}
+
+#accounts_button:hover {
+  opacity: 0.7;
+}
+
+#accounts_iban {
+  width: 10vw;
+  margin-left: 5.85vw;
+}
+
+#accounts_name {
+  width: 11.2vw;
+  margin-left: 16.25vw;
+}
+
+#accounts_members {
+  width: 5.75vw;
+  margin-left: 27.85vw;
+  font-size: 0.65vw;
+}
+
+/* Input */
+
+
+#banking_account_select,
+#banking_w_account_select,
+#banking_t_account_select {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 5vw;
+  height: 1vw;
+
+  margin-top: -22vw;
+  margin-left: 30.85vw;
+
+  background-color: rgb(31, 31, 31);
+}
+
+#banking_bank_select {
+  position: absolute;
+
+  font-family: "crock", crock, serif;
+
+  color: rgb(199, 199, 199);
+  font-size: 0.7vw;
+  text-align: center;
+
+  width: 5vw;
+  height: 1vw;
+
+  margin-top: -20.5vw;
+  margin-left: 27.6vw;
+
+  background-color: rgb(31, 31, 31);
+}
+
+/* Notifications */
+
+#notification_message {
+  position: absolute;
+
+  font-family: 'Chinese Rocks Rg', sans-serif;
+
+  padding-top: 0.5vw;
+
+  text-align: center;
+  font-size: 0.8vw;
+  width: 30vw;
+  height: 3vw;
+
+  margin-top: -4vw;
+  margin-left: 30.6vw;
+
+  padding-top: 1vw;
+
+  background-image: url(../img/notify_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-size: cover;
+
+  opacity: 0.8;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 5px;
+  scroll-behavior: smooth;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border: 0.0px solid grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(49, 49, 49, 0.8);
+  border-radius: 5px;
+}
+
+input[type=text] {
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+
+  color: #2e351ee5;
+
+  text-align: center;
+  background-color: rgba(231, 231, 231, 0.781);
+  border: 1px solid rgba(129, 129, 129, 0.253);
+}
+
+#banking_account_page_back_to_main_button:hover,
+#banking_account_page_back_button:hover,
+#banking_account_page_create_joint_button:hover,
+#banking_account_create_joint_page_back_button:hover,
+#banking_account_create_joint_page_button:hover,
+#banking_account_management_members_page_add_button:hover,
+#banking_account_create_page_exit_button:hover,
+#banking_account_create_page_button:hover,
+#banking_account_management_page_joint_members_button:hover,
+#banking_account_management_members_page_back_button:hover,
+#banking_account_member_perms_page_back_button:hover,
+#banking_account_management_page_storage_button:hover,
+#banking_account_management_page_job_button:hover,
+#banking_account_management_page_back_button:hover,
+#banking_account_management_page_joint_rename_button:hover #banking_billing_page_back_button:hover {
+  opacity: 0.9;
+}
+
+
+@media (min-aspect-ratio: 21/9) {
+  body {
+    width: 70%;
+    height: 75%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 15%;
+    margin-top: -25%;
+
+  }
+
+
+  #banking_account_iban {
+    font-size: 0.6vw;
+
+    width: 13.9vw;
+    margin-top: 11.67vw;
+    margin-left: 28.15vw;
+  }
+
+  #banking_account_username {
+    font-size: 0.7vw;
+
+    width: 13.9vw;
+    margin-top: 14.97vw;
+    margin-left: 28.15vw;
+  }
+
+
+  .banking_title {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+    color: #2e351ebf;
+
+    font-size: 0.8vw;
+
+    height: 1.2vw;
+    width: 13.8vw;
+
+    border-radius: 2%;
+    background-color: #6b74613f;
+    text-align: center;
+  }
+
+  .banking_buttons {
+    font-size: 0.8vw;
+
+    height: 1.2vw;
+    width: 12.9vw;
+
+    margin-left: 28.55vw;
+  }
+
+  #banking_account_money_balance {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+    color: rgba(31, 31, 31, 0.747);
+    font-size: 1.1vw;
+
+    width: 8vw;
+    margin-top: 20.4vw;
+    margin-left: 18.1vw;
+    text-align: center;
+  }
+
+  #banking_account_gold_balance {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    color: rgba(31, 31, 31, 0.747);
+    font-size: 1.1vw;
+
+    width: 8vw;
+    margin-top: 20.4vw;
+    margin-left: 43.95vw;
+    text-align: center;
+  }
+
+  #banking_transactions_button {
+    margin-top: 18vw;
+  }
+
+  #banking_management_button {
+    margin-top: 19.6vw;
+  }
+
+  #banking_billing_button {
+    margin-top: 21.2vw;
+  }
+
+  #banking_account_button {
+    margin-top: 22.8vw;
+  }
+
+  #banking_exit_button {
+    margin-top: 24.5vw;
+  }
+
+  #banking_transactions_button:hover,
+  #banking_management_button:hover,
+  #banking_billing_button:hover,
+  #banking_account_button:hover,
+  #banking_exit_button:hover {
+    opacity: 0.9;
+  }
+
+
+  #banking_mainpage_title {
+    margin-left: 28.1vw;
+    margin-top: 16.5vw;
+  }
+
+  #banking_transaction_title_options_page {
+    margin-left: 28.1vw;
+    margin-top: 16.5vw;
+  }
+
+  #banking_transaction_deposit_options_page {
+    margin-top: 18vw;
+  }
+
+  #banking_transaction_withdraw_options_page {
+    margin-top: 19.6vw;
+  }
+
+  #banking_transaction_transfer_options_page {
+    margin-top: 21.2vw;
+  }
+
+  #banking_transaction_transactions_options_page {
+    margin-top: 22.8vw;
+  }
+
+  #banking_transaction_back_options_page {
+    margin-top: 24.5vw;
+  }
+
+
+  /* Page Transaction Actions */
+
+  #banking_transactions_title_action_page {
+
+    margin-left: 28.1vw;
+    margin-top: 16.5vw;
+  }
+
+  #banking_transaction_input_title {
+    margin-left: 28.1vw;
+    margin-top: 19.5vw;
+  }
+
+  #banking_transactions_back_action_page {
+    margin-top: 24.5vw;
+  }
+
+
+  /* Page Action Buttons Page */
+
+  #banking_transaction_accept_button {
+    margin-top: 22.85vw;
+  }
+
+  #banking_billing_page_back_button,
+  #banking_transactions_history_page_back_button {
+    margin-top: 24.5vw;
+  }
+
+  #banking_transactions_fees_description_action_page {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+    color: #7d291de5;
+
+    font-size: 0.55vw;
+
+    height: 1.4vw;
+    width: 20.9vw;
+
+    margin-left: 34.3vw;
+    margin-top: 27vw;
+
+    text-align: right;
+
+  }
+
+  #banking_transaction_previous {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    color: rgb(199, 199, 199);
+    font-size: 0.7vw;
+    text-align: center;
+
+    width: 1vw;
+    height: 1vw;
+
+    margin-top: 18vw;
+    margin-left: 28.2vw;
+
+    background-color: rgba(31, 31, 31, 0.623);
+  }
+
+  #banking_transaction_current {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    color: rgb(199, 199, 199);
+    font-size: 0.7vw;
+    text-align: center;
+
+    width: 10vw;
+    height: 1vw;
+
+    margin-top: 18vw;
+    margin-left: 30vw;
+
+    background-color: rgb(31, 31, 31);
+  }
+
+  #banking_transaction_next {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    color: rgb(199, 199, 199);
+    font-size: 0.7vw;
+    text-align: center;
+
+    width: 1vw;
+    height: 1vw;
+
+    margin-top: 18vw;
+    margin-left: 40.8vw;
+
+    background-color: rgba(31, 31, 31, 0.623);
+  }
+
+
+  #banking_transaction_previous:hover,
+  #banking_transaction_next:hover,
+  #banking_transactions_history_page_back_button:hover {
+    opacity: 0.9;
+  }
+
+
+  #banking_transaction_amount_input {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    color: rgb(199, 199, 199);
+    font-size: 0.7vw;
+    text-align: center;
+
+    width: 12vw;
+    height: 1vw;
+
+    margin-top: 21.1vw;
+    margin-left: 29vw;
+
+    background-color: rgb(31, 31, 31);
+  }
+
+  #banking_transaction_iban_input {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    color: rgb(199, 199, 199);
+    font-size: 0.7vw;
+    text-align: center;
+
+    width: 13.9vw;
+    height: 1vw;
+
+    margin-left: 28.1vw;
+    margin-top: 18.1vw;
+
+    background-color: rgb(31, 31, 31);
+  }
+
+
+  .banking_transactions_history_page_text {
+    position: absolute;
+
+    font-weight: bold;
+    text-align: center;
+
+    height: 1vw;
+
+    font-family: "crock", crock, serif;
+
+    font-size: 0.7vw;
+    color: #2e351ee5;
+
+    margin-top: 16.7vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(129, 129, 129, 0.253);
+  }
+
+  #banking_transactions_reason_history_page {
+    width: 8vw;
+    margin-left: 22vw;
+  }
+
+  #banking_transactions_account_history_page {
+    width: 5vw;
+    margin-left: 30.45vw;
+  }
+
+  #banking_transactions_amount_history_page {
+    width: 5.55vw;
+    margin-left: 35.95vw;
+  }
+
+  #banking_transactions_date_history_page {
+    width: 5.9vw;
+    margin-left: 41.95vw;
+  }
+
+  #history_records {
+
+    position: absolute;
+
+    overflow-y: scroll;
+
+    width: 27.5vw;
+    height: 6.1vw;
+
+    margin-top: 18vw;
+    margin-left: 21.2vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(17, 17, 17, 0.397);
+  }
+
+  #history_records_main {
+    position: relative;
+    color: white;
+
+    width: 26.5vw;
+    height: 1.3vw;
+
+    flex: 0 0 auto;
+
+    margin-left: 0.5vw;
+    margin-top: 0.5vw;
+
+    /* background-size: 100%; */
+    background-color: rgba(6, 82, 117, 0.185);
+    box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+  }
+
+  .history_record_label {
+    height: 0.9vw;
+
+    font-size: 0.55vw;
+    margin-top: -1.14vw;
+    padding-left: 0.3vw;
+    padding-top: 0.1vw;
+
+  }
+
+  #history_records_reason {
+    width: 8vw;
+    margin-left: 0.7vw;
+  }
+
+  #history_records_account {
+    width: 5vw;
+    margin-left: 9.15vw;
+  }
+
+  #history_records_amount {
+    width: 5.55vw;
+    margin-left: 14.6vw;
+  }
+
+  #history_records_date {
+    width: 5.9vw;
+    margin-left: 20.6vw;
+  }
+
+  #history_records_pages_list {
+    position: absolute;
+    display: inline-block;
+
+    font-size: 0.7vw;
+
+    width: 10vw;
+    height: 1vw;
+
+    margin-top: 24.7vw;
+    margin-left: 20.9vw;
+  }
+
+
+  #banking_account_management_page_title {
+    margin-left: 28.1vw;
+    margin-top: 16.5vw;
+  }
+
+  #banking_account_management_page_joint_members_button {
+    margin-top: 18vw;
+  }
+
+  #banking_account_management_page_joint_rename_title {
+
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+    color: #2e351ee5;
+
+    font-size: 1vw;
+
+    height: 1.4vw;
+    width: 13.9vw;
+
+    margin-left: 28.1vw;
+    margin-top: 19.6vw;
+    text-align: center;
+
+    border-radius: 2%;
+    background-color: #6b74611b;
+  }
+
+  #banking_account_management_page_joint_rename_button {
+    margin-top: 22.8vw;
+  }
+
+  #banking_account_management_page_joint_rename_input,
+  #banking_account_management_members_page_add_input {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    color: rgb(199, 199, 199);
+    font-size: 0.7vw;
+    text-align: center;
+
+    width: 12.0vw;
+    height: 1vw;
+
+    margin-left: 28.55vw;
+    margin-top: 21.3vw;
+
+    background-color: rgba(31, 31, 31, 0.821);
+  }
+
+  #banking_account_management_page_joint_rename_input {
+    width: 13vw;
+  }
+
+  #banking_account_management_members_page_add_input {
+    margin-left: 21.2vw;
+    margin-top: 24.8vw;
+
+    font-size: 0.8vw;
+    height: 1.1vw;
+
+  }
+
+  #banking_account_management_members_page_add_button {
+    margin-left: 33.8vw;
+    margin-top: 24.7vw;
+    width: 7vw;
+  }
+
+  #banking_account_management_page_storage_button {
+    margin-top: 21.2vw;
+  }
+
+  #banking_account_management_page_job_button {
+    margin-top: 18vw;
+  }
+
+  #banking_account_management_page_job_title {
+    margin-left: 28.53vw;
+    margin-top: 19.5vw;
+
+    font-size: 0.7vw;
+    height: 1.0vw;
+    width: 13vw;
+  }
+
+  #banking_account_management_page_back_button {
+    margin-top: 24.5vw;
+  }
+
+
+  #banking_account_management_members_page_iban {
+    height: 0.9vw;
+    width: 6vw;
+    margin-left: 22.1vw;
+    font-size: 0.6vw;
+    margin-top: 18.2vw;
+
+  }
+
+  #banking_account_management_members_page_username {
+    height: 0.9vw;
+    width: 8.05vw;
+    margin-left: 28.5vw;
+    font-size: 0.6vw;
+    margin-top: 18.2vw;
+  }
+
+  #banking_account_management_members_page_action {
+    height: 0.9vw;
+    width: 10.75vw;
+    margin-left: 36.95vw;
+    font-size: 0.6vw;
+    margin-top: 18.2vw;
+  }
+
+
+  #banking_account_page_back_button,
+  #banking_account_create_page_exit_button,
+  #banking_account_create_joint_page_back_button,
+  #banking_account_management_members_page_back_button,
+  #banking_account_member_perms_page_back_button {
+    margin-top: 24.7vw;
+    margin-left: 41.6vw;
+
+    font-size: 0.8vw;
+    width: 7vw;
+  }
+
+
+
+  #accounts_main,
+  #members_main,
+  #banking_account_member_perms_page_panel_list_main {
+    position: relative;
+    color: white;
+
+    width: 26.5vw;
+    height: 1.3vw;
+
+    flex: 0 0 auto;
+
+    margin-left: 0.5vw;
+    margin-top: 0.1vw;
+
+    /* background-size: 100%; */
+    background-color: rgba(6, 82, 117, 0.185);
+    box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+  }
+
+  #members {
+
+    position: absolute;
+
+    overflow-y: scroll;
+
+    width: 27.4vw;
+    height: 5vw;
+
+    margin-top: 19.5vw;
+    margin-left: 21.2vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(17, 17, 17, 0.397);
+  }
+
+  #members_iban {
+    width: 6vw;
+    margin-left: 0.85vw;
+  }
+
+  #banking_account_member_perms_page_panel_list_label {
+    width: 29vw;
+    margin-left: 0.85vw;
+
+    padding-left: 0.5vw;
+
+    text-align: left;
+  }
+
+  #members_username {
+    width: 8vw;
+    margin-left: 7.25vw;
+  }
+
+  #members_perms_button {
+    width: 7vw;
+    margin-left: 15.65vw;
+    font-size: 0.6vw;
+  }
+
+  #members_button {
+    width: 3.5vw;
+    margin-left: 23.0vw;
+    font-size: 0.6vw;
+  }
+
+  #members_button:hover,
+  #members_perms_button:hover {
+    opacity: 0.7;
+  }
+
+
+  #banking_account_member_perms_page_panel {
+
+    position: absolute;
+
+    width: 34.5vw;
+    height: 7vw;
+
+    margin-top: 24.9vw;
+    margin-left: 27.7vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(17, 17, 17, 0.397);
+  }
+
+  #banking_account_member_perms_page_panel_list {
+
+    position: absolute;
+
+    overflow-y: scroll;
+
+    width: 34.5vw;
+    height: 7vw;
+
+    margin-top: 24.9vw;
+    margin-left: 27.7vw;
+
+  }
+
+  .accounts_label,
+  .members_label {
+
+    height: 0.9vw;
+
+    font-size: 0.6vw;
+
+    margin-top: -1.14vw;
+    padding-left: 0.15vw;
+    padding-top: 0.1vw;
+  }
+
+  #banking_account_page_title,
+  #banking_account_create_page_title,
+  #banking_account_create_joint_page_title,
+  #banking_account_management_members_page_title,
+  #banking_account_member_perms_page_title {
+    margin-left: 28.1vw;
+    margin-top: 16.5vw;
+  }
+
+  #banking_account_page_title,
+  #banking_account_create_page_title,
+  #banking_account_create_joint_page_title,
+  #banking_account_management_members_page_title,
+  #banking_account_member_perms_page_title {
+    margin-left: 28.1vw;
+    margin-top: 16.5vw;
+  }
+
+  #banking_account_page_create_joint_button,
+  #banking_account_create_page_button,
+  #banking_account_create_joint_page_button {
+    margin-top: 32.8vw;
+    margin-left: 28.3vw;
+
+    width: 12.5vw;
+    font-size: 0.9vw;
+  }
+
+  #banking_account_page_back_to_main_button {
+    margin-top: 32.8vw;
+    margin-left: 28.3vw;
+
+    width: 12.5vw;
+    font-size: 0.9vw;
+  }
+
+  #banking_account_page_back_button,
+  #banking_account_create_page_exit_button,
+  #banking_account_create_joint_page_back_button,
+  #banking_account_management_members_page_back_button,
+  #banking_account_member_perms_page_back_button {
+    margin-top: 24.5vw;
+    margin-left: 41.6vw;
+
+    font-size: 0.9vw;
+    width: 7vw;
+  }
+
+
+  #banking_account_create_page_description,
+  #banking_account_create_joint_page_description {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+
+    margin-top: 24.8vw;
+    margin-left: 28.3vw;
+
+    color: rgb(31, 31, 31);
+
+    font-size: 0.8vw;
+    text-align: center;
+
+    width: 33.3vw;
+    height: 7.5vw;
+    max-height: 7.5vw;
+
+    background-color: #6b74612d;
+
+    white-space: pre-wrap;
+  }
+
+  .banking_account_page_text {
+    position: absolute;
+
+    font-weight: bold;
+    text-align: center;
+
+    height: 0.9vw;
+
+    font-family: "crock", crock, serif;
+
+    font-size: 0.6vw;
+    color: #2e351ee5;
+
+    margin-top: 18vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(129, 129, 129, 0.253);
+  }
+
+  #banking_account_page_action {
+    width: 4.7vw;
+    margin-left: 21.9vw;
+  }
+
+  #banking_account_page_iban {
+    width: 8vw;
+    margin-left: 27.05vw;
+  }
+
+  #banking_account_page_name {
+    width: 8.4vw;
+    margin-left: 35.4vw;
+  }
+
+  #banking_account_page_members {
+    width: 3.7vw;
+    margin-left: 44.2vw;
+  }
+
+  .accounts_label,
+  .members_label {
+    position: absolute;
+
+    font-weight: bold;
+    text-align: center;
+
+    height: 1vw;
+
+    font-size: 0.7vw;
+    color: rgba(47, 47, 47, 0.883);
+
+    margin-top: -1.14vw;
+    padding-left: 0.15vw;
+
+    box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+    background-color: rgba(222, 184, 135, 0.493);
+  }
+
+  #accounts {
+
+    position: absolute;
+
+    overflow-y: scroll;
+
+    width: 27.6vw;
+    height: 5vw;
+
+    margin-top: 19.1vw;
+    margin-left: 21.1vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(17, 17, 17, 0.397);
+  }
+
+  #accounts_main,
+  #members_main,
+  #banking_account_member_perms_page_panel_list_main {
+    position: relative;
+    color: white;
+
+    width: 26.7vw;
+    height: 1.2vw;
+
+    flex: 0 0 auto;
+
+    margin-left: 0.5vw;
+    margin-top: 0.2vw;
+    font-size: 0.6vw;
+
+    /* background-size: 100%; */
+    background-color: rgba(6, 82, 117, 0.185);
+    box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+  }
+
+  #accounts_button {
+    width: 4.8vw;
+    margin-left: 0.7vw;
+    background-color: rgba(255, 255, 255, 0.649);
+  }
+
+  #accounts_button:hover {
+    opacity: 0.7;
+  }
+
+  #accounts_iban {
+    width: 8vw;
+    margin-left: 5.85vw;
+    font-size: 0.65vw;
+  }
+
+  #accounts_name {
+    width: 8.4vw;
+    margin-left: 14.25vw;
+    font-size: 0.65vw;
+  }
+
+  #accounts_members {
+    width: 3.75vw;
+    margin-left: 23.05vw;
+    font-size: 0.65vw;
+  }
+
+  .banking_billing_page_text {
+    position: absolute;
+
+    font-weight: bold;
+    text-align: center;
+
+    height: 0.9vw;
+
+    font-family: "crock", crock, serif;
+
+    font-size: 0.6vw;
+    color: #2e351ee5;
+
+    margin-top: 16.5vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(129, 129, 129, 0.253);
+  }
+
+
+  #banking_billing_page_action {
+    width: 3vw;
+
+    margin-left: 22vw;
+  }
+
+  #banking_billing_page_reason {
+    width: 5.7vw;
+    margin-left: 25.3vw;
+  }
+
+  #banking_billing_page_issuer {
+    width: 6vw;
+    margin-left: 31.35vw;
+  }
+
+  #banking_billing_page_account {
+    width: 2.8vw;
+    margin-left: 37.7vw;
+  }
+
+  #banking_billing_page_cost {
+    width: 2.5vw;
+    margin-left: 40.95vw;
+  }
+
+  #banking_billing_page_date {
+    width: 4.1vw;
+    margin-left: 43.85vw;
+  }
+
+
+  #billings {
+
+    position: absolute;
+
+    overflow-y: scroll;
+
+    width: 27.4vw;
+    height: 6.5vw;
+
+    margin-top: 17.6vw;
+    margin-left: 21.2vw;
+
+    background-color: #6b7461ad;
+    border: 1px solid rgba(17, 17, 17, 0.397);
+  }
+
+  #billings_main {
+    position: relative;
+    color: white;
+
+    width: 26.4vw;
+    height: 1.1vw;
+
+    flex: 0 0 auto;
+
+    margin-left: 0.5vw;
+    margin-top: 0.5vw;
+
+    /* background-size: 100%; */
+    background-color: rgba(6, 82, 117, 0.185);
+    box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+  }
+
+  .billings_label {
+    position: absolute;
+
+    font-weight: bold;
+    text-align: center;
+
+    height: 0.9vw;
+
+    font-size: 0.6vw;
+    color: rgba(47, 47, 47, 0.883);
+
+    margin-top: -1vw;
+    padding-left: 0.15vw;
+
+    box-shadow: inset 0 0 2px 2px rgba(22, 22, 22, 0.616);
+    background-color: rgba(222, 184, 135, 0.493);
+  }
+
+  #billings_button {
+    width: 3vw;
+    margin-left: 0.7vw;
+    background-color: rgba(255, 255, 255, 0.649);
+  }
+
+  #billings_button:hover {
+    opacity: 0.7;
+  }
+
+  #billings_reason {
+    width: 5.7vw;
+    margin-left: 4vw;
+  }
+
+  #billings_issuer {
+    width: 6vw;
+    margin-left: 10.05vw;
+  }
+
+  #billings_account {
+    width: 3.0vw;
+    margin-left: 16.37vw;
+  }
+
+  #billings_cost {
+    width: 2.5vw;
+    margin-left: 19.68vw;
+  }
+
+  #billings_date {
+    width: 4.1vw;
+    margin-left: 22.5vw;
+    font-size: 0.65vw;
+  }
+
+  #billings_pages_list {
+    position: absolute;
+    display: inline-block;
+
+    font-size: 0.7vw;
+
+    width: 10vw;
+    height: 1vw;
+
+    margin-top: 33.2vw;
+    margin-left: 27.5vw;
+  }
+
+  #billings_pages_list_value {
+    position: relative;
+    display: inline-block;
+    font-family: "crock", crock, serif;
+
+    color: #2f332a;
+
+    font-size: 0.7vw;
+    font-weight: 750;
+
+    height: 1vw;
+    width: 1.2vw;
+
+    text-align: center;
+  }
+
+  #billings_pages_list_value:hover {
+    opacity: 0.7;
+  }
+
+}
+
+@media (aspect-ratio: 16/10) {
+  /* styles for 2560x1600, 1920x1200, etc */
+
+
+  #banking_account_iban {
+    font-size: 0.8vw;
+
+    width: 13.9vw;
+    margin-top: 17.3vw;
+    margin-left: 38.15vw;
+  }
+
+  #banking_account_username {
+    font-size: 0.9vw;
+
+    width: 13.9vw;
+    margin-top: 22.3vw;
+    margin-left: 38.3vw;
+  }
+
+  #banking_mainpage_title {
+    margin-left: 38.25vw;
+    margin-top: 24.9vw;
+  }
+
+  #banking_transactions_button {
+    margin-top: 26.8vw;
+  }
+
+  #banking_management_button {
+    margin-top: 28.8vw;
+  }
+
+  #banking_billing_button {
+    margin-top: 30.8vw;
+  }
+
+  #banking_account_button {
+    margin-top: 32.8vw;
+  }
+
+  #banking_exit_button {
+    margin-top: 34.8vw;
+  }
+
+  #banking_account_money_balance {
+
+    width: 8vw;
+    margin-top: 30.6vw;
+    margin-left: 24.45vw;
+
+  }
+
+  #banking_account_gold_balance {
+    width: 8vw;
+    margin-top: 30.6vw;
+    margin-left: 57.65vw;
+
+  }
+
+
+  #banking_transaction_title_options_page {
+    margin-left: 38.25vw;
+    margin-top: 24.9vw;
+  }
+
+  #banking_transaction_deposit_options_page {
+    margin-top: 26.8vw;
+  }
+
+  #banking_transaction_withdraw_options_page {
+    margin-top: 28.8vw;
+  }
+
+  #banking_transaction_transfer_options_page {
+    margin-top: 30.8vw;
+  }
+
+  #banking_transaction_transactions_options_page {
+    margin-top: 32.8vw;
+  }
+
+  #banking_transaction_back_options_page {
+    margin-top: 34.8vw;
+  }
+
+
+  #banking_transactions_title_action_page {
+
+    margin-left: 38.3vw;
+    margin-top: 22.8vw;
+  }
+
+  #banking_transaction_input_title {
+    margin-left: 38.3vw;
+    margin-top: 26.8vw;
+  }
+
+  #banking_transactions_back_action_page {
+    margin-top: 32.8vw;
+  }
+
+  #banking_transactions_back_action_page:hover {
+    opacity: 0.9;
+  }
+
+
+
+  /* Page Action Buttons Page */
+
+  #banking_transactions_title_action_page {
+
+    margin-left: 38.3vw;
+    margin-top: 24.8vw;
+  }
+
+  #banking_transaction_input_title {
+    margin-left: 38.3vw;
+    margin-top: 28.6vw;
+  }
+
+  #banking_transaction_amount_input {
+    margin-top: 30.5vw;
+  }
+
+  #banking_transaction_iban_input {
+    margin-top: 26.5vw;
+  }
+
+  #banking_transaction_current {
+    margin-top: 26.5vw;
+  }
+
+  #banking_transaction_next {
+    margin-top: 26.5vw;
+  }
+
+  #banking_transaction_previous {
+    margin-top: 26.5vw;
+  }
+
+  #banking_transactions_back_action_page {
+    margin-top: 34.8vw;
+  }
+
+  #banking_transactions_back_action_page:hover {
+    opacity: 0.9;
+  }
+
+
+  #banking_transaction_accept_button {
+    margin-top: 32.8vw;
+  }
+
+  #banking_billing_page_back_button,
+  #banking_transactions_history_page_back_button {
+    margin-top: 34.8vw;
+  }
+
+  #banking_transactions_fees_description_action_page {
+    position: absolute;
+
+    font-family: "crock", crock, serif;
+    color: #7d291de5;
+
+    font-size: 0.65vw;
+
+    height: 1.4vw;
+    width: 20.9vw;
+
+    margin-left: 41.3vw;
+    margin-top: 37.5vw;
+
+    text-align: right;
+
+  }
+
+  #banking_billing_page_back_button,
+  #banking_transactions_history_page_back_button {
+    margin-top: 36.8vw;
+  }
+
+  #history_records_pages_list {
+
+    margin-top: 35.2vw;
+  }
+
+  #history_records {
+    margin-top: 26.5vw;
+  }
+
+  .banking_transactions_history_page_text {
+    margin-top: 25vw;
+  }
+
+  #billings {
+    margin-top: 26.5vw;
+  }
+
+  #billings_pages_list {
+    margin-top: 35.2vw;
+  }
+
+  .banking_billing_page_text {
+    margin-top: 25vw;
+  }
+
+  #banking_account_page_title,
+  #banking_account_create_page_title,
+  #banking_account_create_joint_page_title,
+  #banking_account_management_members_page_title,
+  #banking_account_member_perms_page_title {
+    margin-left: 38.3vw;
+    margin-top: 24.8vw;
+  }
+
+  .banking_account_page_text {
+    margin-top: 27vw;
+  }
+
+  #accounts {
+    margin-top: 28.5vw;
+  }
+
+  #banking_account_page_create_joint_button,
+  #banking_account_create_page_button,
+  #banking_account_create_joint_page_button {
+    margin-top: 34.8vw;
+    margin-left: 28.3vw;
+
+  }
+
+  #banking_account_page_back_to_main_button {
+    margin-top: 34.8vw;
+    margin-left: 28.3vw;
+  }
+
+  #banking_account_page_back_button,
+  #banking_account_create_page_exit_button,
+  #banking_account_create_joint_page_back_button,
+  #banking_account_management_members_page_back_button,
+  #banking_account_member_perms_page_back_button {
+    margin-top: 34.8vw;
+
+  }
+
+  #banking_account_page_create_joint_button,
+  #banking_account_create_page_button,
+  #banking_account_create_joint_page_button {
+    margin-top: 34.8vw;
+
+  }
+
+  #banking_account_create_page_description,
+  #banking_account_create_joint_page_description {
+    margin-top: 26.8vw;
+  }
+
+  #banking_account_management_page_title {
+    margin-left: 38.25vw;
+    margin-top: 24.8vw;
+  }
+
+  #banking_account_management_page_joint_members_button {
+    margin-top: 26.8vw;
+  }
+
+  #banking_account_management_page_joint_rename_title {
+    margin-top: 28.8vw;
+  }
+
+  #banking_account_management_page_joint_rename_button {
+    margin-top: 32.8vw
+  }
+
+  #banking_account_management_page_joint_rename_input,
+  #banking_account_management_members_page_add_input {
+
+    margin-top: 31.1vw;
+
+  }
+
+  #banking_account_management_page_back_button {
+    margin-top: 34.8vw;
+  }
+
+  #members {
+    margin-top: 28.5vw;
+  }
+
+
+  #banking_account_management_members_page_add_input {
+
+    margin-top: 34.8vw;
+  }
+
+  #banking_account_management_members_page_add_button {
+
+    margin-top: 34.8vw;
+
+  }
+
+  #banking_account_management_page_storage_button {
+    margin-top: 30.8vw;
+  }
+}

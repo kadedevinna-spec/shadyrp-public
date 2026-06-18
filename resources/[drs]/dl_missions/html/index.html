@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery.mCustomScrollbar.css">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>DL-Missions</title>
+</head>
+<body>
+    
+    
+    <audio id="audioPlayer" style="display: none;"></audio>
+
+    <div id="npc-dialog-overlay" class="npc-dialog-overlay" aria-live="polite">
+        <div class="npc-dialog-card">
+            <div id="npc-dialog-title" class="npc-dialog-title">Mission</div>
+            <div id="npc-dialog-text" class="npc-dialog-text"></div>
+            <div class="npc-dialog-rule"></div>
+        </div>
+    </div>
+
+
+
+    <div id="page-wrapper">
+        
+        <div class="main-grid" style="grid-template-columns: 0.8fr 2.2fr;">
+            
+            <div id="active-missions">
+                <div class="row header"><h2>{{configurations.translations.ui_activemissions}}</h2></div>
+                <div class="row mCustomScrollbar" id="active-missions-list" data-mcs-theme="light">
+                    <!-- Active missions will be dynamically added here -->
+
+                    <div class="mission" v-for="mission in missionsList" :key="mission.i_id" :class="{'mission-selected': selectedMission && selectedMission.i_id === mission.i_id}" @click="changeDetailMission(mission.i_id)">
+                        <div class="mission_title"><div class="timebased" v-if="mission.t_timeLeft"></div>{{ mission.s_title }}</div>
+
+                        <div class="mission_status mission-completed" 
+                            v-if="mission.i_status == 2">
+                            {{ configurations.translations.ui_completed }}
+                        </div>
+
+                        <div class="mission_status mission-turned-in" 
+                            v-if="mission.i_status == 4">
+                            {{ configurations.translations.ui_turnedin }}
+                        </div>
+                        
+                        <div class="mission_status mission-failed" 
+                            v-else-if="mission.t_timeLeft && mission.t_timeLeft.expired && mission.i_status != 4 && mission.i_status != 2">
+                            {{ configurations.translations.ui_expired }}
+                        </div>
+                        
+                        <div class="mission_status"
+                            :class="missionStatusClass(mission)"
+                            v-else-if="mission.i_status == 3">
+                            {{ missionFailedLabel(mission) }}
+                        </div>
+                        
+                        <div class="mission_status" 
+                            v-else-if="mission.t_timeLeft && !mission.t_timeLeft.expired && mission.i_status != 2 && mission.i_status != 4"
+                            :class="{'mission-failed': mission.t_timeLeft.overall_seconds <= 180}">
+                            {{ mission.t_timeLeft.time_format }}
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="mission-details">
+
+                <div class="row header">
+                    <h2>{{ selectedMission ? selectedMission.s_title : '' }}</h2>
+
+                    <div class="mission_status">
+                        
+                        <h3 v-if="selectedMission && selectedMission.i_status == 2" 
+                            class="mission-completed">
+                            {{ configurations.translations.ui_completed }}
+                        </h3>
+                        
+                        <h3 v-else-if="selectedMission && selectedMission.t_timeLeft && selectedMission.t_timeLeft.expired && selectedMission.i_status != 4" 
+                            class="mission-failed">
+                            {{ configurations.translations.ui_expired }}
+                        </h3>
+
+                        <h3 v-else-if="selectedMission && selectedMission.t_timeLeft && selectedMission.t_timeLeft.expired && selectedMission.i_status == 4" 
+                            class="mission-completed">
+                            {{ configurations.translations.ui_nextmissionavailable }}
+                        </h3>
+                        
+                        <h3 v-else-if="selectedMission && selectedMission.i_status == 3"
+                            :class="missionStatusClass(selectedMission)">
+                            {{ missionFailedLabel(selectedMission) }}
+                        </h3>
+                        
+                        <h3 v-else-if="selectedMission && selectedMission.t_timeLeft && !selectedMission.t_timeLeft.expired && selectedMission.i_status != 4" 
+                            :class="{'mission-failed': selectedMission.t_timeLeft.overall_seconds <= 180}">
+                            <span class="timebased" 
+                                v-if="selectedMission && selectedMission.t_timeLeft && !selectedMission.t_timeLeft.expired && selectedMission.i_status == 1">
+                            </span>
+                            {{ selectedMission.t_timeLeft.time_format }}
+                        </h3>
+
+                        <h3 v-else-if="selectedMission && selectedMission.t_timeLeft && !selectedMission.t_timeLeft.expired && selectedMission.i_status == 4" 
+                            :class="{'mission-completed': selectedMission.t_timeLeft.overall_seconds <= 180}">
+                            {{ configurations.translations.ui_nextmissiontimer }}
+                            <span class="timebased" 
+                                v-if="selectedMission && selectedMission.t_timeLeft && !selectedMission.t_timeLeft.expired && selectedMission.i_status == 4">
+                            </span>
+                            {{ selectedMission.t_timeLeft.time_format }}
+                        </h3>
+
+                    </div>
+                    
+                </div>
+
+                <div class="row mission_info" v-if="selectedMission">
+                    <div class="col-6 p-0" v-if="missionImage"><img id="mission_image" :src="missionImage" alt="Mission Image"></div>
+                    <div :class="missionImage ? 'col-6 p-0' : 'col-12 p-0'" id="mission_description">
+                        {{ selectedMission ? selectedMission.s_description : '' }}
+                    </div>
+                </div>
+
+
+                <div class="row mission_tasks mCustomScrollbar" data-mcs-theme="light">
+
+                    <div class="mission_task" :class="{'task-locked': isTaskLocked(task, index)}" v-if="selectedMissionTasks && selectedMissionTasks.length > 0" v-for="(task, index) in selectedMissionTasks" :key="task.i_id">
+                        <div class="task_title" :class="{'mission-completed': task.i_status == 2, 'mission-failed': task.i_status == 3}">{{ task.s_description }}</div>
+                        <span v-if="isTaskLocked(task, index)" class="task-lock-icon">&#128274;&#xfe0e;</span>
+                        <progress :max="task.i_targetAmount" :value="task.i_progress" v-if="task.i_targetAmount > 1 && !isTaskLocked(task, index)"></progress>
+                    </div>
+
+                </div>
+
+                <div class="row mission_test_tools" v-if="showMissionTestTools && selectedMission">
+                    <button class="mission-reset-button" @click="requestMissionReset(selectedMission)">
+                        Reset Selected Mission
+                    </button>
+                    <span class="mission-reset-hint">Testing only. Removes this mission from your character.</span>
+                </div>
+
+                <div class="row mission_rewards" v-if="selectedMission && selectedMission.t_reward">
+                    <h4 class="mission-locked">{{ configurations.translations.ui_rewards }}:</h4>
+                    <ul class="rewards">
+                        
+                        <li v-if="selectedMission.t_reward.currency" v-for="(value, key) in selectedMission.t_reward.currency" :key="key">
+                            {{ key }}: {{ value }}
+                        </li>
+
+                        <li v-if="selectedMission.t_reward.items" v-for="(item, index) in selectedMission.t_reward.items" :key="index">
+                            {{ item.amount }}x 
+                            <img :src="getItemImage(item.name)" :alt="item.name" @error="getAlternativeItemImage" class="reward_icon">
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script src="js/audio.js"></script>
+
+</body>
+</html> 

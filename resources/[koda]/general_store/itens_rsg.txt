@@ -1,0 +1,78 @@
+================================================================================
+ GENERAL STORE — RSG Core item entries
+================================================================================
+
+Target file:
+  resources/[framework]/rsg-core/shared/items.lua
+
+Inventory images (required for rsg-inventory UI):
+  resources/[framework]/rsg-inventory/html/images/
+
+  Copy PNGs from general_store/html/images/ using the same filename as the image field.
+  Store NUI uses general_store/html/images/ — inventory uses rsg-inventory.
+
+--------------------------------------------------------------------------------
+ ALREADY IN CORE (do not add again)
+--------------------------------------------------------------------------------
+  whiskey, cigarette, cigar
+
+  indian_tobacco is a separate craft/herbalist item (useable = false).
+  general_store consumables use the "tobacco" item below.
+
+--------------------------------------------------------------------------------
+ ADDED TO CORE (16 items — section: GENERAL STORE)
+--------------------------------------------------------------------------------
+
+  item              | label               | image
+  ------------------|---------------------|------------------------
+  biscuits          | Biscuits            | biscuits.png
+  canstrawberries   | Canned Strawberries | canstrawberries.png
+  canpineapple      | Canned Pineapple    | canpineapple.png
+  cornedbeef        | Corned Beef         | cornedbeef.png
+  canpeas           | Canned Peas         | canpeas.png
+  cancorn           | Canned Corn         | cancorn.png
+  canpeaches        | Canned Peaches      | canpeaches.png
+  canbeans          | Canned Beans        | canbeans.png
+  chocolatebar      | Chocolate Bar       | chocolatebar.png
+  cheesewedge       | Cheese Wedge        | cheesewedge.png
+  salted_beef       | Salted Beef         | salted_beef.png
+  salted_venison    | Salted Venison      | salted_venison.png
+  oatcakes          | Oatcakes            | oatcakes.png
+  brandy            | Brandy              | brandy.png
+  rum               | Navy Rum            | rum.png
+  tobacco           | Tobacco             | tobacco.png
+
+  All useable = true — registered by general_store/config_consumables.lua
+
+--------------------------------------------------------------------------------
+ AFTER RESTART
+--------------------------------------------------------------------------------
+  1. restart rsg-core (or full server restart)
+  2. ensure general_store
+  3. Console: "Consumables registered: 19 (0 waiting for core items)"
+
+================================================================================
+ REFERENCE — entries live in items.lua under GENERAL STORE section
+================================================================================
+
+  biscuits        = { name = 'biscuits',        label = 'Biscuits',            weight = 80,  type = 'item', image = 'biscuits.png',        unique = false, useable = true, shouldClose = true, description = 'A tin of dry biscuits.'              },
+  canstrawberries = { name = 'canstrawberries', label = 'Canned Strawberries', weight = 120, type = 'item', image = 'canstrawberries.png', unique = false, useable = true, shouldClose = true, description = 'Sweet strawberries in syrup.'        },
+  canpineapple    = { name = 'canpineapple',    label = 'Canned Pineapple',    weight = 120, type = 'item', image = 'canpineapple.png',    unique = false, useable = true, shouldClose = true, description = 'Tropical pineapple in a tin.'          },
+  cornedbeef      = { name = 'cornedbeef',      label = 'Corned Beef',         weight = 150, type = 'item', image = 'cornedbeef.png',      unique = false, useable = true, shouldClose = true, description = 'Salt-cured beef in a tin.'           },
+  canpeas         = { name = 'canpeas',         label = 'Canned Peas',         weight = 100, type = 'item', image = 'canpeas.png',         unique = false, useable = true, shouldClose = true, description = 'Green peas in brine.'                },
+  cancorn         = { name = 'cancorn',         label = 'Canned Corn',         weight = 110, type = 'item', image = 'cancorn.png',         unique = false, useable = true, shouldClose = true, description = 'Sweet corn in a tin.'                },
+  canpeaches      = { name = 'canpeaches',      label = 'Canned Peaches',      weight = 120, type = 'item', image = 'canpeaches.png',      unique = false, useable = true, shouldClose = true, description = 'Peaches in heavy syrup.'             },
+  canbeans        = { name = 'canbeans',        label = 'Canned Beans',        weight = 130, type = 'item', image = 'canbeans.png',        unique = false, useable = true, shouldClose = true, description = 'Baked beans in a tin.'               },
+  chocolatebar    = { name = 'chocolatebar',    label = 'Chocolate Bar',       weight = 60,  type = 'item', image = 'chocolatebar.png',    unique = false, useable = true, shouldClose = true, description = 'A bar of sweet chocolate.'           },
+  cheesewedge     = { name = 'cheesewedge',     label = 'Cheese Wedge',        weight = 90,  type = 'item', image = 'cheesewedge.png',     unique = false, useable = true, shouldClose = true, description = 'A wedge of aged cheese.'             },
+  salted_beef     = { name = 'salted_beef',     label = 'Salted Beef',         weight = 110, type = 'item', image = 'salted_beef.png',     unique = false, useable = true, shouldClose = true, description = 'Preserved beef, heavily salted.'     },
+  salted_venison  = { name = 'salted_venison',  label = 'Salted Venison',      weight = 110, type = 'item', image = 'salted_venison.png',  unique = false, useable = true, shouldClose = true, description = 'Preserved venison, heavily salted.'  },
+  oatcakes        = { name = 'oatcakes',        label = 'Oatcakes',            weight = 85,  type = 'item', image = 'oatcakes.png',        unique = false, useable = true, shouldClose = true, description = 'Simple oat cakes, filling and dry.'  },
+  brandy          = { name = 'brandy',          label = 'Brandy',              weight = 200, type = 'item', image = 'brandy.png',          unique = false, useable = true, shouldClose = true, description = 'A bottle of fine brandy.'            },
+  rum             = { name = 'rum',             label = 'Navy Rum',            weight = 200, type = 'item', image = 'rum.png',             unique = false, useable = true, shouldClose = true, description = 'Strong navy rum.'                    },
+  tobacco         = { name = 'tobacco',         label = 'Tobacco',             weight = 40,  type = 'item', image = 'tobacco.png',         unique = false, useable = true, shouldClose = true, description = 'Loose tobacco for rolling or chewing.' },
+
+================================================================================
+ OPTIONAL — perishable decay (same pattern as bread/stew in core)
+================================================================================
+  biscuits = { ..., useable = true, decay = 300, delete = true, shouldClose = true, ... },

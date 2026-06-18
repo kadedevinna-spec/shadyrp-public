@@ -1,0 +1,831 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  user-select: none;
+  overflow: hidden; /* Scroll bar'ı tamamen kaldır */
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GİRİŞ ANİMASYONLARI - OPENING ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Container başlangıç durumu */
+.main-container, .main-container2 {
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden; /* Animasyon sırasında taşmayı önle */
+}
+
+.border{
+    position: absolute;
+    top: 13.0208vw;
+    left: 21.5104vw;
+    z-index: 99;
+    background-image: url(./images/border.png);
+    width: .1042vw;
+    height: .7813vw;
+    background-size: 100% 100%;
+}
+
+.border2{
+    position: absolute;
+    top: 13.0208vw;
+    left: 27.7604vw;
+    z-index: 99;
+    background-image: url(./images/border.png);
+    width: .1042vw;
+    height: .7813vw;
+    background-size: 100% 100%;
+}
+.border3{
+    position: absolute;
+    top: 13.0208vw;
+    left: 435px;
+    z-index: 99;
+    background-image: url(./images/border.png);
+    width: .1042vw;
+    height: .7813vw;
+    background-size: 100% 100%;
+}
+.border4{
+    position: absolute;
+    top: 13.0208vw;
+    left: 27.7604vw;
+    z-index: 99;
+    background-image: url(./images/border.png);
+    width: .1042vw;
+    height: .7813vw;
+    background-size: 100% 100%;
+}
+/* Container açıldığında */
+.main-container.show, .main-container2.show {
+    opacity: 1;
+    visibility: visible;
+    animation: containerFadeIn 0.5s ease-out;
+    overflow: hidden; /* Animasyon sırasında taşmayı önle */
+}
+
+@keyframes containerFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SADECE İLK AÇILIŞTA ANİMASYON - "opening" CLASS'I İLE
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes slideFromTop {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideFromLeft {
+    from {
+        transform: translateX(-300px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideFromRight {
+    from {
+        transform: translateX(300px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideFromBottom {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes bgFadeScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* SADECE .opening CLASS'I VARKEN ANİMASYON OLSUN */
+.main-container.opening .market-header,
+.main-container2.opening .market-header {
+    animation: slideFromTop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.main-container.opening .market-desc,
+.main-container2.opening .market-desc {
+    animation: slideFromTop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards;
+}
+
+.main-container.opening .categories,
+.main-container2.opening .categories {
+    animation: slideFromLeft 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+}
+
+.main-container.opening .moneybg,
+.main-container2.opening .moneybg {
+    animation: slideFromRight 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards;
+}
+
+.main-container.opening .itemlist-header,
+.main-container.opening .itemlistheader-desc,
+.main-container2.opening .itemlist-header,
+.main-container2.opening .itemlistheader-desc {
+    animation: slideFromLeft 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s backwards;
+}
+
+.main-container.opening .current-product,
+.main-container.opening .productslash,
+.main-container.opening .total-product,
+.main-container.opening .producttext,
+.main-container2.opening .current-product,
+.main-container2.opening .productslash,
+.main-container2.opening .total-product,
+.main-container2.opening .producttext {
+    animation: slideFromRight 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s backwards;
+}
+
+.main-container.opening .productbg,
+.main-container2.opening .productbg {
+    animation: slideFromRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+/* Her ürün için farklı delay - SADECE AÇILIŞTA */
+.main-container.opening .productbg:nth-child(1),
+.main-container2.opening .productbg:nth-child(1) { animation-delay: 0.5s; }
+.main-container.opening .productbg:nth-child(2),
+.main-container2.opening .productbg:nth-child(2) { animation-delay: 0.55s; }
+.main-container.opening .productbg:nth-child(3),
+.main-container2.opening .productbg:nth-child(3) { animation-delay: 0.6s; }
+.main-container.opening .productbg:nth-child(4),
+.main-container2.opening .productbg:nth-child(4) { animation-delay: 0.65s; }
+.main-container.opening .productbg:nth-child(5),
+.main-container2.opening .productbg:nth-child(5) { animation-delay: 0.7s; }
+.main-container.opening .productbg:nth-child(6),
+.main-container2.opening .productbg:nth-child(6) { animation-delay: 0.75s; }
+.main-container.opening .productbg:nth-child(7),
+.main-container2.opening .productbg:nth-child(7) { animation-delay: 0.8s; }
+.main-container.opening .productbg:nth-child(8),
+.main-container2.opening .productbg:nth-child(8) { animation-delay: 0.85s; }
+
+.main-container.opening .keybinds-section,
+.main-container2.opening .keybinds-section,
+.main-container.opening .keybinds-section2,
+.main-container2.opening .keybinds-section2 {
+    animation: slideFromBottom 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s backwards;
+}
+
+.main-container.opening .main-bg,
+.main-container2.opening .main-bg,
+.main-container.opening .main-bg2,
+.main-container2.opening .main-bg2 {
+    animation: bgFadeScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.main-bg{
+    position: absolute;
+    background-image: url(./images/mainbg.png);
+    width: 33.8542vw;
+    height: 14.8438vw;
+    background-size: cover;
+    right: 2.6042vw;
+    top: 2.6042vw;
+}
+.main-bg2{
+    position: absolute;
+    background-image: url(./images/mainbg.png);
+    width: 33.8542vw;
+    height: 14.8438vw;
+    background-size: cover;
+    right: 2.6042vw;
+    top: 2.6042vw;
+}
+
+.market-header{
+    position: absolute;
+    left: 4.4271vw;
+    top: 1.1458vw;
+    color: #F1EAD0;
+    text-shadow: 0 0 50px rgba(241, 234, 208, 0.15);
+    font-family: "EB Garamond";
+    font-size: 1.25vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.market-desc{
+    position: absolute;
+    left: 4.4271vw;
+    top: 2.8646vw;
+    color: rgba(255, 255, 255, 0.50);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.keybinds-section{
+    display: flex;
+}
+
+.first-key{
+    position: absolute;
+    left: 16.4333vw;
+    top: 12.9688vw;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.firstkey-desc{
+    position: absolute;
+    left: 18.2333vw;
+    top: 12.9688vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.second-key{
+    position: absolute;
+    top: 12.9688vw;
+    left: 22.3438vw;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.secondkey-desc{
+    position: absolute;
+    top: 12.9688vw;
+    left: 25vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.last-key{
+    position: absolute;
+    top: 12.9688vw;
+    left: 28.3854vw;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.lastkey-desc{
+    position: absolute;
+    top: 12.9688vw;
+    left: 31.2854vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+
+
+.itemlist-header{
+    position: absolute;
+    left: 1.1417vw;
+    top: 4.6875vw;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .8333vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.itemlistheader-desc{
+    position: absolute;
+    left: 1.1417vw;
+    top: 5.9813vw;
+    max-width: 24.7396vw;
+    max-height: 3.6458vw;
+    color: rgba(255, 255, 255, 0.50);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.current-product{
+    position: absolute;
+    left: 28.8021vw;
+    top: 5.7771vw;
+    color: #F1EAD0;
+   /*  font-family: "EB Garamond"; */
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.productslash{
+    position: absolute;
+    left: 29.3021vw;
+    top: 5.7771vw;
+    color: rgba(255, 255, 255, 0.65);
+    /* font-family: "EB Garamond"; */
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.total-product{
+    position: absolute;
+    left: 29.6021vw;
+    top: 5.7771vw;
+    color: rgba(255, 255, 255, 0.65);
+    /* font-family: "EB Garamond"; */
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.productlist-section{
+    display: flex;
+    padding: .2604vw;
+}
+
+.productbg{
+    position: absolute;
+    background-size: cover;
+    background-image: url(./images/itembg.png);
+    width: 7.5521vw;
+    height: 3.3854vw;
+    left: 1.0417vw;
+    top: 7.5vw;
+}
+
+.product-money{
+    position: absolute;
+    left: 4.7917vw;
+    top: .6771vw;
+    color: rgba(255, 255, 255, 0.65);
+    text-align: center;
+    /* font-family: "EB Garamond"; */
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.productmoney-bg{
+    position: absolute;
+    left: 4.1667vw;
+    top: .5208vw;
+    width: 2.8646vw;
+    height: .8854vw;
+    background-size: cover;
+    background-image: url(./images/itemmoneybg.png);
+}
+
+.product-photo{
+    position: absolute;
+    left: 0.6vw;  /* Biraz sola kaydırdım - büyüdükçe ortalı olsun */
+    top: 0.8vw;   /* Biraz yukarı */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(./images/itemphoto.png);
+    width: 2.6208vw;     /* 1.9271vw'dan 2.1vw'a çıkardım (+0.17vw) */
+    height: 1.7608vw   /* 1.0417vw'dan 1.24vw'a çıkardım (+0.2vw) */
+}
+
+.producttext{
+    position: absolute;
+    left: 30.6021vw;
+    top: 5.6771vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.productbg:hover{
+    background-image: url(./images/itembghover.png);
+    background-position: center;
+}
+
+.productbg:hover .product-money{
+    color: #0B0B0B;
+}
+
+.productbg:hover .productmoney-bg{
+    background-image: url(./images/itemmoneybghover.png);
+}
+
+/* Seçili item için style (A/D ile seçilen) */
+.productbg.selected-item{
+    background-image: url(./images/itembghover.png) !important;
+    background-position: center;
+    transform: scale(1.03);
+    transition: transform 0.2s ease;
+}
+
+.productbg.selected-item .product-money{
+    color: #0B0B0B !important;
+}
+
+.productbg.selected-item .productmoney-bg{
+    background-image: url(./images/itemmoneybghover.png) !important;
+}
+
+.categories{
+    position: absolute;
+    display: flex;
+    top: 1.0417vw;
+    left: 20.5417vw;
+    max-width: 12.5vw;
+    height: 2.0833vw;
+    max-height: 2.0833vw;
+}
+
+.category-weapon{
+    position: absolute;
+    background-image: url(./images/weapon-category.png);
+    width: 2.0833vw;
+    height: 2.0833vw;
+    background-size: cover;
+    left: 10.1708vw;
+    transition: 0.3s ease;
+}
+
+.category-seeds{
+    position: absolute;
+    background-image: url(./images/seed-category.png);
+    width: 2.0833vw;
+    height: 2.0833vw;
+    background-size: cover;
+    left: 7.9083vw;
+    transition: 0.3s ease;
+}
+
+.category-alcohols{
+    position: absolute;
+    background-image: url(./images/alcohols-category.png);
+    width: 2.0833vw;
+    height: 2.0833vw;
+    background-size: cover;
+    left: 5.6083vw;
+    transition: 0.3s ease;
+}
+
+.category-bombs{
+    position: absolute;
+    background-image: url(./images/bombs-category.png);
+    width: 2.0833vw;
+    height: 2.0833vw;
+    background-size: cover;
+    left: 3.3083vw;
+    transition: 0.3s ease;
+}
+
+.category-tools{
+    position: absolute;
+    background-image: url(./images/tools-category.png);
+    width: 2.0833vw;
+    height: 2.0833vw;
+    background-size: cover;
+    left: 1.1vw;
+    transition: 0.3s ease;
+}
+
+.category-tools:hover{
+    background-image: url(./images/tools-categoryhover.png);
+    transform: scale(1.02);
+}
+
+.category-seeds:hover{
+    background-image: url(./images/seed-categoryhover.png);
+    transform: scale(1.02);
+}
+
+.category-alcohols:hover{
+    background-image: url(./images/alcohols-categoryhover.png);
+    transform: scale(1.02);
+}
+
+.category-bombs:hover{
+    background-image: url(./images/bombs-categoryhover.png);
+    transform: scale(1.02);
+}
+
+.category-weapon:hover{
+    background-image: url(./images/weapon-categoryhover.png);
+    transform: scale(1.02);
+}
+
+.moneybg{
+    position: absolute;
+    background-image: url(./images/specialmoneybg.png);
+    width: 4.6875vw;
+    height: 1.3021vw;
+    top: 5.2604vw;
+    left: 28.125vw;
+    background-size: 100% 100%;
+    /* Flexbox ile içeriği ortala */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.special-money{
+    color: #0B0B0B;
+    text-align: center;
+    /* font-family: "EB Garamond"; */
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: .1042vw;
+    /* position ve left/top kaldırıldı - flexbox ile ortada duruyor */
+    }
+
+
+.keybinds-section2{
+    display: flex;
+}
+
+.first-key2{
+    position: absolute;
+    left: 17.8333vw;
+    top: 12.9688vw;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.firstkey-desc2{
+    position: absolute;
+    left: 19.6333vw;
+    top: 12.9688vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.second-key2{
+    position: absolute;
+    top: 12.9688vw;
+    left: 23.3438vw;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.secondkey-desc2{
+    position: absolute;
+    top: 12.9688vw;
+    left: 26vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.last-key2{
+    position: absolute;
+    top: 12.9688vw;
+    left: 28.3854vw;
+    color: #FFF;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.lastkey-desc2{
+    position: absolute;
+    top: 12.9688vw;
+    left: 31.2854vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+/* .active-category {
+    filter: brightness(1.5) saturate(1.3);
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+} */
+
+/* Active kategorilerin hover image'lerini göster */
+.category-tools.active-category {
+    background-image: url(./images/tools-categoryhover.png) !important;
+}
+
+.category-seeds.active-category {
+    background-image: url(./images/seed-categoryhover.png) !important;
+}
+
+.category-alcohols.active-category {
+    background-image: url(./images/alcohols-categoryhover.png) !important;
+}
+
+.category-bombs.active-category {
+    background-image: url(./images/bombs-categoryhover.png) !important;
+}
+
+.category-weapon.active-category {
+    background-image: url(./images/weapon-categoryhover.png) !important;
+}
+
+/* Progress Bar (Hold ENTER to buy) */
+.purchase-progress-container {
+    position: absolute;
+    left: 23.3438vw;
+    top: 13.7vw; /* BUY yazısının hemen altında */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-bar-bg {
+    width: 76px;
+    height: 1.5px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: #F1EAD0; /* Altın sarısı - tema rengine uygun */
+    border-radius: 5px;
+    transition: width 0.05s linear;
+}
+
+
+.notify-container {
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    pointer-events: none;
+}
+
+.notify-bg{
+    position: absolute;
+    background-image: url(./images/mainbg.png);
+    top: 1.0417vw;
+    left: 38.8021vw;
+    width: 23.4375vw;
+    height: 5.2083vw;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+}
+
+.alert-text{
+    color: #E9E9E9;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    font-family: Cardo;
+    font-size: 1.25vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 0.5vw;
+}
+
+.alert-desc{
+    color: rgba(233, 233, 233, 0.75);
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    font-family: Cardo;
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.2;
+    max-width: 20vw;
+    padding: 0 1vw;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HARİTA ÜZERİNDE KIRMIZI DAİRE - MAP CIRCLE OVERLAY
+   ═══════════════════════════════════════════════════════════════ */
+#map-circle-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+}
+
+#map-circle {
+    position: absolute;
+    border: 3px solid rgba(255, 0, 0, 0.8);
+    border-radius: 50%;
+    background: rgba(255, 0, 0, 0.15);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5), inset 0 0 30px rgba(255, 0, 0, 0.1);
+    transform: translate(-50%, -50%);
+    animation: pulse-circle 2s ease-in-out infinite;
+}
+
+#map-circle-center {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 0, 0, 0.9);
+    border: 2px solid white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+}
+
+@keyframes pulse-circle {
+    0%, 100% {
+        opacity: 0.8;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5), inset 0 0 30px rgba(255, 0, 0, 0.1);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.7), inset 0 0 50px rgba(255, 0, 0, 0.2);
+    }
+}

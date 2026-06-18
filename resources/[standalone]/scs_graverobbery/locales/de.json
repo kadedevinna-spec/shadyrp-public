@@ -1,0 +1,39 @@
+{
+    "notify": {
+        "could_not_locate_grave": "Grab konnte nicht gefunden werden...",
+        "this_grave_has_already_been_disturbed": "Dieses Grab wurde bereits geschändet...",
+        "you_must_wait_before_robbing_more_graves": "Du musst %s Minuten warten, bevor du weitere Gräber plündern kannst...",
+        "you_stopped_digging": "Du hast aufgehört zu graben...",
+        "not_enough_lawmen_online": "Nicht genug Gesetzeshüter im Dienst. Willst du wirklich die Toten stören?",
+        "the_restless_spirit_turns_aggressive": "Der ruhelose Geist wird aggressiv!",
+        "the_restless_dead_rise_to_defend_their_grave": "Die rastlosen Toten erheben sich, um ihr Grab zu verteidigen!",
+        "robbery_failed": "Raub fehlgeschlagen: %s",
+        "reward_notification": "Du hast %s gefunden",
+        "grave_dug_up": "Das Grab wurde ausgehoben. Durchsuche die Erde nach Wertsachen...",
+        "nothing_to_rummage": "Hier gibt es nichts mehr zu holen...",
+        "you_stopped_rummaging": "Du hast aufgehört, die Erde zu durch wühlen...",
+        "must_dig_first": "Du musst das Grab zuerst ausheben, bevor du in der Erde wühlen kannst..."
+    },
+    "error": {
+        "no_grave_nearby": "Kein Grab in der Nähe gefunden, das geplündert werden kann..."
+    },
+    "target": {
+        "dig_up_grave": "Grab ausheben",
+        "dig_up_grave_description": "Hebe das Grab aus",
+        "dig_up_grave_icon": "fa-solid fa-skull",
+        "rummage_through_dirt": "In der Erde wühlen",
+        "rummage_through_dirt_description": "Durchsuche die Erde nach Wertsachen",
+        "rummage_through_dirt_icon": "fa-solid fa-hand"
+    },
+    "progressbar": {
+        "digging_up_grave": "Grab wird ausgehoben...",
+        "rummaging_through_dirt": "Durchsuche die Erde..."
+    },
+    "lawman_alert": {
+        "grave_robbery_reported": "Beunruhigende Meldungen über Grabschändung wurden gemeldet!",
+        "grave_robbery_location": "Ort: %s",
+        "grave_digging_reported": "Verdächtige Aktivität gemeldet – jemand wurde gesehen, wie er ein Grab aushebt!",
+        "grave_digging_location": "Ort: %s",
+        "grave_digging_urgent": "DRINGEND: Grabräuber sind am Werk!"
+    }
+}

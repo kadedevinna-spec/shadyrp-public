@@ -1,0 +1,46 @@
+{
+    "buttons": {
+        "cancel": "Cancel",
+        "accept": "Accept",
+        "save": "Save",
+        "back": "Back",
+        "reset": "Reset",
+        "delete": "Delete",
+        "create": "Create"
+    },
+    "headers": {
+        "barber": "BARBER",
+        "myFacialStyles": "MY FACIAL STYLES",
+        "variationSettings": "Variation settings",
+        "colourSettings": "Colour settings",
+        "cameraPosition": "Camera position",
+        "warning": "Warning!",
+        "outfitName": "Outfit Name",
+        "newOutfit": "New Outfit!"
+    },
+    "labels": {
+        "createNewFacialStyle": "Create new facial style",
+        "createNewFacialStyleMannequin": "Create new facial style using mannequin",
+        "naked": "Naked",
+        "clothes": "Clothes",
+        "skin": "Skin",
+        "style": "Style",
+        "variation": "Variation",
+        "colour": "Colour",
+        "var": "Var",
+        "true": "True",
+        "false": "False",
+        "male": "Male",
+        "female": "Female",
+        "enterOutfitName": "Enter the name of the outfit"
+    },
+    "messages": {
+        "deleteOutfitConfirm": "Are you sure you want to delete",
+        "outfit": "outfit?",
+        "resetOutfitConfirm": "Are you sure you want to reset the outfit you are creating?",
+        "selectGender": "Select the gender"
+    },
+    "price": {
+        "savePrice": "Save - $"
+    }
+}

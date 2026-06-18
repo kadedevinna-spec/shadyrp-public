@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stable Racing</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="derby-sprite" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="ico-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </symbol>
+            <symbol id="ico-medal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/>
+                <path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/>
+                <path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/>
+            </symbol>
+            <symbol id="ico-finish" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" d="M6 3v18"/>
+                <rect x="8" y="4" width="5" height="5" rx="0.75" fill="currentColor" opacity="0.18"/>
+                <rect x="13" y="4" width="5" height="5" rx="0.75" fill="currentColor" opacity="0.42"/>
+                <rect x="8" y="9" width="5" height="5" rx="0.75" fill="currentColor" opacity="0.42"/>
+                <rect x="13" y="9" width="5" height="5" rx="0.75" fill="currentColor" opacity="0.18"/>
+            </symbol>
+            <symbol id="ico-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="5"/>
+                <path d="M20 21a8 8 0 0 0-16 0"/>
+            </symbol>
+            <symbol id="ico-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/>
+                <circle cx="12" cy="8" r="6"/>
+            </symbol>
+            <symbol id="ico-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                <path d="M4 22h16"/>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21 2.18 1.09 3.02 2.58 3.02 4.34"/>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </symbol>
+            <symbol id="ico-waypoints" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="4.5" r="2.5"/>
+                <path d="m10.5 13-3 8"/><path d="M12 20v-6.5"/><path d="m13.5 13 3 8"/><path d="m9 6 1.5-1.5"/><path d="m15 6-1.5-1.5"/>
+            </symbol>
+            <symbol id="ico-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </symbol>
+            <symbol id="ico-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                <path d="M8 7h8"/><path d="M8 11h6"/>
+            </symbol>
+            <symbol id="ico-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838.838-2.872a2 2 0 0 1 .506-.855z"/>
+            </symbol>
+            <symbol id="ico-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <div id="derby-app" class="hidden" aria-hidden="true">
+        <div class="derby-backdrop"></div>
+        <div class="derby-shell derby-club-shell" role="dialog" aria-labelledby="derby-title">
+            <canvas id="derby-horse-canvas" class="derby-horse-bg" width="400" height="300" aria-hidden="true"></canvas>
+            <div class="derby-club-ribbon" aria-hidden="true"></div>
+            <header class="derby-header derby-club-header">
+                <div class="derby-header-brand">
+                    <span class="derby-ico-wrap derby-ico-wrap--brand" aria-hidden="true">
+                        <canvas
+                            id="derby-brand-horse-canvas"
+                            class="derby-horse-line-icon derby-brand-horse-canvas"
+                            width="56"
+                            height="56"
+                            data-css-w="56"
+                            data-css-h="56"
+                            aria-hidden="true"
+                        ></canvas>
+                    </span>
+                    <div>
+                        <h1 id="derby-title">Derby Horses — Racing</h1>
+                        <p class="derby-sub">Your record, open meets, player races, and steward notes</p>
+                    </div>
+                </div>
+                <button type="button" class="derby-btn derby-btn-ghost derby-club-close" id="derby-close" title="Close (Esc)">
+                    <span class="derby-ico-wrap derby-ico-wrap--btn" aria-hidden="true">
+                        <svg class="derby-ico"><use xlink:href="#ico-x" href="#ico-x"/></svg>
+                    </span>
+                    <span>Close</span>
+                </button>
+            </header>
+
+            <div class="derby-body">
+                <nav class="derby-sidebar derby-club-sidebar" aria-label="Sections">
+                    <button type="button" class="derby-nav is-active" data-panel="career">
+                        <span class="derby-ico-wrap derby-ico-wrap--nav" aria-hidden="true">
+                            <svg class="derby-ico"><use xlink:href="#ico-medal" href="#ico-medal"/></svg>
+                        </span>
+                        <span>Career</span>
+                    </button>
+                    <button type="button" class="derby-nav" data-panel="halloffame">
+                        <span class="derby-ico-wrap derby-ico-wrap--nav" aria-hidden="true">
+                            <svg class="derby-ico"><use xlink:href="#ico-trophy" href="#ico-trophy"/></svg>
+                        </span>
+                        <span>Hall of Fame</span>
+                    </button>
+                    <button type="button" class="derby-nav" data-panel="events">
+                        <span class="derby-ico-wrap derby-ico-wrap--nav" aria-hidden="true">
+                            <svg class="derby-ico"><use xlink:href="#ico-finish" href="#ico-finish"/></svg>
+                        </span>
+                        <span>Events</span>
+                    </button>
+                    <button type="button" class="derby-nav" data-panel="playerevents">
+                        <span class="derby-ico-wrap derby-ico-wrap--nav" aria-hidden="true">
+                            <svg class="derby-ico"><use xlink:href="#ico-users" href="#ico-users"/></svg>
+                        </span>
+                        <span>Player races</span>
+                    </button>
+                    <button type="button" class="derby-nav" data-panel="guide">
+                        <span class="derby-ico-wrap derby-ico-wrap--nav" aria-hidden="true">
+                            <svg class="derby-ico"><use xlink:href="#ico-book" href="#ico-book"/></svg>
+                        </span>
+                        <span>How it works</span>
+                    </button>
+                </nav>
+
+                <main class="derby-main derby-club-main">
+                    <div id="derby-toast" class="derby-toast hidden" role="status" aria-live="polite"></div>
+
+                    <section id="panel-career" class="derby-panel is-visible">
+                        <div class="derby-panel-head">
+                            <span class="derby-ico-wrap derby-ico-wrap--panel" aria-hidden="true">
+                                <canvas
+                                    class="derby-horse-line-icon derby-panel-horse-canvas"
+                                    width="28"
+                                    height="28"
+                                    data-css-w="28"
+                                    data-css-h="28"
+                                    aria-hidden="true"
+                                ></canvas>
+                            </span>
+                        <h2>Your stable record</h2>
+                            <button type="button" class="derby-btn derby-btn-sm derby-club-btn" id="btn-refresh-career">Refresh</button>
+                        </div>
+                        <div class="derby-card derby-career-card">
+                            <div class="derby-stat">
+                                <span class="derby-ico-wrap derby-ico-wrap--stat" aria-hidden="true">
+                                    <svg class="derby-ico"><use xlink:href="#ico-user" href="#ico-user"/></svg>
+                                </span>
+                                <span class="derby-stat-label">Rider</span>
+                                <span class="derby-stat-value" id="career-name">—</span>
+                            </div>
+                            <div class="derby-stat">
+                                <span class="derby-ico-wrap derby-ico-wrap--stat" aria-hidden="true">
+                                    <svg class="derby-ico"><use xlink:href="#ico-award" href="#ico-award"/></svg>
+                                </span>
+                                <span class="derby-stat-label">Handicap title</span>
+                                <span class="derby-stat-value" id="career-title">—</span>
+                            </div>
+                            <div class="derby-stat">
+                                <span class="derby-ico-wrap derby-ico-wrap--stat" aria-hidden="true">
+                                    <svg class="derby-ico"><use xlink:href="#ico-trophy" href="#ico-trophy"/></svg>
+                                </span>
+                                <span class="derby-stat-label">Wins</span>
+                                <span class="derby-stat-value" id="career-wins">0</span>
+                            </div>
+                            <div class="derby-stat">
+                                <span class="derby-ico-wrap derby-ico-wrap--stat" aria-hidden="true">
+                                    <svg class="derby-ico"><use xlink:href="#ico-waypoints" href="#ico-waypoints"/></svg>
+                                </span>
+                                <span class="derby-stat-label">Starts</span>
+                                <span class="derby-stat-value" id="career-entries">0</span>
+                            </div>
+                            <div class="derby-stat derby-stat-wide">
+                                <span class="derby-ico-wrap derby-ico-wrap--stat" aria-hidden="true">
+                                    <svg class="derby-ico"><use xlink:href="#ico-star" href="#ico-star"/></svg>
+                                </span>
+                                <span class="derby-stat-label">Reputation</span>
+                                <span class="derby-stat-value" id="career-rep">0</span>
+                            </div>
+                        </div>
+                        <p class="derby-hint">Your record is updated after each meet is written into the books. If something looks off, hit <strong>Refresh</strong>.</p>
+                    </section>
+
+                    <section id="panel-halloffame" class="derby-panel">
+                        <div class="derby-panel-head">
+                            <span class="derby-ico-wrap derby-ico-wrap--panel" aria-hidden="true">
+                                <svg class="derby-ico"><use xlink:href="#ico-trophy" href="#ico-trophy"/></svg>
+                            </span>
+                            <h2>Hall of Fame</h2>
+                            <button type="button" class="derby-btn derby-btn-sm derby-club-btn" id="btn-refresh-halloffame">Refresh</button>
+                        </div>
+                        <p class="derby-lead">Top riders by <strong>reputation</strong> across all meets. Names refresh when riders race.</p>
+                        <div class="derby-hof-wrap">
+                            <div class="derby-hof-head derby-hof-row">
+                                <span class="derby-hof-rank">#</span>
+                                <span class="derby-hof-name">Rider</span>
+                                <span class="derby-hof-title">Handicap</span>
+                                <span class="derby-hof-num">W</span>
+                                <span class="derby-hof-num">Starts</span>
+                                <span class="derby-hof-rep">Rep</span>
+                            </div>
+                            <ul id="derby-hof-list" class="derby-hof-list"></ul>
+                            <p id="derby-hof-empty" class="derby-empty hidden">No standings yet — be the first across the line!</p>
+                        </div>
+                    </section>
+
+                    <section id="panel-events" class="derby-panel">
+                        <div class="derby-panel-head">
+                            <span class="derby-ico-wrap derby-ico-wrap--panel" aria-hidden="true">
+                                <svg class="derby-ico"><use xlink:href="#ico-finish" href="#ico-finish"/></svg>
+                            </span>
+                            <h2>Published fixtures</h2>
+                            <button type="button" class="derby-btn derby-btn-sm derby-club-btn" id="btn-refresh-races">Refresh</button>
+                        </div>
+                        <p class="derby-lead">Each card tells you who opened the meet, how full the room is, and shows a quick <strong>programme chart</strong> of the run. Follow the <span class="derby-text-course">red track line</span> from <strong>START</strong> to <strong>FINISH</strong>, passing the checkpoints in that order.</p>
+                        <ul id="races-list" class="derby-races"></ul>
+                        <p id="races-empty" class="derby-empty hidden">No active lobbies right now. Host a race from the catalog below!</p>
+
+                        <div class="derby-panel-head" style="margin-top:18px;">
+                            <h2>Available routes</h2>
+                        </div>
+                        <p class="derby-lead">Pick a route to host a new lobby. Other riders can join from their Events tab.</p>
+                        <div id="catalog-routes-grid" class="derby-player-routes-grid"></div>
+                    </section>
+
+                    <section id="panel-playerevents" class="derby-panel">
+                        <div class="derby-panel-head">
+                            <span class="derby-ico-wrap derby-ico-wrap--panel" aria-hidden="true">
+                                <svg class="derby-ico"><use xlink:href="#ico-users" href="#ico-users"/></svg>
+                            </span>
+                            <h2>Player-created races</h2>
+                            <button type="button" class="derby-btn derby-btn-sm derby-club-btn" id="btn-refresh-player-routes">Refresh</button>
+                        </div>
+                        <p class="derby-lead">Races laid out by riders like you. Pick one, join the field, and ride the posted course.</p>
+                        <div id="player-routes-grid" class="derby-courses-grid"></div>
+                        <p id="player-routes-empty" class="derby-empty hidden">No player-created races yet. Use <kbd class="derby-kbd">/derbyedit</kbd> to lay out a new course.</p>
+                    </section>
+
+                    <section id="panel-guide" class="derby-panel">
+                        <div class="derby-panel-head">
+                            <span class="derby-ico-wrap derby-ico-wrap--panel" aria-hidden="true">
+                                <svg class="derby-ico"><use xlink:href="#ico-book" href="#ico-book"/></svg>
+                            </span>
+                            <h2>How a meet runs</h2>
+                        </div>
+                        <ol class="derby-guide-steps">
+                            <li>
+                                <span class="derby-guide-n">1</span>
+                                <div>
+                                    <strong>Open the board</strong>
+                                    <p>Use <kbd class="derby-kbd">/derby</kbd> to check the open meets, your own record, and the programme charts on each fixture card.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="derby-guide-n">2</span>
+                                <div>
+                                    <strong>Player-made courses</strong>
+                                    <p>Use <kbd class="derby-kbd">/derbyedit</kbd> to open the route editor: place checkpoints in the world, name your meet, set riders and options, then save. Published routes show under <em>Player races</em> in <kbd class="derby-kbd">/derby</kbd>—anyone can <em>Start race</em> to host a lobby on that course, same as the official programme.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="derby-guide-n">3</span>
+                                <div>
+                                    <strong>Choose a fixture</strong>
+                                    <p>Under <em>Events</em>, pick the meet you want. See who is hosting, how many riders are already in, and take a quick look at the programme before you join.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="derby-guide-n">4</span>
+                                <div>
+                                    <strong>Take your place</strong>
+                                    <p>Press <em>Join lobby</em> to put your name down for the field. Then wait with the others until the steward closes the list.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="derby-guide-n">5</span>
+                                <div>
+                                    <strong>When they drop the flag</strong>
+                                    <p>Once the start is called, follow the route on your map and ride through each checkpoint in order. The <span class="derby-text-course">red line</span> on the card is the same path you will be riding.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="derby-guide-n">6</span>
+                                <div>
+                                    <strong>Across the wire</strong>
+                                    <p>First horse home on the published course takes the win. After that, the standings are updated and the room is cleared for the next heat.</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <div id="derby-race-hud" class="derby-race-hud hidden" aria-hidden="true">
+        <div class="derby-race-hud-card">
+            <p class="derby-race-hud-kicker">At the line</p>
+            <div id="derby-race-hud-num" class="derby-race-hud-num">—</div>
+            <p id="derby-race-hud-sub" class="derby-race-hud-sub">Hold your horse steady</p>
+        </div>
+    </div>
+
+    <div id="derby-lobby-hud" class="derby-race-hud hidden" aria-hidden="true" style="pointer-events:none;">
+        <div class="derby-race-hud-card" style="padding:18px 28px;min-width:280px;text-align:center;">
+            <p class="derby-race-hud-kicker" style="margin-bottom:6px;">Race Lobby</p>
+            <div id="derby-lobby-hud-text" class="derby-race-hud-num" style="font-size:1.4rem;margin-bottom:4px;">Waiting for riders...</div>
+            <p id="derby-lobby-hud-players" class="derby-race-hud-sub" style="font-size:0.82rem;opacity:0.7;margin-bottom:8px;"></p>
+            <div id="derby-lobby-hud-keys" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;font-size:0.78rem;opacity:0.6;margin-top:4px;">
+                <span id="derby-lobby-force-start" class="hidden" style="color:#ffd700;">[F4] Force Start</span>
+                <span style="color:#ccc;">[Backspace / Del] Leave</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="derby-leaderboard" class="hidden" aria-hidden="true" style="
+        pointer-events:none;position:fixed;top:180px;left:16px;z-index:9500;
+        font-family:'Playfair Display',Georgia,serif;color:#fff;
+    ">
+        <div style="
+            background:rgba(12,10,8,0.72);border:1px solid rgba(180,160,120,0.25);
+            border-radius:6px;padding:10px 14px;min-width:160px;backdrop-filter:blur(4px);
+        ">
+            <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:1.5px;opacity:0.5;margin-bottom:6px;">Positions</div>
+            <div id="derby-leaderboard-rows" style="font-size:0.82rem;line-height:1.6;"></div>
+            <div id="derby-leaderboard-timer" class="hidden" style="
+                margin-top:8px;padding-top:6px;border-top:1px solid rgba(180,160,120,0.2);
+                font-size:0.72rem;text-align:center;color:#ffd700;
+            "></div>
+        </div>
+    </div>
+
+    <!-- Race result overlay: center screen, fade in/out -->
+    <div id="derby-race-result" class="derby-race-result hidden" aria-hidden="true">
+        <div class="derby-race-result__card">
+            <div class="derby-race-result__ribbon"></div>
+            <div id="derby-result-icon" class="derby-race-result__icon">
+                <svg class="derby-ico" style="width:48px;height:48px;"><use xlink:href="#ico-trophy" href="#ico-trophy"/></svg>
+            </div>
+            <div id="derby-result-title" class="derby-race-result__title">Race Complete</div>
+            <div class="derby-race-result__divider"></div>
+            <div class="derby-race-result__stats">
+                <div class="derby-race-result__stat">
+                    <span class="derby-race-result__stat-label">Position</span>
+                    <span id="derby-result-pos" class="derby-race-result__stat-value derby-race-result__pos">1st</span>
+                </div>
+                <div class="derby-race-result__stat">
+                    <span class="derby-race-result__stat-label">Time</span>
+                    <span id="derby-result-time" class="derby-race-result__stat-value">0:00.000</span>
+                </div>
+                <div class="derby-race-result__stat">
+                    <span class="derby-race-result__stat-label">Checkpoints</span>
+                    <span id="derby-result-cps" class="derby-race-result__stat-value">0/0</span>
+                </div>
+                <div class="derby-race-result__stat">
+                    <span class="derby-race-result__stat-label">Riders</span>
+                    <span id="derby-result-riders" class="derby-race-result__stat-value">1</span>
+                </div>
+            </div>
+            <div class="derby-race-result__divider"></div>
+            <div id="derby-result-subtitle" class="derby-race-result__subtitle">Well ridden!</div>
+        </div>
+    </div>
+
+    <!-- Editor panel: slide-in from right, same dark club theme -->
+    <div id="derby-editor" class="derby-editor hidden" aria-hidden="true">
+        <div class="derby-editor-inner">
+            <header class="derby-editor-header">
+                <div class="derby-editor-header-left">
+                    <svg class="derby-ico derby-ico--editor-title"><use xlink:href="#ico-edit" href="#ico-edit"/></svg>
+                    <h2>Route Editor</h2>
+                </div>
+                <button type="button" class="derby-editor-close" id="derby-editor-close" title="Close editor (ESC)">
+                    &times;
+                </button>
+            </header>
+
+            <!-- Keybind bar -->
+            <div class="derby-editor-keys">
+                <div class="derby-editor-key-item">
+                    <kbd class="derby-kbd derby-kbd--lg">E</kbd>
+                    <kbd class="derby-kbd derby-kbd--lg">PgDn</kbd>
+                    <span>Place checkpoint</span>
+                </div>
+                <div class="derby-editor-key-item">
+                    <kbd class="derby-kbd derby-kbd--lg">↑ ↓</kbd>
+                    <span>Adjust width</span>
+                </div>
+                <div class="derby-editor-key-item">
+                    <kbd class="derby-kbd derby-kbd--lg">Space</kbd>
+                    <span>Confirm</span>
+                </div>
+                <div class="derby-editor-key-item">
+                    <kbd class="derby-kbd derby-kbd--lg">TAB</kbd>
+                    <span>Edit fields</span>
+                </div>
+            </div>
+
+            <div class="derby-editor-body">
+                <h3 class="derby-editor-section-title">Course details</h3>
+                <div class="derby-editor-field">
+                    <label for="editor-title">Title</label>
+                    <input id="editor-title" type="text" class="derby-editor-input" placeholder="e.g. Heartlands Sprint" maxlength="120"/>
+                </div>
+                <div class="derby-editor-field">
+                    <label for="editor-desc">Description</label>
+                    <textarea id="editor-desc" class="derby-editor-input derby-editor-textarea" placeholder="Short note about this course…" maxlength="500" rows="2"></textarea>
+                </div>
+                <div class="derby-editor-row">
+                    <div class="derby-editor-field derby-editor-field--half">
+                        <label for="editor-region">Region</label>
+                        <input id="editor-region" type="text" class="derby-editor-input" placeholder="e.g. New Hanover" maxlength="80"/>
+                    </div>
+                    <div class="derby-editor-field derby-editor-field--half">
+                        <label for="editor-surface">Surface</label>
+                        <input id="editor-surface" type="text" class="derby-editor-input" placeholder="e.g. Dirt" maxlength="80"/>
+                    </div>
+                </div>
+                <div class="derby-editor-field">
+                    <label class="derby-editor-check-label">
+                        <input id="editor-loop" type="checkbox" class="derby-editor-checkbox"/>
+                        <span>Closed loop (circuit)</span>
+                    </label>
+                </div>
+                <div class="derby-editor-row">
+                    <div class="derby-editor-field derby-editor-field--half">
+                        <label for="editor-min-players">Min players</label>
+                        <input id="editor-min-players" type="number" class="derby-editor-input" min="1" max="32" value="2" step="1"/>
+                    </div>
+                    <div class="derby-editor-field derby-editor-field--half">
+                        <label for="editor-max-players">Max players</label>
+                        <input id="editor-max-players" type="number" class="derby-editor-input" min="1" max="32" value="8" step="1"/>
+                    </div>
+                </div>
+                <div class="derby-editor-divider"></div>
+                <h3 class="derby-editor-section-title">AI Opponents</h3>
+                <div class="derby-editor-field">
+                    <label class="derby-editor-check-label">
+                        <input id="editor-ai-enabled" type="checkbox" class="derby-editor-checkbox"/>
+                        <span>Enable AI opponents</span>
+                    </label>
+                </div>
+                <div class="derby-editor-field" id="editor-ai-count-wrap">
+                    <label for="editor-ai-count">Number of AI riders</label>
+                    <input id="editor-ai-count" type="number" class="derby-editor-input" min="1" max="8" value="3" step="1"/>
+                </div>
+
+                <div class="derby-editor-divider"></div>
+
+                <div class="derby-editor-cp-header">
+                    <h3 class="derby-editor-section-title">Checkpoints <span id="editor-cp-count" class="derby-editor-badge">0</span></h3>
+                </div>
+                <ol id="editor-cp-list" class="derby-editor-cp-list"></ol>
+                <p id="editor-cp-empty" class="derby-editor-cp-empty">No checkpoints yet — walk to a spot and press <kbd class="derby-kbd">E</kbd></p>
+
+                <div class="derby-editor-divider"></div>
+
+                <h3 class="derby-editor-section-title">Route preview</h3>
+                <div id="editor-preview-frame" class="derby-route-frame derby-route-frame--editor"></div>
+            </div>
+
+            <footer class="derby-editor-footer">
+                <button type="button" class="derby-btn derby-btn-sm derby-club-btn" id="editor-btn-clear">Clear all</button>
+                <div class="derby-editor-footer-right">
+                    <button type="button" class="derby-btn derby-btn-sm derby-club-btn" id="editor-btn-cancel">Cancel</button>
+                    <button type="button" class="derby-btn derby-btn-sm derby-club-btn derby-editor-btn-save" id="editor-btn-save">Save route</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="horseLineData.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

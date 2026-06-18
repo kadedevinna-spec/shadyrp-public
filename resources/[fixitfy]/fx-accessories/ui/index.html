@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixitfy Attach Menu</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+
+<body>
+    <div class="menu" id="menu" style="display: none;">
+        <button class="menu-return-button" id="objectsReturnButton" title="Back" aria-label="Back"
+            style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36A1 1 0 0 1 13.83 19"/></svg>
+        </button>
+
+        <div class="header-frame">
+            <div class="header" id="menuTitle">Fixitfy Attach Menu</div>
+            <div class="header-desc" id="menuDesc">Manage Attached Objects.</div>
+        </div>
+
+        <div class="boxes" id="boxes">
+            <div class="box" id="objects" data-type="objects">Objects</div>
+        </div>
+
+        <div class="main-buttons">
+            <div class="attach">
+                <div class="attach-text">Attach</div>
+            </div>
+            <div class="remove">
+                <div class="remove-text">Remove</div>
+            </div>
+            <div class="remove-all">
+                <div class="remove-all-text">Remove All</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="attached-menu" id="attachedMenu" style="display: none;">
+        <div class="attached-menu-title" id="attachedMenuTitle"></div>
+        <div class="attached-menu-desc" id="attachedMenuDesc"></div>
+
+        <div class="radial-menu" id="radialMenu">
+            <button class="radial-node" data-category="Head" id="nodeHead">H</button>
+            <button class="radial-node" data-category="Neck" id="nodeNeck">N</button>
+            <button class="radial-node" data-category="Torso" id="nodeTorso">T</button>
+            <button class="radial-node" data-category="Waist" id="nodeWaist">W</button>
+            <button class="radial-node" data-category="Leg" id="nodeLeg">L</button>
+            <button class="radial-node" data-category="Hand" id="nodeHand">Ha</button>
+            <button class="radial-node" data-category="Arm" id="nodeArm">A</button>
+            <button class="radial-rotate-button" id="rotateCharacterButton" title="Rotate Character"
+                aria-label="Rotate Character">
+            </button>
+            <button class="radial-dress-button" id="toggleDressButton" title="Dress / Undress"
+                aria-label="Dress / Undress">
+            </button>
+            <button class="radial-objects-button" id="openObjectsButton" title="Open Objects Menu"
+                aria-label="Open Objects Menu">
+            </button>
+            <button class="radial-ard-button" id="openAccadminButton" title="Accadmin Panel"
+                aria-label="Accadmin Panel">
+            </button>
+            <div class="radial-side-switch is-hidden" id="previewSideSwitch" aria-label="Preview Side Switch">
+                <button class="radial-side-node" data-side="left" title="Left" aria-label="Left">L</button>
+                <button class="radial-side-node active" data-side="right" title="Right" aria-label="Right">R</button>
+            </div>
+            <div class="radial-orbit" id="attachedOrbit"></div>
+        </div>
+    </div>
+
+    <div class="acc-settings-panel" id="accSettingsPanel" style="display: none;">
+
+        <div class="acc-header">
+            <div class="title" id="accMainTitle"></div>
+            <div class="acc-section-title" id="accGenderTitle"></div>
+            <div class="acc-gender-subtitle" id="accGenderSubtitle"></div>
+
+            <div class="acc-gender-indicator" id="accGenderIndicator">
+                <img id="accGenderImage" src="./assets/img/male-white.png" alt="Gender" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="acc-section-title" id="accBodyPartsTitle" data-help-key="body_parts_preview"></div>
+
+        <div class="acc-bodypart-row" id="accBodypartRow"></div>
+
+        <div class="acc-bodypart-sep"></div>
+
+        <div class="acc-item-box" id="accItemBox" style="display:none;">
+            <div class="acc-item-list-header" id="accItemListHeader">
+                <span id="accItemListLabel"></span>
+                <span id="accItemListCount"></span>
+            </div>
+            <div class="acc-info-row" id="accInfoRow" style="display:none;">
+                <div class="acc-info-block">
+                    <span class="acc-info-lbl" id="accLblSelected"></span>
+                    <span class="acc-info-val acc-info-val--item" id="accValSelected"></span>
+                </div>
+                <div class="acc-info-block">
+                    <span class="acc-info-lbl" id="accLblCategory"></span>
+                    <span class="acc-info-val" id="accValCategory"></span>
+                </div>
+            </div>
+            <div class="huds-container" id="accPreview"></div>
+        </div>
+
+        <div class="acc-action-row">
+            <div class="select-all" id="accRemoveButton" data-help-key="remove_button"></div>
+            <div class="select-all" id="accAttachButton" data-help-key="attach_button"></div>
+        </div>
+
+        <div class="acc-action-div"></div>
+
+        <div class="acc-section-title" id="accExplanationTitle"></div>
+
+        <div class="desc" id="accExplanationText"></div>
+
+    </div>
+
+
+
+
+
+
+
+<!-- YAN PICKER PANEL -->
+<div id="accSidePicker">
+  <div class="ard-ptitle" id="c-side-picker-title">Animations</div>
+  <input class="ard-pick-search" type="text" id="c-side-search" placeholder="Search...">
+  <div class="ard-pick-none" id="c-side-anim-none" style="display:none;">— No Animation —</div>
+  <div class="ard-pick-list" id="c-side-picker-list"></div>
+
+  <!-- Picker animasyon önizleme kontrolleri — animasyona tıklanınca gösterilir -->
+  <div class="ard-animsec" id="c-side-anim-ctrl" style="display:none;margin-top:6px;">
+    <div class="ard-animsec-title" id="c-pk-anim-ctrl-hdr">Preview</div>
+    <div class="ard-anim-name" id="c-pk-anim-ctrl-label"></div>
+    <div class="ard-transport">
+      <button class="ard-tbtn" id="c-pk-btn-frame-prev" title="Prev frame">
+        <iconify-icon icon="mdi:step-backward" width="18" height="18"></iconify-icon>
+      </button>
+      <button class="ard-tbtn play" id="c-pk-btn-anim-play" title="Play / Pause">
+        <svg width="11" height="13" viewBox="0 0 8 10" fill="currentColor"><polygon points="0,0 8,5 0,10"/></svg>
+      </button>
+      <button class="ard-tbtn stop" id="c-pk-btn-anim-stop" title="Stop">
+        <iconify-icon icon="mdi:stop" width="20" height="20"></iconify-icon>
+      </button>
+      <button class="ard-tbtn" id="c-pk-btn-frame-next" title="Next frame">
+        <iconify-icon icon="mdi:step-forward" width="18" height="18"></iconify-icon>
+      </button>
+    </div>
+    <div class="ard-scrub-wrap">
+      <div class="ard-scrub-row">
+        <span class="ard-scrub-time" id="c-pk-scrub-cur">0.00</span>
+        <div class="ard-scrub-track" id="c-pk-scrub-track">
+          <div class="ard-scrub-fill" id="c-pk-scrub-fill">
+            <div class="ard-scrub-thumb"></div>
+          </div>
+        </div>
+        <span class="ard-scrub-time" id="c-pk-scrub-dur">0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ard-bottom">
+    <button class="ard-btn ard-cancel" id="c-side-picker-close">
+      <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="9,2 4,7 9,12"/></svg>
+      <span id="c-side-picker-close-lbl">Close</span>
+    </button>
+    <div class="ard-bot-sep" id="c-side-picker-sep" style="display:none;"></div>
+    <button class="ard-btn ard-primary" id="c-side-picker-apply" style="display:none;">
+      <span id="c-side-picker-apply-lbl">Apply</span>
+      <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="2,7 6,11 12,3"/></svg>
+    </button>
+  </div>
+</div>
+
+<div id="accadminPanel" style="display:none;">
+  <div class="ard-wrap">
+    <div class="ard-shell">
+
+      <!-- P1 — SETUP -->
+      <div class="ard-panel" id="c-p1">
+        <div class="ard-ptitle" id="c-p1-title">Admin Panel</div>
+
+        <!-- Step indicators -->
+        <div class="ard-steps">
+          <div class="ard-step-node cur">
+            <span class="ard-step-num">1</span>
+            <span class="ard-step-lbl" data-sl="setup">Setup</span>
+          </div>
+          <div class="ard-step-line"></div>
+          <div class="ard-step-node">
+            <span class="ard-step-num">2</span>
+            <span class="ard-step-lbl" data-sl="bone">Bone</span>
+          </div>
+          <div class="ard-step-line"></div>
+          <div class="ard-step-node">
+            <span class="ard-step-num">3</span>
+            <span class="ard-step-lbl" data-sl="calib">Calib.</span>
+          </div>
+          <div class="ard-step-line"></div>
+          <div class="ard-step-node">
+            <span class="ard-step-num">4</span>
+            <span class="ard-step-lbl" data-sl="output">Output</span>
+          </div>
+        </div>
+
+        <!-- Calibrate As -->
+        <div class="ard-calib-bar">
+          <span class="ard-calib-lbl" id="c-lbl-calgender">Calibrate As</span>
+          <div class="ard-calib-sel">
+            <button class="ard-calib-arr" id="c-calib-arr-prev">&#8249;</button>
+            <div class="ard-calib-ico-wrap">
+              <img class="ard-calib-ico" id="c-calib-ico" src="./assets/img/male-white.png" alt="">
+            </div>
+            <button class="ard-calib-arr" id="c-calib-arr-next">&#8250;</button>
+          </div>
+          <span class="ard-calib-val" id="c-calib-val">MALE</span>
+          <div class="ard-csel" id="c-iAccadminGender" data-csel-val="Male" style="display:none;">
+            <span class="ard-csel-val">Male character</span>
+            <span class="ard-csel-arr"></span>
+            <div class="ard-csel-menu">
+              <div class="ard-csel-opt sel" data-val="Male" id="c-opt-calgender-male">Male character</div>
+              <div class="ard-csel-opt" data-val="Female" id="c-opt-calgender-female">Female character</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ard-content">
+
+          <!-- Item Info -->
+          <div class="ard-group">
+            <span class="ard-group-ico">
+              <svg viewBox="0 0 14 14"><path d="M2 2h10v2H2zM2 6h10M2 10h6"/></svg>
+            </span>
+            <span class="ard-group-lbl" id="c-p1-grp-info">Item Info</span>
+          </div>
+          <div class="ard-section">
+            <div class="ard-field">
+              <label id="c-lbl-key"></label>
+              <input type="text" id="c-iKey" placeholder="— Enter Key —">
+            </div>
+            <div class="ard-field">
+              <label id="c-lbl-label"></label>
+              <input type="text" id="c-iLabel" placeholder="— Enter Label —">
+            </div>
+            <div class="ard-field">
+              <label id="c-lbl-model"></label>
+              <button type="button" class="ard-pick-btn" id="c-iModelBtn">
+                <span id="c-iModelVal">— Select Model —</span><span>›</span>
+              </button>
+              <input type="hidden" id="c-iModel" value="">
+            </div>
+          </div>
+
+          <!-- Classification -->
+          <div class="ard-group" style="margin-top:12px;">
+            <span class="ard-group-ico">
+              <svg viewBox="0 0 14 14"><path d="M2 7 Q7 2 12 7 Q7 12 2 7z"/><circle cx="7" cy="7" r="2"/></svg>
+            </span>
+            <span class="ard-group-lbl" id="c-p1-grp-class">Classification</span>
+          </div>
+          <div class="ard-section">
+            <div class="ard-field">
+              <label id="c-lbl-gender"></label>
+              <div class="ard-csel" id="c-iGender" data-csel-val="all">
+                <span class="ard-csel-val">All</span>
+                <span class="ard-csel-arr"></span>
+                <div class="ard-csel-menu">
+                  <div class="ard-csel-opt sel" data-val="all" id="c-opt-gender-all">All</div>
+                  <div class="ard-csel-opt" data-val="male" id="c-opt-gender-male">Male</div>
+                  <div class="ard-csel-opt" data-val="female" id="c-opt-gender-female">Female</div>
+                </div>
+              </div>
+            </div>
+            <div class="ard-field">
+              <label id="c-lbl-category"></label>
+              <div class="ard-csel" id="c-iCategory" data-csel-val="Hand">
+                <span class="ard-csel-val">El (Hand)</span>
+                <span class="ard-csel-arr"></span>
+                <div class="ard-csel-menu">
+                  <div class="ard-csel-opt" data-val="Neck">Boyun (Neck)</div>
+                  <div class="ard-csel-opt sel" data-val="Hand">El (Hand)</div>
+                  <div class="ard-csel-opt" data-val="Head">Kafa (Head)</div>
+                  <div class="ard-csel-opt" data-val="Torso">Govde (Torso)</div>
+                  <div class="ard-csel-opt" data-val="Leg">Bacak (Leg)</div>
+                  <div class="ard-csel-opt" data-val="Arm">Kol (Arm)</div>
+                  <div class="ard-csel-opt" data-val="Belt">Kemer (Belt)</div>
+                </div>
+              </div>
+            </div>
+            <div class="ard-field">
+              <label id="c-lbl-anim"></label>
+              <button type="button" class="ard-pick-btn" id="c-iAnimBtn">
+                <span id="c-iAnimVal">— Select Animation —</span><span>›</span>
+              </button>
+              <input type="hidden" id="c-iAnim" value="">
+            </div>
+          </div>
+
+          <!-- Options -->
+          <div class="ard-group" style="margin-top:12px;">
+            <span class="ard-group-ico">
+              <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="4.5"/><path d="M7 4v3l2 2"/></svg>
+            </span>
+            <span class="ard-group-lbl" id="c-p1-grp-opts">Options</span>
+          </div>
+          <div class="ard-section">
+            <div class="ard-trow">
+              <span class="ard-tlabel" id="c-lbl-fixedrot">fixedRot</span>
+              <label class="ard-toggle">
+                <input type="checkbox" id="c-iFixedRot" checked>
+                <span class="ard-tslider"></span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="ard-error" id="c-p1-error" style="display:none;"></div>
+
+        <div class="ard-bottom">
+          <button class="ard-btn ard-neutral" id="c-btnImport">
+            <svg viewBox="0 0 14 14" stroke-width="1.8"><path d="M2 4h10M2 7h7M2 10h5"/></svg>
+            <span id="c-btnImport-lbl">Import</span>
+          </button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-primary" id="c-btnGoToBone">
+            <span id="c-btnGoToBone-lbl">Bone</span>
+            <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="5,2 10,7 5,12"/></svg>
+          </button>
+        </div>
+      </div>
+
+
+      <!-- P2 — BONE -->
+      <div class="ard-panel" id="c-p2">
+        <div class="ard-ptitle" id="c-p2-title">Bone Select</div>
+
+        <div class="ard-steps">
+          <div class="ard-step-node ok">
+            <span class="ard-step-num">✓</span>
+            <span class="ard-step-lbl" data-sl="setup">Setup</span>
+          </div>
+          <div class="ard-step-line" style="background:rgba(240,215,130,.25)"></div>
+          <div class="ard-step-node cur">
+            <span class="ard-step-num">2</span>
+            <span class="ard-step-lbl" data-sl="bone">Bone</span>
+          </div>
+          <div class="ard-step-line"></div>
+          <div class="ard-step-node">
+            <span class="ard-step-num">3</span>
+            <span class="ard-step-lbl" data-sl="calib">Calib.</span>
+          </div>
+          <div class="ard-step-line"></div>
+          <div class="ard-step-node">
+            <span class="ard-step-num">4</span>
+            <span class="ard-step-lbl" data-sl="output">Output</span>
+          </div>
+        </div>
+
+        <div class="ard-content">
+          <div class="ard-isum" id="c-selBoneTag" style="margin-bottom:8px;text-align:center;">No bone selected yet</div>
+          <div class="ard-div"></div>
+
+          <div class="ard-bone-strip" id="c-bone-nav-title">
+            <span class="ard-bone-strip-lbl" id="c-boneHoverLabel">Body Regions</span>
+          </div>
+
+          <!-- Back to regions link (shows only when in bone list) -->
+          <div class="ard-bback" id="c-bBackRegion">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            <span class="ard-bback-text">Regions</span>
+          </div>
+
+          <input class="ard-bsearch" type="text" id="c-bSearch" placeholder="Search bones...">
+
+          <div class="ard-region-list" id="c-regionList">
+            <button class="ard-region-btn" data-region="head">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><circle cx="7" cy="5.5" r="3.5"/><path d="M4 9 Q7 12 10 9"/></svg>
+              </span>
+              <span class="ard-region-lbl">Head</span>
+              <span class="ard-region-dot"></span>
+            </button>
+            <button class="ard-region-btn" data-region="neck">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><rect x="5" y="2.5" width="4" height="8" rx="2"/></svg>
+              </span>
+              <span class="ard-region-lbl">Neck</span>
+              <span class="ard-region-dot"></span>
+            </button>
+            <button class="ard-region-btn" data-region="torso">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><path d="M3 3h8l1 3.5H2z"/><rect x="3.5" y="6.5" width="7" height="4.5" rx="1"/></svg>
+              </span>
+              <span class="ard-region-lbl">Torso</span>
+              <span class="ard-region-dot"></span>
+            </button>
+            <button class="ard-region-btn" data-region="waist">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><rect x="1" y="5.5" width="12" height="3" rx="1"/><rect x="5.5" y="4" width="3" height="6" rx=".8"/></svg>
+              </span>
+              <span class="ard-region-lbl">Waist &amp; Hip</span>
+              <span class="ard-region-dot"></span>
+            </button>
+            <button class="ard-region-btn" data-region="arm_right">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><path d="M9 2 Q11 7 9 12"/><path d="M7 2 Q5 7 7 12"/></svg>
+              </span>
+              <span class="ard-region-lbl">Right Arm</span>
+              <span class="ard-region-dot"></span>
+            </button>
+            <button class="ard-region-btn" data-region="arm_left">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><path d="M5 2 Q3 7 5 12"/><path d="M7 2 Q9 7 7 12"/></svg>
+              </span>
+              <span class="ard-region-lbl">Left Arm</span>
+              <span class="ard-region-dot"></span>
+            </button>
+            <button class="ard-region-btn" data-region="fingers_right">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><path d="M3 8 V5 M5 8 V4 M7 8 V5 M9 8 V6"/><path d="M1 8 Q1 12 5 12 Q9 12 11 8"/></svg>
+              </span>
+              <span class="ard-region-lbl">Right Fingers</span>
+              <span class="ard-region-dot"></span>
+            </button>
+            <button class="ard-region-btn" data-region="fingers_left">
+              <span class="ard-region-ico">
+                <svg viewBox="0 0 14 14" stroke-width="1.4"><path d="M11 8 V5 M9 8 V4 M7 8 V5 M5 8 V6"/><path d="M13 8 Q13 12 9 12 Q5 12 3 8"/></svg>
+              </span>
+              <span class="ard-region-lbl">Left Fingers</span>
+              <span class="ard-region-dot"></span>
+            </button>
+          </div>
+
+          <div class="ard-blist" id="c-bList"></div>
+        </div>
+
+        <div class="ard-error" id="c-p2-error" style="display:none;"></div>
+
+        <div class="ard-bottom">
+          <button class="ard-btn ard-cancel" id="c-btnBackSetup">
+            <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="9,2 4,7 9,12"/></svg>
+            <span id="c-btnBackSetup-lbl">Setup</span>
+          </button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-primary" id="c-btnGoToAccadmin">
+            <span id="c-btnGoToAccadmin-lbl">Select</span>
+            <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="5,2 10,7 5,12"/></svg>
+          </button>
+        </div>
+      </div>
+
+
+      <!-- P3 — CALIBRATION -->
+      <div class="ard-panel" id="c-p3">
+        <div class="ard-ptitle" id="c-p3-title">Calibration</div>
+
+        <div class="ard-steps">
+          <div class="ard-step-node ok">
+            <span class="ard-step-num">✓</span>
+            <span class="ard-step-lbl" data-sl="setup">Setup</span>
+          </div>
+          <div class="ard-step-line" style="background:rgba(240,215,130,.25)"></div>
+          <div class="ard-step-node ok">
+            <span class="ard-step-num">✓</span>
+            <span class="ard-step-lbl" data-sl="bone">Bone</span>
+          </div>
+          <div class="ard-step-line" style="background:rgba(240,215,130,.25)"></div>
+          <div class="ard-step-node cur">
+            <span class="ard-step-num">3</span>
+            <span class="ard-step-lbl" data-sl="calib">Calib.</span>
+          </div>
+          <div class="ard-step-line"></div>
+          <div class="ard-step-node">
+            <span class="ard-step-num">4</span>
+            <span class="ard-step-lbl" data-sl="output">Output</span>
+          </div>
+        </div>
+
+        <div class="ard-content">
+          <div class="ard-isum" id="c-iSum" style="margin-bottom:4px;"></div>
+          <div class="ard-isum-sub" id="c-accadminBoneTag"></div>
+          <div class="ard-div"></div>
+
+          <div class="ard-agrid" style="margin-bottom:8px;">
+            <div class="ard-axis-lbl" id="c-axis-lbl-pos">Position</div>
+            <div class="ard-arow">
+              <span class="ard-albl ard-ax-x">PX</span>
+              <button class="ard-aminus" data-a="px">−</button>
+              <button class="ard-aplus" data-a="px">+</button>
+              <input type="number" class="ard-aval" id="c-v-px" data-a="px" value="0" step="0.01">
+            </div>
+            <div class="ard-arow">
+              <span class="ard-albl ard-ax-y">PY</span>
+              <button class="ard-aminus" data-a="py">−</button>
+              <button class="ard-aplus" data-a="py">+</button>
+              <input type="number" class="ard-aval" id="c-v-py" data-a="py" value="0" step="0.01">
+            </div>
+            <div class="ard-arow">
+              <span class="ard-albl ard-ax-z">PZ</span>
+              <button class="ard-aminus" data-a="pz">−</button>
+              <button class="ard-aplus" data-a="pz">+</button>
+              <input type="number" class="ard-aval" id="c-v-pz" data-a="pz" value="0" step="0.01">
+            </div>
+            <div class="ard-asep"></div>
+            <div class="ard-axis-lbl" id="c-axis-lbl-rot"><span id="c-rot-lbl-static">Rotation</span><span class="ard-rot-mode" id="c-rot-mode"></span></div>
+            <div class="ard-arow">
+              <span class="ard-albl ard-ax-x">Pitch</span>
+              <button class="ard-aminus" data-a="pitch">−</button>
+              <button class="ard-aplus" data-a="pitch">+</button>
+              <input type="number" class="ard-aval" id="c-v-pitch" data-a="pitch" value="0" step="0.01">
+            </div>
+            <div class="ard-arow">
+              <span class="ard-albl ard-ax-y">Roll</span>
+              <button class="ard-aminus" data-a="roll">−</button>
+              <button class="ard-aplus" data-a="roll">+</button>
+              <input type="number" class="ard-aval" id="c-v-roll" data-a="roll" value="0" step="0.01">
+            </div>
+            <div class="ard-arow">
+              <span class="ard-albl ard-ax-z">Yaw</span>
+              <button class="ard-aminus" data-a="yaw">−</button>
+              <button class="ard-aplus" data-a="yaw">+</button>
+              <input type="number" class="ard-aval" id="c-v-yaw" data-a="yaw" value="0" step="0.01">
+            </div>
+          </div>
+
+          <!-- Keyboard Guide -->
+          <div class="ard-animsec ard-animsec-kb">
+            <div class="ard-animsec-title" id="c-kbhint-title">Keyboard Guide</div>
+            <div class="ard-kbhint">
+              <span class="kbcat" id="c-kb-cat-camera">Camera</span>
+              <span class="kbk">W &nbsp;A &nbsp;S &nbsp;D</span><span class="kbdesc" id="c-kb-desc-wasd">Forward · Back · Left · Right</span>
+              <span class="kbk">Space &nbsp;·&nbsp; Shift</span><span class="kbdesc" id="c-kb-desc-space-shift">Up · Down</span>
+              <span class="kbcat" id="c-kb-cat-position">Position</span>
+              <span class="kbk">↑ &nbsp;↓ &nbsp;← &nbsp;→</span><span class="kbdesc" id="c-kb-desc-arrows">Forward · Back · Left · Right</span>
+              <span class="kbk">Q &nbsp;·&nbsp; Z</span><span class="kbdesc" id="c-kb-desc-qz">Up · Down</span>
+              <span class="kbcat" id="c-kb-cat-rotation">Rotation</span>
+              <span class="kbk">C &nbsp;·&nbsp; V</span><span class="kbdesc" id="c-kb-desc-cv">Cycle Pitch · Roll · Yaw</span>
+              <span class="kbcat" id="c-kb-cat-axis">Axis</span>
+              <span class="kbk">B</span><span class="kbdesc" id="c-kb-desc-axis">Toggle active axis</span>
+            </div>
+          </div>
+
+          <!-- Animation Control -->
+          <div class="ard-animsec" id="c-anim-ctrl">
+            <div class="ard-animsec-title" id="c-anim-ctrl-hdr">Animation Control</div>
+            <div class="ard-anim-name" id="c-anim-ctrl-label"></div>
+
+            <div class="ard-transport">
+              <button class="ard-tbtn" id="c-btn-frame-prev" title="Prev frame">
+                <iconify-icon icon="mdi:step-backward" width="18" height="18"></iconify-icon>
+              </button>
+              <button class="ard-tbtn play" id="c-btn-anim-play" title="Play / Pause">
+                <svg width="11" height="13" viewBox="0 0 8 10" fill="currentColor"><polygon points="0,0 8,5 0,10"/></svg>
+              </button>
+              <button class="ard-tbtn stop" id="c-btn-anim-stop" title="Stop">
+                <iconify-icon icon="mdi:stop" width="20" height="20"></iconify-icon>
+              </button>
+              <button class="ard-tbtn" id="c-btn-frame-next" title="Next frame">
+                <iconify-icon icon="mdi:step-forward" width="18" height="18"></iconify-icon>
+              </button>
+            </div>
+
+            <div class="ard-scrub-wrap">
+              <div class="ard-scrub-row">
+                <span class="ard-scrub-time" id="c-scrub-cur">0.00</span>
+                <div class="ard-scrub-track" id="c-scrub-track">
+                  <div class="ard-scrub-fill" id="c-scrub-fill">
+                    <div class="ard-scrub-thumb"></div>
+                  </div>
+                </div>
+                <span class="ard-scrub-time" id="c-scrub-dur">2.80</span>
+              </div>
+            </div>
+
+            <div class="ard-delay-row">
+              <button class="ard-btn-delay" id="c-btn-use-delay">
+                <iconify-icon icon="mdi:clock-plus-outline" width="15" height="15"></iconify-icon>
+                <span id="c-btn-use-delay-lbl">Add Delay</span>
+              </button>
+              <button class="ard-btn-delay" id="c-btn-use-cut">
+                <iconify-icon icon="mdi:content-cut" width="15" height="15"></iconify-icon>
+                <span id="c-btn-use-cut-lbl">Add Cut</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ard-bottom">
+          <button class="ard-btn ard-cancel" id="c-btnBackBone">
+            <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="9,2 4,7 9,12"/></svg>
+            <span id="c-btnBackBone-lbl">Back</span>
+          </button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-neutral" id="c-btnReset">Reset</button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-primary" id="c-btnGenerate">
+            <span id="c-btnGenerate-lbl">Apply</span>
+            <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="2,7 6,11 12,3"/></svg>
+          </button>
+        </div>
+      </div>
+
+
+      <!-- P4 — OUTPUT -->
+      <div class="ard-panel" id="c-p4">
+        <div class="ard-ptitle" id="c-p4-title">Output</div>
+
+        <div class="ard-steps">
+          <div class="ard-step-node ok">
+            <span class="ard-step-num">✓</span><span class="ard-step-lbl" data-sl="setup">Setup</span>
+          </div>
+          <div class="ard-step-line" style="background:rgba(240,215,130,.25)"></div>
+          <div class="ard-step-node ok">
+            <span class="ard-step-num">✓</span><span class="ard-step-lbl" data-sl="bone">Bone</span>
+          </div>
+          <div class="ard-step-line" style="background:rgba(240,215,130,.25)"></div>
+          <div class="ard-step-node ok">
+            <span class="ard-step-num">✓</span><span class="ard-step-lbl" data-sl="calib">Calib.</span>
+          </div>
+          <div class="ard-step-line" style="background:rgba(240,215,130,.25)"></div>
+          <div class="ard-step-node cur">
+            <span class="ard-step-num">4</span><span class="ard-step-lbl" data-sl="output">Output</span>
+          </div>
+        </div>
+
+        <div class="ard-content">
+
+          <div class="ard-p4-card">
+            <div class="ard-p4-key" id="c-p4-card-key"></div>
+            <div class="ard-p4-rows">
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:tag-outline" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p4-lbl-label">Label</span>
+                <span class="ard-p4-row-val" id="c-p4-card-label"></span>
+              </div>
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:cube-outline" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p4-lbl-model">Model</span>
+                <span class="ard-p4-row-val" id="c-p4-card-model"></span>
+              </div>
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:shape-outline" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p4-lbl-cat">Category</span>
+                <span class="ard-p4-row-val" id="c-p4-card-cat"></span>
+              </div>
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:gender-male-female" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p4-lbl-gender">Gender</span>
+                <span class="ard-p4-row-val" id="c-p4-card-gender"></span>
+              </div>
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:bone" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p4-lbl-bone">Bone</span>
+                <span class="ard-p4-row-val" id="c-p4-card-bone"></span>
+              </div>
+              <div class="ard-p4-row" id="c-p4-row-anim">
+                <iconify-icon icon="mdi:motion-play-outline" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p4-lbl-anim">Animation</span>
+                <span class="ard-p4-row-val" id="c-p4-card-anim"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ard-group">
+            <span class="ard-group-ico">
+              <svg viewBox="0 0 14 14"><polyline points="3,4 1,7 3,10"/><polyline points="11,4 13,7 11,10"/><line x1="8" y1="2" x2="6" y2="12"/></svg>
+            </span>
+            <span class="ard-group-lbl" id="c-p4-output-title">Config Output</span>
+          </div>
+          <textarea class="ard-ocode" id="c-oCode" readonly></textarea>
+          <div class="ard-cfb" id="c-cfb"></div>
+
+        </div>
+
+        <div class="ard-bottom">
+          <button class="ard-btn ard-cancel" id="c-btnBackAccadmin">
+            <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="9,2 4,7 9,12"/></svg>
+            <span id="c-btnBackAccadmin-lbl">Calib.</span>
+          </button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-neutral" id="c-btnSaveDraft">
+            <iconify-icon icon="mdi:content-save-outline" width="12" height="12"></iconify-icon>
+            <span id="c-btnSaveDraft-lbl">Save</span>
+          </button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-primary" id="c-btnCopy">
+            <iconify-icon icon="mdi:content-copy" width="12" height="12"></iconify-icon>
+            <span id="c-btnCopy-lbl">Copy</span>
+          </button>
+        </div>
+
+        <div class="ard-footer">
+          <button class="ard-btn ard-neutral" id="c-btnNew">
+            <svg viewBox="0 0 14 14" stroke-width="2"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+            <span id="c-btnNew-lbl">New Item</span>
+          </button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-primary" id="c-btnItemReg">
+            <svg viewBox="0 0 14 14" stroke-width="1.5"><rect x="2" y="2" width="10" height="10" rx="1"/><line x1="5" y1="7" x2="9" y2="7"/><line x1="7" y1="5" x2="7" y2="9"/></svg>
+            <span id="c-btnItemReg-lbl">Item Registration</span>
+          </button>
+        </div>
+      </div>
+
+
+      <!-- P5 — ITEM REGISTRATION -->
+      <div class="ard-panel" id="c-p5">
+        <div class="ard-ptitle" id="c-p5-title">Registration</div>
+
+        <div class="ard-content">
+
+          <div class="ard-p4-card">
+            <div class="ard-p4-key" id="c-p5-card-key"></div>
+            <div class="ard-p4-rows">
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:tag-outline" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p5-lbl-label">Label</span>
+                <span class="ard-p4-row-val" id="c-p5-card-label"></span>
+              </div>
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:shape-outline" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p5-lbl-cat">Category</span>
+                <span class="ard-p4-row-val" id="c-p5-card-cat"></span>
+              </div>
+              <div class="ard-p4-row">
+                <iconify-icon icon="mdi:gender-male-female" width="11" height="11"></iconify-icon>
+                <span class="ard-p4-row-lbl" id="c-p5-lbl-gender">Gender</span>
+                <span class="ard-p4-row-val" id="c-p5-card-gender"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ard-div"></div>
+
+          <!-- Identifiers -->
+          <div class="ard-group">
+            <span class="ard-group-ico"><svg viewBox="0 0 14 14"><path d="M2 2h10v2H2zM2 6h10M2 10h6"/></svg></span>
+            <span class="ard-group-lbl" id="c-p5-grp-id">Identifiers</span>
+          </div>
+          <div class="ard-section">
+            <div class="ard-field">
+              <label id="c-lbl-p5-name"></label>
+              <input type="text" id="c-p5-key" placeholder="— Enter Key —">
+            </div>
+            <div class="ard-field">
+              <label id="c-lbl-p5-label"></label>
+              <input type="text" id="c-p5-label" placeholder="— Enter Label —">
+            </div>
+          </div>
+
+          <!-- Properties -->
+          <div class="ard-group" style="margin-top:10px;">
+            <span class="ard-group-ico"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="4.5"/><path d="M7 4v3l2 2"/></svg></span>
+            <span class="ard-group-lbl" id="c-p5-grp-props">Properties</span>
+          </div>
+          <div class="ard-section">
+            <div class="ard-field">
+              <label id="c-lbl-p5-weight"></label>
+              <input type="number" id="c-p5-weight" value="0" min="0" step="0.01">
+            </div>
+            <div class="ard-field">
+              <label id="c-lbl-p5-limit"></label>
+              <input type="number" id="c-p5-limit" value="10" min="1">
+            </div>
+            <div class="ard-field">
+              <label id="c-lbl-p5-desc"></label>
+              <input type="text" id="c-p5-desc" value="Accessory item used by Accessories">
+            </div>
+          </div>
+
+          <!-- Output -->
+          <div class="ard-group" style="margin-top:10px;">
+            <span class="ard-group-ico"><svg viewBox="0 0 14 14"><polyline points="3,4 1,7 3,10"/><polyline points="11,4 13,7 11,10"/><line x1="8" y1="2" x2="6" y2="12"/></svg></span>
+            <span class="ard-group-lbl" id="c-p5-code-title">Output</span>
+          </div>
+
+          <div class="ard-fw-row">
+            <button class="ard-fw-btn ard-p5-fw-btn active" id="c-p5-btn-vorp" data-fw="vorp">
+              <span id="c-p5-lbl-vorp">VORP SQL</span>
+              <span class="ard-fw-btn-dot"></span>
+            </button>
+            <button class="ard-fw-btn ard-p5-fw-btn" id="c-p5-btn-rsg" data-fw="rsg">
+              <span id="c-p5-lbl-rsg">RSG Lua</span>
+              <span class="ard-fw-btn-dot"></span>
+            </button>
+          </div>
+          <textarea class="ard-ocode p5" id="c-p5-code" readonly></textarea>
+          <div class="ard-cfb" id="c-p5-cfb"></div>
+
+        </div>
+
+        <div class="ard-bottom">
+          <button class="ard-btn ard-cancel" id="c-p5-btnBack">
+            <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="9,2 4,7 9,12"/></svg>
+            <span id="c-p5-btnBack-lbl">Back</span>
+          </button>
+          <div class="ard-bot-sep"></div>
+          <button class="ard-btn ard-primary" id="c-p5-btnCopy">
+            <iconify-icon icon="mdi:content-copy" width="12" height="12"></iconify-icon>
+            <span id="c-p5-btnCopy-lbl">Copy</span>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /ard-shell -->
+  </div><!-- /ard-wrap -->
+</div><!-- /accadminPanel -->
+
+
+    <!-- IMPORT OVERLAY -->
+    <div class="ard-import-overlay" id="c-import-overlay" style="display:none;">
+
+      <div class="imp-title" id="c-imp-title">Import</div>
+
+      <div class="imp-tabs">
+        <button class="imp-tab" data-f="male" title="Male">
+          <img class="imp-tab-img" src="./assets/img/male-white.png" alt="Male">
+        </button>
+        <div class="imp-tab-sep"></div>
+        <button class="imp-tab" data-f="female" title="Female">
+          <img class="imp-tab-img" src="./assets/img/female-white.png" alt="Female">
+        </button>
+        <div class="imp-tab-sep"></div>
+        <button class="imp-tab" data-f="all" title="All">
+          <span class="imp-tab-ico">
+            <iconify-icon icon="mdi:gender-male-female" width="28" height="28"></iconify-icon>
+          </span>
+        </button>
+        <div class="imp-tab-sep"></div>
+        <button class="imp-tab" data-f="fav" title="Favourites">
+          <span class="imp-tab-ico">
+            <iconify-icon icon="mdi:star" width="28" height="28"></iconify-icon>
+          </span>
+        </button>
+        <div class="imp-tab-sep"></div>
+        <button class="imp-tab" id="imp-tab-saved" title="Saved">
+          <span class="imp-tab-ico">
+            <iconify-icon icon="mdi:content-save-outline" width="26" height="26"></iconify-icon>
+          </span>
+        </button>
+      </div>
+
+      <div class="imp-search-row">
+        <span class="imp-search-ico">
+          <svg viewBox="0 0 14 14" stroke-width="1.8"><circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg>
+        </span>
+        <input class="imp-search" id="imp-search" type="text" placeholder="Search by label or key...">
+      </div>
+      <div class="imp-nav-hint" id="imp-nav-hint">↑ ↓ to navigate &nbsp;·&nbsp; Enter to select</div>
+
+      <div class="imp-saved-bar" id="imp-saved-bar" style="display:none;">
+        <div class="imp-saved-ctrl">
+          <span class="imp-saved-lbl" id="c-imp-saved-lbl">Saved</span>
+          <div class="imp-prog-wrap" id="imp-prog-wrap">
+            <div class="imp-prog-bar" id="imp-prog-bar"></div>
+          </div>
+          <button class="imp-reload-btn" id="imp-reload-btn" title="Reload">
+            <iconify-icon icon="mdi:refresh" width="18" height="18"></iconify-icon>
+          </button>
+        </div>
+        <span class="imp-copy-feedback" id="imp-copy-feedback"></span>
+      </div>
+
+      <div class="imp-list" id="imp-list">
+        <div class="imp-empty" id="imp-empty">Select a filter above to browse items</div>
+      </div>
+
+      <div class="imp-bottom">
+        <button class="imp-bot-btn" id="c-import-cancel">
+          <svg viewBox="0 0 14 14" stroke-width="2"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+          <span id="c-import-cancel-lbl">Cancel</span>
+        </button>
+        <div class="imp-bot-sep" id="c-import-delete-sep" style="display:none;"></div>
+        <button class="imp-bot-btn imp-bot-btn-del" id="c-import-delete" style="display:none;" disabled>
+          <svg viewBox="0 0 14 14" stroke-width="2" fill="none"><polyline points="2,3.5 12,3.5"/><line x1="5.5" y1="1.5" x2="8.5" y2="1.5"/><rect x="3" y="3.5" width="8" height="9" rx="1"/><line x1="5.5" y1="6" x2="5.5" y2="10"/><line x1="8.5" y1="6" x2="8.5" y2="10"/></svg>
+          <span id="c-import-delete-lbl">Delete</span>
+        </button>
+        <div class="imp-bot-sep"></div>
+        <button class="imp-bot-btn" id="c-import-load" disabled>
+          <svg viewBox="0 0 14 14" stroke-width="2"><polyline points="2,7 6,11 12,3"/></svg>
+          <span id="c-import-load-lbl">Load</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SHOP PANEL
+    ════════════════════════════════════════════════════════════════════ -->
+    <div id="shop-panel">
+
+        <!-- Header -->
+        <div class="shop-header">
+            <div class="shop-header-title" id="shop-title">Accessories Store</div>
+        </div>
+
+        <!-- Arama -->
+        <div class="shop-search-wrap">
+            <input class="shop-search" id="shop-search" type="text" placeholder="Search...">
+        </div>
+
+        <!-- Kategori butonları -->
+        <div class="shop-categories" id="shop-cat-bar"></div>
+        <div class="shop-cat-sep"></div>
+
+        <!-- Tier legend -->
+        <div class="shop-tier-legend" id="shop-tier-legend" style="display:none;">
+            <div class="shop-tier-legend-item" data-tier="legendary">
+                <iconify-icon icon="mdi:fire" class="stl-icon stl-legendary"></iconify-icon>
+                <span class="stl-label" data-tier="legendary">Legendary</span>
+            </div>
+            <div class="shop-tier-legend-sep"></div>
+            <div class="shop-tier-legend-item" data-tier="exclusive">
+                <iconify-icon icon="mdi:crown" class="stl-icon stl-exclusive"></iconify-icon>
+                <span class="stl-label" data-tier="exclusive">Exclusive</span>
+            </div>
+            <div class="shop-tier-legend-sep"></div>
+            <div class="shop-tier-legend-item" data-tier="rare">
+                <iconify-icon icon="mdi:star-four-points" class="stl-icon stl-rare"></iconify-icon>
+                <span class="stl-label" data-tier="rare">Rare</span>
+            </div>
+            <div class="shop-tier-legend-sep"></div>
+            <div class="shop-tier-legend-item" data-tier="common">
+                <iconify-icon icon="mdi:hexagon-outline" class="stl-icon stl-common"></iconify-icon>
+                <span class="stl-label" data-tier="common">Common</span>
+            </div>
+        </div>
+
+        <div class="shop-cat-sep" id="shop-tier-sep" style="display:none;"></div>
+
+        <!-- Global indirim şeridi -->
+        <div class="shop-discount-strip" id="shop-discount-strip" style="display:none;">
+            <iconify-icon icon="mdi:tag-outline" class="shop-disc-strip-icon"></iconify-icon>
+            <span class="shop-disc-strip-lbl" id="shop-disc-strip-lbl"></span>
+            <span class="shop-disc-strip-pct" id="shop-disc-strip-pct"></span>
+        </div>
+        <div class="shop-cat-sep" id="shop-disc-sep" style="display:none;"></div>
+
+        <!-- Item listesi -->
+        <div class="shop-item-list-wrap">
+            <div id="shop-item-list"></div>
+        </div>
+
+        <!-- Sepet -->
+        <div class="shop-cart-section">
+            <div class="shop-cart-label" id="shop-cart-label-text">Your Cart</div>
+            <div class="shop-cart-sep"></div>
+            <div class="shop-cart-nodes" id="shop-cart-nodes">
+                <div class="shop-cart-empty" id="shop-cart-empty">Empty</div>
+            </div>
+
+            <!-- Sepet toplamları -->
+            <div class="shop-totals-sep"></div>
+            <div class="shop-total-row" id="shop-total-row">
+                <div class="shop-total-line">
+                    <div class="shop-total-label" id="shop-cash-label">CASH</div>
+                    <div class="shop-total-rhs">
+                        <img class="shop-total-icon" src="./assets/img/cash.png" alt="cash">
+                        <div class="shop-total-val" id="shop-cash-val">0.00</div>
+                    </div>
+                </div>
+                <div class="shop-total-line">
+                    <div class="shop-total-label" id="shop-gold-label">GOLD</div>
+                    <div class="shop-total-rhs">
+                        <img class="shop-total-icon" src="./assets/img/itemtype_gold2.png" alt="gold">
+                        <div class="shop-total-val" id="shop-gold-val">0.00</div>
+                    </div>
+                </div>
+                <div class="shop-totals-mid-sep"></div>
+                <div class="shop-total-line shop-balance-line">
+                    <div class="shop-total-label" id="shop-your-cash-lbl">YOUR CASH</div>
+                    <div class="shop-total-rhs">
+                        <img class="shop-total-icon" src="./assets/img/cash.png" alt="cash">
+                        <div class="shop-total-val" id="shop-cash-balance">0.00</div>
+                    </div>
+                </div>
+                <div class="shop-total-line shop-balance-line">
+                    <div class="shop-total-label" id="shop-your-gold-lbl">YOUR GOLD</div>
+                    <div class="shop-total-rhs">
+                        <img class="shop-total-icon" src="./assets/img/itemtype_gold2.png" alt="gold">
+                        <div class="shop-total-val" id="shop-gold-balance">0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Butonlar -->
+            <div class="shop-action-row">
+                <button class="shop-cancel-btn" id="shop-cancel-btn">CANCEL</button>
+                <button class="shop-buy-btn" id="shop-buy-btn" disabled>BUY</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SHOP KEY GUIDE -->
+    <div id="shop-key-guide" style="display:none;">
+        <div class="key-hint"><span class="key">Space</span><span class="hint" id="shop-kg-add-cart">Add to Cart</span></div>
+        <div class="key-hint"><span class="key">C / V</span><span class="hint" id="shop-kg-rotate">Rotate</span></div>
+        <div class="key-hint"><span class="key">LMB</span><span class="hint" id="shop-kg-camera">Camera</span></div>
+        <div class="key-hint"><span class="key">Q / E</span><span class="hint" id="shop-kg-tilt">Tilt</span></div>
+        <div class="key-hint"><span class="key">RMB</span><span class="hint" id="shop-kg-zoom">Zoom</span></div>
+        <div class="key-hint key-hint-toggle">
+            <span class="key">H</span>
+            <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+            <span class="hint" id="shop-kg-hide">Hide Menu</span>
+        </div>
+        <div class="key-hint"><span class="key">X</span><span class="hint" id="shop-kg-reset">Reset</span></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FX ANNOUNCE OVERLAY
+    ════════════════════════════════════════════════════════════════════ -->
+    <div id="fx-announce" style="display:none;">
+        <div class="fx-ann-row">
+            <div class="fx-ann-title-group">
+                <iconify-icon id="fx-ann-icon-el" icon="mdi:bullhorn" width="22" height="22" class="fx-ann-icon"></iconify-icon>
+                <span class="fx-ann-title" id="fx-ann-label"></span>
+            </div>
+            <div class="fx-ann-badge" id="fx-ann-badge">
+                <iconify-icon id="fx-ann-discount-icon-el" icon="mdi:tag-outline" width="10" height="10" class="fx-ann-badge-icon"></iconify-icon>
+                <div class="fx-ann-badge-inner">
+                    <span class="fx-ann-badge-lbl">SALE</span>
+                    <span class="fx-ann-discount" id="fx-ann-discount"></span>
+                </div>
+            </div>
+        </div>
+        <div class="fx-ann-sep-line"></div>
+        <span class="fx-ann-desc" id="fx-ann-desc"></span>
+        <div class="fx-ann-dates-row" id="fx-ann-dates-row">
+            <iconify-icon id="fx-ann-date-icon-el" icon="oui:calendar" class="fx-ann-cal-icon"></iconify-icon>
+            <span class="fx-ann-dates" id="fx-ann-dates"></span>
+        </div>
+        <div class="fx-ann-bar-wrap"><div class="fx-ann-bar" id="fx-ann-bar"></div></div>
+    </div>
+
+    <!-- FX PROGRESS BAR -->
+    <div id="fx-progress-container" style="display:none;">
+        <img src="./assets/img/dropicon.png" id="fx-progressbar-img">
+        <div id="fx-progressbar-text"></div>
+        <div id="fx-progress-bar">
+            <div id="fx-progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- BUILT-IN NOTIFY -->
+    <div id="fx-notify-container"></div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

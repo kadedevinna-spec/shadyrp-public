@@ -1,0 +1,443 @@
+local Functions = {} -- DO NOT TOUCH
+
+if Config.Framework == 'rsg' then -- <- THE FRAMEWORK THAT WILL BE CALLED FROM CONFIG.FRAMEWORK OPTION.
+
+    local RSG = nil
+    local attempts = 0
+    local maxAttempts = 10
+
+    while attempts < maxAttempts do
+
+        attempts = attempts + 1
+
+        if attempts > 1 then
+            error("[RSG-CORE] Not ready, tp_libs running before framework itself or wrong framework selected on TP Libs Configuration - retrying... (" .. attempts .. ")")
+        end
+        
+        RSG = exports['rsg-core']:GetCoreObject() -- Core Getter
+
+        if RSG ~= nil then
+            break
+        end
+
+        Wait(1000) -- mandatory wait - we want after many seconds
+
+    end
+
+    Citizen.CreateThread(function () 
+        
+        Functions.GetPlayer = function(source)
+
+            if GetPlayerName(source) == nil then
+                print(string.format('The player with the online source id: (%s) is not online.', source))
+                return nil
+            end
+            local xPlayer = RSG.Functions.GetPlayer(source)
+
+            if xPlayer then -- NOT SURE IF IT WORKS FOR RSG TO PREVENT ERRORS IF PLAYER IS IN SESSION.
+                return RSG.Functions.GetPlayer(source)
+            end
+    
+            print(string.format('The player object with the online source id: (%s) is invalid or in session.', source))
+            return nil
+        end
+    
+        Functions.IsPlayerCharacterSelected = function(source) -- Returns a boolean if player is in session or not.
+    
+            if GetPlayerName(source) == nil then
+                print(string.format('The player with the online source id: (%s) is not online.', source))
+                return false
+            end
+    
+            local xPlayer = RSG.Functions.GetPlayer(source)
+            return xPlayer ~= nil -- NOT SURE IF IT WORKS FOR RSG TO PREVENT ERRORS IF PLAYER IS IN SESSION.
+        end
+    
+        Functions.GetIdentifier = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            return xPlayer.PlayerData.citizenid
+        end
+    
+        Functions.GetCharacterId = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+          
+            if xPlayer == nil then return false end
+           
+            return xPlayer.PlayerData.cid
+        end
+    
+        Functions.GetGroup = function(source)
+
+            if RSG.Functions.HasPermission(source, 'admin') then
+                return 'admin'
+            end
+
+            if RSG.Functions.HasPermission(source, 'moderator') then
+                return 'moderator'
+            end
+
+            if RSG.Functions.HasPermission(source, 'mod') then
+                return 'mod'
+            end
+
+            return 'user'
+
+        end
+    
+        Functions.GetJob = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            return tostring(xPlayer.PlayerData.job.name)
+        end
+        
+        Functions.SetJob = function(source, job)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            xPlayer.Functions.SetJob(job, 0)
+        end
+            
+        Functions.SetJobGrade = function(source, grade)
+            local xPlayer = Functions.GetPlayer(source)
+            local job     = tostring(xPlayer.PlayerData.job.name)
+            xPlayer.Functions.SetJob(job, grade)
+        end
+            
+        Functions.GetJobGrade = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            local grade = xPlayer.PlayerData.job.grade.level or PlayerData.job.grade or PlayerData.job.level or 0
+
+            return grade
+        end
+    
+        Functions.GetFirstName = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            return xPlayer.PlayerData.charinfo.firstname
+        end
+    
+        Functions.GetLastName = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            return xPlayer.PlayerData.charinfo.lastname
+        end
+    
+        -- ACCOUNTS
+    
+        Functions.GetMoney = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            return xPlayer.Functions.GetMoney('cash')
+        end
+    
+        Functions.GetGold = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer == nil then return false end
+                
+            return xPlayer.Functions.GetMoney('gold')
+        end
+    
+        Functions.AddMoney = function(source, amount)
+            local xPlayer = Functions.GetPlayer(source)
+            xPlayer.Functions.AddMoney('cash', amount)
+        end
+    
+        Functions.AddGold = function(source, amount)
+            local xPlayer = Functions.GetPlayer(source)
+            xPlayer.Functions.AddMoney('gold', amount)
+        end
+    
+    
+        Functions.RemoveMoney = function(source, amount)
+            local xPlayer = Functions.GetPlayer(source)
+            xPlayer.Functions.RemoveMoney('cash', amount)
+        end
+    
+        Functions.RemoveGold = function(source, amount)
+            local xPlayer = Functions.GetPlayer(source)
+            xPlayer.Functions.RemoveMoney('gold', amount)
+        end
+    
+        -- INVENTORY
+    
+        Functions.GetUserInventory = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+            return xPlayer.PlayerData.items
+        end
+    
+        Functions.GetInventoryTotalWeight = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+            return RSG.Player.GetTotalWeight(xPlayer.PlayerData.items)
+        end
+
+        Functions.GetInventoryMaxWeight = function(source)
+            local xPlayer = Functions.GetPlayer(source)
+            return xPlayer.PlayerData.weight
+        end
+    
+        Functions.AddItemToInventory = function(source, item, amount)
+            local xPlayer = Functions.GetPlayer(source)
+            xPlayer.Functions.AddItem(item, amount)
+            TriggerClientEvent('inventory:client:ItemBox', source, RSG.Shared.Items[item], "add")
+        end
+    
+        Functions.RemoveItemFromInventory = function(source, item, amount)
+            local xPlayer = Functions.GetPlayer(source)
+            xPlayer.Functions.RemoveItem(item, amount)
+            TriggerClientEvent('inventory:client:ItemBox', source, RSG.Shared.Items[item], "remove")
+        end
+
+        Functions.GetItemCount = function(source, item, amount)
+            local xPlayer = Functions.GetPlayer(source)
+
+            if xPlayer.Functions.GetItemByName(item) == nil then
+                return 0
+            else
+                local amountitem = xPlayer.Functions.GetItemByName(item).amount
+                return amountitem
+            end
+
+            return 0
+        end
+    
+        Functions.GetItemWeight = function(item)
+            local weight = 0
+
+            if RSG.Shared.Items[item] then
+    
+                weight = RSG.Shared.Items[item].weight
+            end
+    
+            return weight
+        end
+    
+        Functions.CanCarryItem = function(source, item, amount)
+
+            if not exports['rsg-inventory']:CanAddItem(source, item, amount) then
+                return false
+            end
+    
+            return true
+        end
+    
+        Functions.AddWeaponToInventory = function(source, weapon)
+            local xPlayer = Functions.GetPlayer(source)
+            xPlayer.Functions.AddItem(weapon, 1)
+            TriggerClientEvent('inventory:client:ItemBox', source, RSG.Shared.Items[weapon], "add", 1)
+        end
+    
+        Functions.CanCarryWeapons = function(source, weapon)
+            
+            if not exports['rsg-inventory']:CanAddItem(source, weapon, 1) then
+                return false
+            end
+    
+            return true
+    
+        end
+            
+        Functions.GetItems = function() -- returns all server items in a table
+            return RSG.Shared.Items
+        end
+
+
+        Functions.RegisterContainerInventory = function(containerName, maxWeight, invConfig)
+        
+            exports["ghmattimysql"]:execute( 'SELECT * FROM `inventories` WHERE identifier = ?', { containerName }, function(result)
+                
+                if not result or result and not result[1] then
+
+                    exports['rsg-inventory']:CreateInventory(containerName, {
+                        label = invConfig.title or "",
+                        maxweight = maxWeight * 1000,
+                        slots = nil
+                    })
+                    
+                    exports["ghmattimysql"]:execute(
+                        "INSERT IGNORE INTO inventories (identifier) VALUES (@identifier)",
+                        {
+                            ["@identifier"] = containerName
+                        }
+                    )
+    
+                end
+
+            end)
+
+        end
+
+        Functions.UnRegisterContainer = function(containerId) 
+            
+            containerId = tonumber(containerId)
+
+            exports["ghmattimysql"]:execute( 'SELECT * FROM `inventories` WHERE id = ?', { containerId }, function(result)
+                
+                if not result or not result[1] then
+                    print('[ERROR] UnRegisterContainer - Container not found:', containerId)
+                    return
+                end
+
+                local containerName = result[1].identifier
+                
+                exports['rsg-inventory']:DeleteInventory(containerName)
+
+            end)
+
+        end
+
+        Functions.GetContainerIdByName = function(containerName)
+
+            local await = true
+            local containerId = 0
+
+            exports["ghmattimysql"]:execute( 'SELECT * FROM `inventories` WHERE identifier = ?', { containerName }, function(result)
+                
+                if not result or not result[1] then
+                    print('[ERROR] GetContainerIdByName - Container not found:', containerName)
+                    containerId = 0
+                else
+
+                    containerId = tonumber(result[1].id)
+                end
+
+                await = false
+                
+            end)
+
+            while await do 
+                Wait(10)
+            end
+
+            return containerId
+
+        end
+
+        Functions.UpgradeContainerWeight = function(containerId, extraWeight)
+
+            exports["ghmattimysql"]:execute( 'SELECT * FROM `inventories` WHERE id = ?', { containerId }, function(result)
+                
+                if not result or not result[1] then
+                    print('[ERROR] DoesContainerExistById - Container not found:', containerId)
+                    return
+                end
+
+                local containerName = result[1].identifier
+                local stash = exports['rsg-inventory']:GetInventory(containerName)
+
+                local maxweight = stash.maxweight + (extraWeight * 1000)
+                exports['rsg-inventory']:SetInventoryWeight(containerName, maxweight)
+        
+            end)
+
+        end
+
+        Functions.DoesContainerExistById = function(containerId)
+
+            local exist = false
+            local await = true
+
+            containerId = tonumber(containerId)
+
+            exports["ghmattimysql"]:execute( 'SELECT * FROM `inventories` WHERE id = ?', { containerId }, function(result)
+                
+                if not result or not result[1] then
+                    print('[ERROR] DoesContainerExistById - Container not found:', containerId)
+                    return
+                end
+
+                local containerName = result[1].identifier
+                
+                local exist = exports['rsg-inventory']:GetInventory(containerName)
+                if exist == nil then exist = false end
+    
+                if not exist then 
+                    local exist = exports['rsg-inventory']:GetInventory(containerId)
+                    if exist == nil then exist = false end
+                end
+
+                await = false
+    
+            end)
+
+            while await do 
+                Wait(10)
+            end
+
+            return exist 
+
+        end
+
+        Functions.DoesContainerExistByName = function(containerName)
+            local exist = exports['rsg-inventory']:GetInventory(containerName)
+            if exist == nil then exist = false end
+
+            return exist
+        end
+
+        Functions.OpenContainerInventory = function(source, containerId, title)
+                
+            local _source = source
+                
+            containerId = tonumber(containerId)
+
+            exports["ghmattimysql"]:execute( 'SELECT * FROM `inventories` WHERE id = ?', { containerId }, function(result)
+                
+                if not result or not result[1] then
+                    print('[ERROR] OpenContainerInventory - Container not found:', containerId)
+                    return
+                end
+                
+                local containerName = result[1].identifier
+                local stash = exports['rsg-inventory']:GetInventory(containerName)
+    
+                if stash then
+                    exports['rsg-inventory']:OpenInventory(_source, containerName, {
+                        label = title,
+                        maxweight = stash.maxweight,
+                        slots = stash.slots
+                    })
+                else
+                    print('[ERROR] Inventory does not exist:', containerName)
+                end
+            end)
+            
+        end
+            
+        AddFunctionsList(Functions) -- DO NOT MODIFY!
+    
+        Wait(5000)
+        print("^2Sucessfully loaded - [^1RSG^2] Framework.")
+
+    end)
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

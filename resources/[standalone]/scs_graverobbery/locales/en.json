@@ -1,0 +1,39 @@
+{
+    "notify": {
+        "could_not_locate_grave": "Could not locate the grave...",
+        "this_grave_has_already_been_disturbed": "This grave has already been disturbed...",
+        "you_must_wait_before_robbing_more_graves": "You must wait %s minutes before robbing more graves...",
+        "you_stopped_digging": "You stopped digging...",
+        "not_enough_lawmen_online": "Not enough lawmen online to disturb the dead...",
+        "the_restless_spirit_turns_aggressive": "The restless spirit turns aggressive!",
+        "the_restless_dead_rise_to_defend_their_grave": "The restless dead rise to defend their grave!",
+        "robbery_failed": "Robbery failed: %s",
+        "reward_notification": "You found %s",
+        "grave_dug_up": "The grave has been dug up. Search through the dirt for valuables...",
+        "nothing_to_rummage": "There's nothing here to rummage through...",
+        "you_stopped_rummaging": "You stopped searching through the dirt...",
+        "must_dig_first": "You must dig up the grave before rummaging through the dirt..."
+    },
+    "error": {
+        "no_grave_nearby": "No grave found nearby to interact with..."
+    },
+    "target": {
+        "dig_up_grave": "Dig Up Grave",
+        "dig_up_grave_description": "Dig up the grave",
+        "dig_up_grave_icon": "fa-solid fa-skull",
+        "rummage_through_dirt": "Rummage Through Dirt",
+        "rummage_through_dirt_description": "Search through the dirt for valuables",
+        "rummage_through_dirt_icon": "fa-solid fa-hand"
+    },
+    "progressbar": {
+        "digging_up_grave": "Digging Up Grave...",
+        "rummaging_through_dirt": "Rummaging Through Dirt..."
+    },
+    "lawman_alert": {
+        "grave_robbery_reported": "Disturbing reports of grave desecration have been reported!",
+        "grave_robbery_location": "Location: %s",
+        "grave_digging_reported": "Suspicious activity reported - someone was seen digging up a grave!",
+        "grave_digging_location": "Location: %s",
+        "grave_digging_urgent": "URGENT: Grave disturbance in progress!"
+    }
+}

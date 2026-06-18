@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Reports</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:transparent;overflow:hidden;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+
+:root{
+  --bg-base:#111110;--bg-surface:#1c1b19;--bg-elevated:#2a2927;--bg-hover:#2f2d2a;
+  --text:#eae6df;--text-dim:#a09a92;--text-muted:#5c5750;
+  --accent:#1ed760;--warning:#c49a3c;--error:#c04438;--info:#4a8bb5;
+  --border:#2e2c29;--border-light:#3a3835;
+  --radius:6px;--shadow:0 8px 32px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.4);
+}
+
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
+#overlay.visible{display:flex}
+
+#panel{
+  background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;
+  box-shadow:var(--shadow);width:520px;max-height:78vh;display:flex;flex-direction:column;
+  overflow:hidden;animation:popIn .18s ease;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg-elevated);
+}
+.panel-title{font-size:14px;font-weight:600;color:var(--text);letter-spacing:.3px}
+.panel-subtitle{font-size:11px;color:var(--text-dim);margin-top:2px}
+.btn-close{
+  background:none;border:1px solid var(--border);color:var(--text-dim);
+  border-radius:4px;padding:4px 8px;font-size:12px;cursor:pointer;transition:all .15s;
+}
+.btn-close:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-light)}
+
+.panel-hint{
+  padding:10px 16px;background:rgba(74,139,181,.08);border-bottom:1px solid rgba(74,139,181,.2);
+  font-size:12px;color:var(--info);display:flex;align-items:center;gap:6px;flex-shrink:0;
+}
+.hint-cmd{font-family:'Courier New',monospace;background:rgba(74,139,181,.15);padding:1px 6px;border-radius:3px;font-size:11px;color:#7ab8d8}
+
+.panel-body{flex:1;overflow-y:auto;padding:12px 14px;scrollbar-width:thin;scrollbar-color:var(--bg-elevated) transparent}
+.panel-body::-webkit-scrollbar{width:4px}
+.panel-body::-webkit-scrollbar-thumb{background:var(--bg-elevated);border-radius:2px}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted)}
+.empty-state .icon{font-size:32px;margin-bottom:10px;opacity:.4}
+.empty-state p{font-size:13px}
+
+.report-card{
+  background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:10px;overflow:hidden;
+}
+.report-card:last-child{margin-bottom:0}
+.report-head{
+  padding:10px 12px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;
+  transition:background .12s;
+}
+.report-head:hover{background:var(--bg-hover)}
+.report-chevron{color:var(--text-muted);font-size:10px;margin-top:3px;transition:transform .15s;flex-shrink:0}
+.report-card.open .report-chevron{transform:rotate(90deg)}
+.report-meta{flex:1;min-width:0}
+.report-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.report-title{font-size:13px;font-weight:600;color:var(--text)}
+.report-info{display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap}
+.badge{
+  display:inline-block;padding:1px 7px;border-radius:9999px;
+  font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;
+}
+.badge-open{background:rgba(30,215,96,.12);color:#1ed760;border:1px solid rgba(30,215,96,.25)}
+.badge-claimed{background:rgba(196,154,60,.12);color:#c49a3c;border:1px solid rgba(196,154,60,.25)}
+.badge-resolved{background:rgba(92,87,80,.15);color:#a09a92;border:1px solid rgba(92,87,80,.3)}
+.badge-reopened{background:rgba(74,139,181,.12);color:#4a8bb5;border:1px solid rgba(74,139,181,.25)}
+.report-date{font-size:10px;color:var(--text-muted)}
+.reply-count{font-size:10px;color:var(--text-dim);background:var(--bg-hover);padding:1px 6px;border-radius:9999px;border:1px solid var(--border)}
+.new-reply{color:var(--accent)!important;border-color:rgba(30,215,96,.3)!important;background:rgba(30,215,96,.08)!important}
+
+.report-body{
+  border-top:1px solid var(--border);padding:10px 12px;
+  display:none;
+}
+.report-card.open .report-body{display:block}
+.report-desc{font-size:12px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+
+.messages-label{font-size:10px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+.message-list{display:flex;flex-direction:column;gap:6px}
+.msg{
+  display:flex;gap:8px;padding:7px 9px;border-radius:4px;
+}
+.msg.admin-msg{background:rgba(30,215,96,.05);border:1px solid rgba(30,215,96,.12)}
+.msg.player-msg{background:rgba(255,255,255,.02);border:1px solid var(--border)}
+.msg-avatar{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px;
+}
+.msg.admin-msg .msg-avatar{background:rgba(30,215,96,.2);color:var(--accent)}
+.msg.player-msg .msg-avatar{background:rgba(255,255,255,.06);color:var(--text-dim)}
+.msg-content{flex:1;min-width:0}
+.msg-sender{font-size:11px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:5px}
+.msg-role{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)}
+.msg-text{font-size:12px;color:var(--text-dim);line-height:1.5;margin-top:2px}
+.msg-time{font-size:10px;color:var(--text-muted);margin-top:2px}
+.no-replies{font-size:12px;color:var(--text-muted);font-style:italic;padding:4px 0}
+
+.loading{text-align:center;padding:30px;color:var(--text-muted);font-size:13px}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="overlay">
+  <div id="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">&#128196; My Reports</div>
+        <div class="panel-subtitle">Track your submitted reports &amp; admin replies</div>
+      </div>
+      <button class="btn-close" onclick="closePanel()">&#10005; Close</button>
+    </div>
+    <div class="panel-hint">
+      <span>&#128712;</span>
+      Type <span class="hint-cmd">/myreports</span> any time to check for new replies from admins
+    </div>
+    <div class="panel-body" id="panel-body">
+      <div class="loading"><span class="spinner"></span>Loading your reports&hellip;</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var overlay = document.getElementById('overlay');
+var panelBody = document.getElementById('panel-body');
+
+function esc(str) {
+  if (str == null) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function timeAgo(dateStr) {
+  if (!dateStr) return '';
+  var d = new Date(dateStr);
+  var now = new Date();
+  var diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  return Math.floor(diff/86400) + 'd ago';
+}
+
+function statusBadge(s) {
+  var cls = { open:'badge-open', claimed:'badge-claimed', resolved:'badge-resolved', reopened:'badge-reopened' };
+  return '<span class="badge ' + (cls[s] || 'badge-open') + '">' + esc(s) + '</span>';
+}
+
+function renderReports(reports) {
+  if (!reports || reports.length === 0) {
+    panelBody.innerHTML = '<div class="empty-state"><div class="icon">&#128196;</div><p>You have no reports yet.<br>Use <strong>/report [message]</strong> to submit one.</p></div>';
+    return;
+  }
+
+  var html = '';
+  reports.forEach(function(r, i) {
+    var msgs = r.messages || [];
+    var adminReplies = msgs.filter(function(m) { return m.sender_role === 'admin' || m.sender_role === 'superadmin' || m.sender_role === 'mod'; });
+    var hasNewReply = adminReplies.length > 0;
+    var replyLabel = msgs.length > 0
+      ? '<span class="reply-count' + (hasNewReply ? ' new-reply' : '') + '">' + msgs.length + ' ' + (msgs.length === 1 ? 'reply' : 'replies') + '</span>'
+      : '<span class="reply-count">No replies yet</span>';
+
+    var messagesHtml = '';
+    if (msgs.length > 0) {
+      messagesHtml = '<div class="messages-label">Conversation</div><div class="message-list">';
+      msgs.forEach(function(m) {
+        var isAdmin = m.sender_role === 'admin' || m.sender_role === 'superadmin' || m.sender_role === 'mod';
+        var roleTag = isAdmin ? '<span class="msg-role">Admin</span>' : '';
+        var initials = (m.sender_name || '?').charAt(0).toUpperCase();
+        messagesHtml +=
+          '<div class="msg ' + (isAdmin ? 'admin-msg' : 'player-msg') + '">' +
+            '<div class="msg-avatar">' + initials + '</div>' +
+            '<div class="msg-content">' +
+              '<div class="msg-sender">' + esc(m.sender_name || '-') + ' ' + roleTag + '</div>' +
+              '<div class="msg-text">' + esc(m.message || '') + '</div>' +
+              '<div class="msg-time">' + timeAgo(m.created_at) + '</div>' +
+            '</div>' +
+          '</div>';
+      });
+      messagesHtml += '</div>';
+    } else {
+      messagesHtml = '<div class="no-replies">No replies yet. An admin will respond to your report soon.</div>';
+    }
+
+    html +=
+      '<div class="report-card" id="rc-' + i + '">' +
+        '<div class="report-head" onclick="toggle(' + i + ')">' +
+          '<span class="report-chevron">&#9654;</span>' +
+          '<div class="report-meta">' +
+            '<div class="report-title-row">' +
+              '<span class="report-title">' + esc(r.title || r.report_type || 'Report') + '</span>' +
+            '</div>' +
+            '<div class="report-info">' +
+              statusBadge(r.status) + ' ' + replyLabel +
+              '<span class="report-date">' + timeAgo(r.created_at) + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="report-body">' +
+          (r.description ? '<div class="report-desc">' + esc(r.description) + '</div>' : '') +
+          messagesHtml +
+        '</div>' +
+      '</div>';
+  });
+
+  panelBody.innerHTML = html;
+}
+
+function toggle(i) {
+  var card = document.getElementById('rc-' + i);
+  if (card) card.classList.toggle('open');
+}
+
+function closePanel() {
+  overlay.classList.remove('visible');
+  fetch('https://m-serverguard/closePlayerReports', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }).catch(function(){});
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePanel();
+});
+
+window.addEventListener('message', function(e) {
+  var d = e.data;
+  if (!d || !d.action) return;
+
+  if (d.action === 'openPlayerReports') {
+    overlay.classList.add('visible');
+    panelBody.innerHTML = '<div class="loading"><span class="spinner"></span>Loading your reports&hellip;</div>';
+    fetch('https://m-serverguard/getMyReports', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }).catch(function(){});
+  } else if (d.action === 'receiveMyReports') {
+    renderReports(d.data || []);
+  } else if (d.action === 'closePlayerReports') {
+    overlay.classList.remove('visible');
+  }
+});
+</script>
+</body>
+</html>

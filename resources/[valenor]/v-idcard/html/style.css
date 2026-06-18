@@ -1,0 +1,820 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+@import url(https://db.onlinewebfonts.com/c/58c8520b15f339e3930e9132fede723e?family=Breaking+Road);
+
+body {
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: auto;
+}
+
+.main-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    pointer-events: auto;
+    display: none;
+}
+
+.main-container-2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    pointer-events: auto;
+    display: none;
+}
+
+
+
+.main-background {
+    width: 27.4479vw;
+    height: 41.8229vw;
+    background-image: url(./img/background.png);
+    background-size: 100% 100%;
+    animation: fadeInScale 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.main-background-2 {
+    width: 27.4479vw;
+    height: 41.8229vw;
+    background-image: url(./img/bglast.png);
+    background-size: 100% 100%;
+    animation: fadeInScale 0.5s ease-out;
+}
+
+.inputkemkum {
+    background: none;
+    border: none;
+    font-family: "Breaking Road";
+    color: #050089;
+    font-size: .7292vw;
+
+}
+
+.inputkemkum:focus {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+
+.header-text {
+    position: absolute;
+    width: 21.875vw;
+    top: 3.6458vw;
+    left: 3.125vw;
+    text-align: center;
+    color: #0B0B0B;
+    font-family: "EB Garamond";
+    font-size: 1.25vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    animation: slideFromTop 0.6s ease-out 0.3s both;
+}
+
+.header-desc {
+    position: absolute;
+    width: 21.875vw;
+    top: 5.2083vw;
+    left: 3.125vw;
+    color: rgba(11, 11, 11, 0.65);
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    animation: slideFromTop 0.6s ease-out 0.4s both;
+}
+
+@keyframes slideFromTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.player-name-key {
+    position: absolute;
+    top: 10.5729vw;
+    left: 2.1646vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 0.6s both;
+}
+
+.player-name-val {
+    position: absolute;
+    top: 10.2vw;
+    left: 8.25vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.2917vw;
+    animation: slideFromRight 0.5s ease-out 0.6s both;
+}
+
+.signature-button {
+    position: absolute;
+    top: 28.225vw;
+    left: 11.1979vw;
+    width: 4.6875vw;
+    height: 4.6875vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    transition: transform 0.15s ease-in-out;
+    cursor: pointer;
+    animation: slideFromBottom 0.6s ease-out 1.5s both;
+}
+
+.signature-button.stamped {
+    background-image: url(./img/samp.png);
+    animation: stampEffect 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes stampEffect {
+    0% {
+        transform: translateY(-100px) scale(0) rotate(-15deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-10px) scale(1.1) rotate(-5deg);
+        opacity: 1;
+    }
+    70% {
+        transform: translateY(5px) scale(0.95) rotate(2deg);
+    }
+    100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.signature-button-2 {
+    position: absolute;
+    top: 32.855vw;
+    left: 11.3979vw;
+    width: 4.6875vw;
+    height: 4.6875vw;
+    background-image: url(./img/samp.png);
+    background-size: cover;
+    transition: transform 0.15s ease-in-out;
+    animation: slideFromBottom 0.6s ease-out 1.8s both;
+}
+
+
+.signature-button:hover {
+    transform: scale(1.02);
+}
+
+
+
+.date-key {
+    position: absolute;
+    top: 12.6563vw;
+    left: 3.0458vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 0.7s both;
+}
+
+.date-val {
+    position: absolute;
+    top: 12.2917vw;
+    left: 8.8542vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.2917vw;
+    animation: slideFromRight 0.5s ease-out 0.7s both;
+}
+
+.born-key {
+    position: absolute;
+    top: 14.6875vw;
+    left: 1.5313vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 0.8s both;
+}
+
+.born-val {
+    position: absolute;
+    top: 14.3229vw;
+    left: 7.2917vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.8125vw;
+    animation: slideFromRight 0.5s ease-out 0.8s both;
+}
+
+.eyes-key {
+    position: absolute;
+    top: 16.8229vw;
+    left: 2.4125vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 0.9s both;
+}
+
+.eyes-val {
+    position: absolute;
+    top: 16.3542vw;
+    left: 8.0729vw;
+    color: #050089;
+    font-size: .7292vw;
+    font-family: "Breaking Road";
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.8125vw;
+    animation: slideFromRight 0.5s ease-out 0.9s both;
+}
+
+.hair-key {
+    position: absolute;
+    top: 16.8229vw;
+    left: 12.0479vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 0.9s both;
+}
+
+.hair-val {
+    position: absolute;
+    top: 16.45vw;
+    left: 18.0729vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.8125vw;
+    animation: slideFromRight 0.5s ease-out 0.9s both;
+}
+
+.weight-key {
+    position: absolute;
+    top: 18.9063vw;
+    left: 1.4229vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.0s both;
+}
+
+.weight-val {
+    position: absolute;
+    top: 18.6854vw;
+    left: 7.0313vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.8125vw;
+    animation: slideFromRight 0.5s ease-out 1.0s both;
+}
+
+.height-key {
+    position: absolute;
+    top: 18.9063vw;
+    left: 7.8813vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.0s both;
+}
+
+.height-val {
+    position: absolute;
+    top: 18.6854vw;
+    left: 13.763vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.8125vw;
+    animation: slideFromRight 0.5s ease-out 1.0s both;
+}
+
+.gender-key {
+    position: absolute;
+    top: 18.9063vw;
+    left: 14.2958vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.0s both;
+}
+
+.gender-val {
+    position: absolute;
+    top: 18.6854vw;
+    left: 20.2604vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.8125vw;
+    animation: slideFromRight 0.5s ease-out 1.0s both;
+}
+
+.nationality-key {
+    position: absolute;
+    top: 20.9375vw;
+    left: 2.725vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.1s both;
+}
+
+.nationality-val {
+    position: absolute;
+    top: 20.5208vw;
+    left: 8.5938vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 14.8125vw;
+    animation: slideFromRight 0.5s ease-out 1.1s both;
+}
+
+.employed-key {
+    position: absolute;
+    top: 23.0729vw;
+    left: 2.9854vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.2s both;
+}
+
+.employed-val {
+    position: absolute;
+    top: 22.6042vw;
+    left: 8.6979vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 7.8125vw;
+    animation: slideFromRight 0.5s ease-out 1.2s both;
+}
+
+.place-residence-key {
+    position: absolute;
+    top: 25.1563vw;
+    left: 4.5313vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.3s both;
+}
+
+.place-residence-val {
+    position: absolute;
+    top: 24.7354vw;
+    left: 10.1563vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 12.5vw;
+    animation: slideFromRight 0.5s ease-out 1.3s both;
+}
+
+.signature-key {
+    position: absolute;
+    top: 27.1875vw;
+    left: 2.3vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.4s both;
+}
+
+.signature-val {
+    position: absolute;
+    top: 26.9708vw;
+    left: 8.0729vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 12.5vw;
+    animation: slideFromRight 0.5s ease-out 1.4s both;
+}
+
+.registry-no-key {
+    position: absolute;
+    top: 29.2875vw;
+    left: 3.2vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.5s both;
+}
+
+.registry-no-val {
+    position: absolute;
+    top: 28.9708vw;
+    left: 8.7729vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 12.5vw;
+    animation: slideFromRight 0.5s ease-out 1.5s both;
+}
+
+.issue-date-key {
+    position: absolute;
+    top: 31.3875vw;
+    left: 2.6vw;
+    width: 5.2083vw;
+    color: rgba(11, 11, 11, 0.65);
+    font-family: "EB Garamond";
+    font-size: .7292vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: right;
+    animation: slideFromLeft 0.5s ease-out 1.6s both;
+}
+
+.issue-date-val {
+    position: absolute;
+    top: 30.9708vw;
+    left: 8.1729vw;
+    color: #050089;
+    font-family: "Breaking Road";
+    font-size: .7292vw;
+    font-style: normal;
+    text-align: left;
+    font-weight: 400;
+    line-height: normal;
+    width: 12.5vw;
+    animation: slideFromRight 0.5s ease-out 1.6s both;
+}
+
+.footer-text {
+    position: absolute;
+    color: rgba(11, 11, 11, 0.65);
+    text-align: center;
+    font-family: "EB Garamond";
+    font-size: .8333vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    top: 34.1167vw;
+    left: 4.4271vw;
+    width: 19.2708vw;
+    height: 4.1667vw;
+    text-align: center;
+    animation: slideFromBottom 0.6s ease-out 1.7s both;
+}
+
+@keyframes slideFromBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profilephoto {
+    position: absolute;
+    left: 16.5625vw;
+    top: 10.5rem;
+    width: 6.25vw;
+    height: 6.7708vw;
+    background-image: url(./img/pp.png);
+    background-size: 100% 100%;
+    cursor: pointer;
+    transform: rotate(4deg);
+    animation: slideFromRight 0.7s ease-out 0.5s both;
+}
+
+/* Custom fotoğraf için vintage efekt */
+.profilephoto.custom-photo {
+    filter: grayscale(100%) sepia(20%);
+    transform: rotate(4deg);
+}
+
+.profilephoto-2 {
+    position: absolute;
+    left: 16.25vw;
+    top: 8.4375vw;
+    width: 6.7708vw;
+    height: 7.2917vw;
+    background-image: url(./img/pplast.png);
+    background-size: 100% 100%;
+    animation: slideFromRight 0.7s ease-out 0.5s both;
+}
+
+/* Custom fotoğraf için vintage efekt */
+.profilephoto-2.custom-photo {
+    filter: grayscale(100%) sepia(20%);
+    transform: rotate(4deg);
+}
+
+@keyframes slideFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.tapes-1 {
+    position: absolute;
+    left: 15.2083vw;
+    top: 14.5833vw;
+    width: 2.7604vw;
+    height: 1.5625vw;
+    background-image: url(./img/tape1.png);
+    z-index: 99;
+    animation: slideFromTop 0.5s ease-out 0.8s both;
+}
+
+.tapes-2 {
+    position: absolute;
+    left: 20.9375vw;
+    top: 7.9167vw;
+    width: 2.7604vw;
+    height: 1.5625vw;
+    background-image: url(./img/tape2.png);
+    z-index: 99;
+    animation: slideFromTop 0.5s ease-out 0.9s both;
+}
+
+/* 
+INPUT */
+
+.input-container{
+    position: absolute;
+    position: absolute;
+    top: 30%;
+    left: 55%;
+    z-index: 9944;
+}
+
+.inputbg{
+    background-image: url(./img/inputbg.png);
+    background-size: cover;
+    width: 15.3646vw;
+    height: 8.3333vw;
+}
+
+.inputheader{
+    position: absolute;
+    left: 1.0417vw;
+    top: .7813vw;
+    color: #F1EAD0;
+    font-family: "EB Garamond";
+    font-size: .9375vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.inputdesc{
+    position: absolute;
+    left: 1.0417vw;
+    top: 1.9792vw;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.cancelbutton{
+    position: absolute;
+    left: 1.0417vw;
+    top: 5.4167vw;
+    background-image: url(./img/inputbutton.png);
+    width: 6.3802vw;
+    height: 1.8229vw;
+}
+
+.cancelbutton:hover {
+    background-image: url(./img/inputbuttonhvr.png);
+}
+.cancelbutton:hover .canceltext {
+    color: black;
+}
+
+.confirmbutton:hover {
+    background-image: url(./img/inputbuttonhvr.png);
+}
+
+.confirmbutton:hover .confirmtext {
+    color: black;
+}
+
+
+.canceltext{
+    position: absolute;
+    left: 2.2917vw;
+    top: .5208vw;
+    color: #F1EAD0;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.confirmbutton{
+    position: absolute;
+    left: 7.9167vw;
+    top: 5.4167vw;
+    background-image: url(./img/inputbutton.png);
+    width: 6.3802vw;
+    height: 1.8229vw;
+}
+
+.confirmtext{
+    position: absolute;
+    left: 2.2917vw;
+    top: .5208vw;
+    color: #F1EAD0;
+    font-family: "EB Garamond";
+    font-size: .625vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.linkinput{
+    position: absolute;
+    left: 1.5625vw;
+    top: 3.6979vw;
+    background: none;
+    border: none;
+    color: white;
+}
+
+.linkinput:focus{
+    border: none;
+    background: none;
+    outline: none;
+    box-shadow: none;
+}

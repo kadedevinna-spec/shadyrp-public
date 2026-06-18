@@ -1,0 +1,488 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+@font-face {
+    font-family: RDR2;
+    src: url("RDR_Lino_Regular.ttf");
+}
+
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    font-family:  RDR2, serif !important;
+    background-color: transparent !important;
+}
+
+.npc-dialog-overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 8vh;
+    display: none;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(1.5vh);
+    transition: opacity 180ms ease, transform 180ms ease;
+    z-index: 9999;
+}
+
+.npc-dialog-overlay.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.npc-dialog-card {
+    position: relative;
+    width: min(48vw, 860px);
+    min-height: 9vh;
+    padding: 1.8vh 2.15vw 1.75vh;
+    color: #f7efe2;
+    text-align: center;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.48));
+}
+
+.npc-dialog-card::before {
+    content: "";
+    position: absolute;
+    inset: -0.45vh -0.5vw;
+    background-image: url("../images/uielements/darkmode/inkroller_1a.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.npc-dialog-title {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.55vh;
+    color: #d8ad64;
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.npc-dialog-text {
+    position: relative;
+    z-index: 1;
+    color: #fff8ec;
+    font-size: 1.55rem;
+    line-height: 1.35;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.95);
+}
+
+.npc-dialog-rule {
+    position: relative;
+    z-index: 1;
+    width: 36%;
+    height: 1px;
+    margin: 1vh auto 0;
+    background: linear-gradient(90deg, transparent, rgba(218, 174, 96, 0.9), transparent);
+}
+
+
+#page-wrapper{
+    display: none;
+    width: 60vw;
+    height: 58vh;
+    background-image: url("../images/uielements/darkmode/inkroller_1a.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    padding-left: 1.563vw;
+    padding-top:4.861vh;
+    padding-right: 1.953vw;
+    padding-bottom: 3.472vh;
+    color: white;
+}
+
+
+.main-grid{
+    display: grid;
+    column-gap: 3.7%;
+    height: 100%;
+}
+
+
+.main-grid div .row{
+    margin: 0;
+}
+
+
+.header{
+    border-bottom: 2px solid white;
+    margin-bottom: 2.083vh !important;
+    display: flex;
+}
+
+
+.header h2, .header h3{
+    float: left;
+    margin: 0 !important;
+}
+
+
+.timebased{
+    background-image: url("../images/uielements/clock-icon-white.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.195vw;
+}
+
+
+#mission-details .timebased{
+    margin-right: 0.391vw;
+}
+
+
+#active-missions .mission-selected .timebased{
+    background-image: url("../images/uielements/clock-icon-black.svg");
+}
+
+
+#active-missions{
+    margin: 0;
+    max-height: 100%;
+    padding-left: 0.391vw;
+}
+
+
+#mission-details{
+    position: relative;
+    margin: 0;
+}
+
+
+#mission-details .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+#mission-details .header .mission_status{
+    text-align: right;
+    width: auto;
+}
+
+
+#mission-details #mission_image{
+    width: 100%;
+    height: 100%;
+}
+
+#mission-details #mission_description{
+    box-sizing: border-box;
+    padding-left: 0.781vw !important;
+}
+
+
+#mission-details .mission_info{
+    height: 19.792vh;
+    margin-bottom: 2.083vh !important;
+}
+
+
+#mission-details .mission_tasks{
+    display: flex;           /* Flex aktivieren */
+    flex-direction: column;  /* Items untereinander stapeln */
+    max-height: 17vh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-bottom: 1.736vh;
+}
+
+
+#mission-details .mission_task{
+    position: relative;
+    width: 100%;
+    height: 3.125vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* zentriert Titel + Progress gemeinsam */
+    gap: 10px;                 /* Abstand zwischen Text und Progress */
+
+    margin-bottom: 1.042vh;
+    color: white;
+}
+
+
+#mission-details .mission_task::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image: url("../images/uielements/darkmode/invite_bg_large.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    opacity: 0.3;
+    z-index: 0;
+
+    transform-origin: center;
+}
+
+
+#mission-details .mission_task:nth-child(even)::before {
+    transform: scaleX(-1);
+}
+
+
+#mission-details .mission_task > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+#mission-details progress {
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: 30%;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.5);
+}
+
+
+/* Hintergrund (Track) – Chrome / Edge / Safari */
+#mission-details progress::-webkit-progress-bar {
+  background: rgba(0,0,0,0.5);
+}
+
+
+/* Füllung – Chrome / Edge / Safari */
+#mission-details progress::-webkit-progress-value {
+  background: rgba(255,255,255,0.7);
+}
+
+
+/* Füllung – Firefox */
+#mission-details progress::-moz-progress-bar {
+  background: rgba(255,255,255,0.7);
+}
+
+
+
+#mission-details .mission_rewards{
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#mission-details .mission_test_tools{
+    position: absolute;
+    left: 0;
+    bottom: 4.5vh;
+    display: flex;
+    align-items: center;
+    gap: 0.75vw;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.mission-reset-button{
+    border: 1px solid rgba(216, 173, 100, 0.75);
+    background: rgba(45, 18, 12, 0.86);
+    color: #f7efe2;
+    padding: 0.35vh 0.75vw;
+    font-family: RDR2, serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+}
+
+.mission-reset-button:hover{
+    background: rgba(92, 30, 18, 0.95);
+    color: #fff8ec;
+}
+
+.mission-reset-hint{
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+
+#mission-details .mission_rewards h4{
+    margin-right: 20px !important;
+    margin-bottom: 0 !important;
+}
+
+
+#mission-details .mission_rewards ul{
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    font-size: 1.2rem;
+    align-items: baseline;
+    margin: 0 !important;
+}
+
+
+#mission-details .mission_rewards ul li img{
+    max-width: 1.563vw;
+    height: auto;
+}
+
+
+#mission-details .mission_tracking{
+    float: right;
+    position: absolute;
+    right: 0;
+}
+
+
+#active-missions #active-missions-list{
+    display: flex;           /* Flex aktivieren */
+    flex-direction: column;  /* Items untereinander stapeln */
+    max-height: 39.028vh;
+    height: 39.028vh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+#active-missions #active-missions-list .mission{
+    background-image: url("../images/uielements/darkmode/selection_box.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.472vh;
+    width: 94%;
+    padding-left: 0.586vw;
+    padding-right: 0.586vw;
+    margin-bottom: 1.042vh;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+
+#active-missions #active-missions-list .mission:last-child{
+    margin-bottom: 0 !important;
+}
+
+
+#active-missions #active-missions-list .mission:hover{
+    transform: scale(1.01);
+}
+
+
+.mission-selected{
+    width: 100% !important;
+    background: none !important;
+    background-color: rgba(255,255,255,0.75) !important;
+    color: black !important;
+    transition: none !important;
+    transform: none !important;
+    cursor: default !important;
+}
+
+
+#active-missions .mission_title{
+    display: flex;
+    align-items: center;
+}
+
+
+.task-locked {
+   opacity: 0.5; 
+}
+
+
+.mission-failed{
+    color: darkred !important;
+}
+
+.mission-path-closed{
+    color: goldenrod !important;
+}
+
+.mission-locked{
+    color: goldenrod !important;
+}
+
+.mission-completed{
+    color: lightgreen !important;
+}
+
+.mission-turned-in{
+    color: rgb(173, 216, 230) !important;
+}   
+
+#active-missions .mission-selected .mission-turned-in{
+    color: #2B748C !important;
+}
+
+#active-missions .mission-selected .mission-completed{
+    color: green !important;
+}
+
+
+
+/*/////////////////////////////// MEDIA QUERIES //////////////////////////////////////////////////*/
+
+
+/* Full HD oder kleiner */
+@media (max-width: 1920px) {
+    html{
+        font-size: 13px;
+    }
+
+    .npc-dialog-card {
+        width: min(58vw, 760px);
+    }
+}
+
+/* UWQHD */
+@media (min-width: 3440px) and (max-width: 3839px) {
+    html{
+        font-size: 22px;
+    }
+
+    .npc-dialog-card {
+        width: min(46vw, 1200px);
+    }
+
+    #page-wrapper{
+        height: 65vh;
+    }
+    #mission-details .mission_info{
+        height: auto;
+    }
+}
+
+/* 4K */
+@media (min-width: 3840px) {
+    html{
+        font-size: 24px;
+    }
+
+    .npc-dialog-card {
+        width: min(46vw, 1280px);
+    }
+}

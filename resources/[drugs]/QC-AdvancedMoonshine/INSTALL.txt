@@ -1,0 +1,172 @@
+═══════════════════════════════════════════════════════════════════════════════
+  QC-AdvancedMoonshine - Installation Guide
+═══════════════════════════════════════════════════════════════════════════════
+
+  Developer: Artmines | Quantum Projects Community
+  Discord: https://discord.gg/kJ8ZrGM8TS
+  Version: 2.0.0
+
+═══════════════════════════════════════════════════════════════════════════════
+  PREREQUISITES
+═══════════════════════════════════════════════════════════════════════════════
+
+Before installing, ensure you have the following dependencies installed:
+
+  [REQUIRED]
+  • ox_lib          - https://github.com/overextended/ox_lib
+  • oxmysql         - https://github.com/overextended/oxmysql
+  • rsg-core        - RSG Framework Core
+  • rsg-inventory   - https://github.com/Rexshack-RedM/rsg-inventory
+  • rco-dialogs     - https://github.com/RetryR1v2/rco-dialogs
+  • xsound          - https://github.com/Xogy/xsound
+
+═══════════════════════════════════════════════════════════════════════════════
+  INSTALLATION STEPS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. EXTRACT RESOURCE
+   ─────────────────────────────────────────────────────────────────────────
+   • Extract the QC-AdvancedMoonshine folder to your server's resources folder
+   • Recommended path: resources/[quantum]/QC-AdvancedMoonshine
+   • Ensure folder name is exactly: QC-AdvancedMoonshine
+
+2. DATABASE SETUP
+   ─────────────────────────────────────────────────────────────────────────
+   • Navigate to: INSTALLATION/qc_moonshine.sql
+   • Execute the SQL file in your database (MySQL/MariaDB)
+   • This creates the following tables:
+     - qc_moonshine_stills
+     - qc_moonshine_shacks
+     - qc_moonshine_stats
+
+3. ITEM CONFIGURATION
+   ─────────────────────────────────────────────────────────────────────────
+   • Open: INSTALLATION/items.lua
+   • Copy all item definitions
+   • Paste into: rsg-core/shared/items.lua
+   • Ensure no duplicate item names exist
+
+4. AUDIO SETUP (xsound)
+   ─────────────────────────────────────────────────────────────────────────
+   • Locate your xsound resource folder
+   • Navigate to: xsound/html/sounds/
+   • Copy brewfx.ogg from INSTALLATION/ to xsound/html/sounds/
+   • Verify file path: xsound/html/sounds/brewfx.ogg
+
+5. CONFIGURATION
+   ─────────────────────────────────────────────────────────────────────────
+   • Review and edit: config.lua
+   • Review and edit: config.shacks.lua
+   • Adjust settings to match your server's needs:
+     - Vendor locations and pricing
+     - Recipe configurations
+     - Shack rental prices and locations
+     - XP rewards and level progression
+
+6. SERVER.CFG SETUP
+   ─────────────────────────────────────────────────────────────────────────
+   • Open your server.cfg file
+   • Add the following AFTER all dependencies:
+
+     ensure ox_lib
+     ensure oxmysql
+     ensure rsg-core
+     ensure rsg-inventory
+     ensure rco-dialogs
+     ensure xsound
+     ensure QC-AdvancedMoonshine
+
+   ⚠ IMPORTANT: Dependencies MUST be started before QC-AdvancedMoonshine
+
+7. RESTART SERVER
+   ─────────────────────────────────────────────────────────────────────────
+   • Stop your server completely
+   • Start your server
+   • Check console for any errors
+   • Verify resource loaded: "QC-AdvancedMoonshine started successfully"
+
+═══════════════════════════════════════════════════════════════════════════════
+  POST-INSTALLATION VERIFICATION
+═══════════════════════════════════════════════════════════════════════════════
+
+After installation, verify everything is working:
+
+  ✓ Check for console errors during startup
+  ✓ Ensure all dependencies loaded successfully
+  ✓ Visit Old Coot McGraw's shop (should appear on map with blip)
+  ✓ Purchase a Basic Still Kit and test placement
+  ✓ Test brewing with basic ingredients (corn, wheat, sugar, yeast)
+  ✓ Verify brewing sounds play during active brewing
+  ✓ Check XP system updates after brewing completion
+
+═══════════════════════════════════════════════════════════════════════════════
+  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+  ISSUE: Script fails to start
+  ─────────────────────────────────────────────────────────────────────────
+  • Check all dependencies are installed and started first
+  • Verify database tables were created successfully
+  • Check server console for specific error messages
+
+  ISSUE: Items not showing in inventory
+  ─────────────────────────────────────────────────────────────────────────
+  • Verify items were added to rsg-core/shared/items.lua
+  • Restart rsg-core after adding items
+  • Check for duplicate item names
+
+  ISSUE: Brewing sounds not playing
+  ─────────────────────────────────────────────────────────────────────────
+  • Verify xsound is installed and started
+  • Confirm brewfx.ogg is in xsound/html/sounds/
+  • Check browser console (F12) for audio errors
+
+  ISSUE: Shack blips not appearing
+  ─────────────────────────────────────────────────────────────────────────
+  • Verify config.shacks.lua is properly configured
+  • Check player has met Marcus Kane (boss location)
+  • Ensure player meets level requirements
+
+  ISSUE: XP not being awarded
+  ─────────────────────────────────────────────────────────────────────────
+  • Check server/xp_system.lua is loading correctly
+  • Verify exports are functioning (check console)
+  • Ensure player character data is properly loaded
+
+═══════════════════════════════════════════════════════════════════════════════
+  CONFIGURATION TIPS
+═══════════════════════════════════════════════════════════════════════════════
+
+  ADJUSTING DIFFICULTY
+  ─────────────────────────────────────────────────────────────────────────
+  • Edit Config.Temperature.DifficultyTiers in config.lua
+  • Increase heatUpSpeed/coolDownSpeed for harder gameplay
+  • Adjust OptimalTemp and TempTolerance for precision requirements
+
+  BALANCING ECONOMY
+  ─────────────────────────────────────────────────────────────────────────
+  • Adjust prices in Config.Vendor.Shop
+  • Modify recipe ingredient requirements in Config.Recipes
+  • Change shack rental prices in config.shacks.lua
+  • Adjust XP rewards in Config.XP.Rewards
+
+  CUSTOMIZING LOCATIONS
+  ─────────────────────────────────────────────────────────────────────────
+  • Modify vendor location in Config.Vendor.Location
+  • Change boss location in Config.Boss.Location
+  • Edit shack locations in config.shacks.lua (coords, interior_id)
+
+═══════════════════════════════════════════════════════════════════════════════
+  SUPPORT
+═══════════════════════════════════════════════════════════════════════════════
+
+  For support, bug reports, or feature requests:
+
+  • Discord: https://discord.gg/kJ8ZrGM8TS
+  • Report issues in our #help-me channel
+  • Include server console logs and error messages
+  • Provide reproduction steps for bugs
+
+═══════════════════════════════════════════════════════════════════════════════
+  THANK YOU FOR CHOOSING QUANTUM PROJECTS!
+═══════════════════════════════════════════════════════════════════════════════

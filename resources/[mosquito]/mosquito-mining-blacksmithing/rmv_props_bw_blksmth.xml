@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Map>
+    <MapMeta Creator="**Invalid**"/>
+
+
+    <!-- BLACKWATER -->
+    <DeletedObject Hash="1907611" Position_x="-869.48919677734" Position_y="-1393.8471679688" Position_z="43.38744354248"/>
+    <DeletedObject Hash="541872060" Position_x="-869.31982421875" Position_y="-1390.6389160156" Position_z="42.497451782227"/>
+    <DeletedObject Hash="2054799887" Position_x="-869.5867" Position_y="-1393.9008" Position_z="43.04325"/>
+    <DeletedObject Hash="-1790225167" Position_x="-869.6907" Position_y="-1393.9365" Position_z="42.518295"/>
+
+
+
+
+    <!-- ANNESBURG -->
+    <DeletedObject Hash="-1405956211" Position_x="2756.7712402344" Position_y="1304.7977294922" Position_z="69.57723236084"/>
+	<DeletedObject Hash="-1588007813" Position_x="2756.1643066406" Position_y="1304.7214355469" Position_z="68.957695007324"/>
+	<DeletedObject Hash="541872060" Position_x="2879.5197753906" Position_y="1356.9594726562" Position_z="62.02375793457"/>
+
+    <!-- VALENTINE -->
+     <DeletedObject Hash="541872060" Position_x="-360.61413574219" Position_y="801.91198730469" Position_z="115.24945831299"/>
+</Map>

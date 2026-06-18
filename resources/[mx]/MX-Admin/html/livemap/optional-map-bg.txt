@@ -1,0 +1,5 @@
+Assets do mapa ao vivo (incluídos neste recurso):
+- rdr3-map.jpg — textura do mapa RedM (projeção alinhada com Config.LiveMap.WebMap).
+- blips/blip.svg, blips/blip_dead.svg, blips/blip_pin.svg — pins (blip_pin reservado para futuros pontos).
+
+Opcional: map-bg.png na mesma pasta — só usado como fundo alternativo se rdr3-map.jpg faltar.
