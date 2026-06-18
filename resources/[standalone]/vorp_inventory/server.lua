@@ -33,8 +33,69 @@ end
 exports("vorp_inventoryApi", function() return VorpInventoryAPI end)
 exports("registerUsableItem", function(...) return callVorpInventoryApi("registerUsableItem", ...) end)
 exports("RegisterUsableItem", function(...) return callVorpInventoryApi("RegisterUsableItem", ...) end)
-local DebugVorpBridge = GetConvar and tostring(GetConvar("vorp_inventory_bridge_debug", "0")) == "1"
+local CriticalBootstrapExports = {
+    vorp_inventoryApi = true,
+    registerUsableItem = true,
+    RegisterUsableItem = true
+}
+local PendingUsableItemRegistrations = {}
 
+function vorp_inventoryApi()
+    return VorpInventoryAPI
+end
+
+local function queueUsableItemRegistration(itemName, cbOrData)
+    if not itemName or not cbOrData then return false end
+
+    PendingUsableItemRegistrations[#PendingUsableItemRegistrations + 1] = {
+        itemName = itemName,
+        cbOrData = cbOrData
+    }
+
+    print(("^3[vorp_inventory bridge] queued usable item registration until api ready:^0 %s"):format(tostring(itemName)))
+    return true
+end
+
+local function callUsableRegistration(itemName, cbOrData)
+    local fn = VorpInventoryAPI and (VorpInventoryAPI.registerUsableItem or VorpInventoryAPI.RegisterUsableItem)
+    if type(fn) == "function" then
+        return fn(itemName, cbOrData)
+    end
+    return queueUsableItemRegistration(itemName, cbOrData)
+end
+
+local function flushPendingUsableItemRegistrations()
+    local fn = VorpInventoryAPI and (VorpInventoryAPI.registerUsableItem or VorpInventoryAPI.RegisterUsableItem)
+    if type(fn) ~= "function" or #PendingUsableItemRegistrations == 0 then return end
+
+    local pending = PendingUsableItemRegistrations
+    PendingUsableItemRegistrations = {}
+    print(("^2[vorp_inventory bridge] flushing queued usable item registrations:^0 %s"):format(#pending))
+
+    for _, entry in ipairs(pending) do
+        local ok, result = pcall(fn, entry.itemName, entry.cbOrData)
+        if not ok or result == false then
+            print(("^1[vorp_inventory bridge] failed queued usable item registration:^0 %s (%s)"):format(
+                tostring(entry.itemName),
+                tostring(result)
+            ))
+        end
+    end
+end
+
+exports("vorp_inventoryApi", function()
+    return VorpInventoryAPI
+end)
+
+exports("registerUsableItem", function(itemName, cbOrData)
+    return callUsableRegistration(itemName, cbOrData)
+end)
+
+exports("RegisterUsableItem", function(itemName, cbOrData)
+    return callUsableRegistration(itemName, cbOrData)
+end)
+
+local DebugVorpBridge = GetConvar and tostring(GetConvar("vorp_inventory_bridge_debug", "0")) == "1"
 local function debugPrint(name, ...)
     if DebugVorpBridge then
         print(("^3[vorp_inventory bridge] %s^0"):format(name), ...)
@@ -153,8 +214,6 @@ local function inventoryTraceShouldPrint(itemName)
     if type(GetConvar) == "function" and tostring(GetConvar("vorp_inventory_trace", "0")) == "1" then
         return true
     end
-    return false
-end
 
     local name = tostring(itemName or ""):lower()
     return isCrusherRawItem(itemName)
@@ -1070,17 +1129,13 @@ VorpInventoryAPI.getUserInventoryWeapons = function(source, cb)
 end
 VorpInventoryAPI.GetUserInventoryWeapons = VorpInventoryAPI.getUserInventoryWeapons
 
-function vorp_inventoryApi()
-    return VorpInventoryAPI
-end
-
-exports("vorp_inventoryApi", function() return VorpInventoryAPI end)
+flushPendingUsableItemRegistrations()
 
 AddEventHandler("vorpCore:canCarryItems", canCarryItems)
 AddEventHandler("vorpCore:canCarryItem", canCarryItem)
 
 for exportName, fn in pairs(VorpInventoryAPI) do
-    if type(fn) == "function" then
+    if type(fn) == "function" and not CriticalBootstrapExports[exportName] then
         exports(exportName, fn)
     end
 end
