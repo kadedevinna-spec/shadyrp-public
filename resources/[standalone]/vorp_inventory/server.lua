@@ -118,6 +118,11 @@ end
 
 local function inventoryTraceShouldPrint(itemName)
     if DebugVorpBridge then return true end
+    if type(GetConvar) == "function" and tostring(GetConvar("vorp_inventory_trace", "0")) == "1" then
+        return true
+    end
+    return false
+end
 
     local name = tostring(itemName or ""):lower()
     return isCrusherRawItem(itemName)
