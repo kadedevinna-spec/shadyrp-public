@@ -818,9 +818,33 @@ local function setItemMetadata(source, itemId, metadata, amount, cb)
         tostring(type(metadata) == "table" and metadata.durability or nil)
     ))
 
-    if not result and slot then
+    local fallbackSlot = slot
+    if not fallbackSlot and type(lookupItemId) == "table" then
+        fallbackSlot = tonumber(lookupItemId.slot or lookupItemId.id or lookupItemId.mainid or lookupItemId.itemId)
+    end
+
+    if not fallbackSlot then
+        local lookupName = nil
+        if type(lookupItemId) == "string" then
+            lookupName = lookupItemId
+        elseif type(lookupItemId) == "table" then
+            lookupName = lookupItemId.name or lookupItemId.item or lookupItemId.itemName
+        end
+
+        if lookupName then
+            for _, invItem in ipairs(getInventoryItems(source)) do
+                local invName = invItem and (invItem.name or invItem.item or invItem.itemName)
+                if invName == lookupName then
+                    fallbackSlot = tonumber(invItem.slot or invItem.id or invItem.mainid or invItem.itemId)
+                    if fallbackSlot then break end
+                end
+            end
+        end
+    end
+
+    if not result and fallbackSlot then
         result = safeCall("SetItemMetadata v", function()
-            return exports["v-inventory"]:SetItemMetadata(source, slot, metadata or {})
+            return exports["v-inventory"]:SetItemMetadata(source, fallbackSlot, metadata or {})
         end, false) == true
     end
 

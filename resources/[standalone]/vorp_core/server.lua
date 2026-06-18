@@ -39,8 +39,8 @@ local function getPlayer(source)
     return core.Functions.GetPlayer(tonumber(source) or source)
 end
 
-local function makeCharacter(source)
-    local player = getPlayer(source)
+local function makeCharacter(source, player)
+    player = player or getPlayer(source)
     if not player then return nil end
 
     local data = player.PlayerData or {}
@@ -95,6 +95,9 @@ local function makeCharacter(source)
         player.Functions.SetPlayerData("group", group)
         return true
     end
+
+    character.Character = character
+    character.character = character
 
     return setmetatable(character, {
         __call = function(self)
@@ -206,12 +209,15 @@ local function makeUser(source)
     local player = getPlayer(source)
     if not player then return nil end
 
-    local character = makeCharacter(source)
+    local character = makeCharacter(source, player)
+    if not character then return nil end
     local data = player.PlayerData or {}
 
     return {
         source = source,
         identifier = data.license,
+        Character = character,
+        character = character,
         getUsedCharacter = character,
         getIdentifier = function()
             return data.license
