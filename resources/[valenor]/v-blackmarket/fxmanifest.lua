@@ -8,6 +8,11 @@ description 'Black Market script for your RedM Servers'
 version '1.0.0'
 lua54 'yes'
 
+dependency 'vorp_core'
+dependency 'vorp_inventory'
+dependency 'rsg-core'
+dependency 'rsg-inventory'
+
 
 client_scripts {
     'config.lua',

@@ -1,6 +1,21 @@
 print("^2[vorp_inventory bridge] server starting^0")
 
 local VorpInventoryAPI = {}
+local function callVorpInventoryApi(name, ...)
+    local fn = VorpInventoryAPI[name]
+    if type(fn) ~= "function" then
+        local alt = name:sub(1, 1):upper() .. name:sub(2)
+        fn = VorpInventoryAPI[alt]
+    end
+    if type(fn) == "function" then
+        return fn(...)
+    end
+    return nil
+end
+
+exports("vorp_inventoryApi", function() return VorpInventoryAPI end)
+exports("registerUsableItem", function(...) return callVorpInventoryApi("registerUsableItem", ...) end)
+exports("RegisterUsableItem", function(...) return callVorpInventoryApi("RegisterUsableItem", ...) end)
 local DebugVorpBridge = GetConvar and tostring(GetConvar("vorp_inventory_bridge_debug", "0")) == "1"
 
 local function debugPrint(name, ...)

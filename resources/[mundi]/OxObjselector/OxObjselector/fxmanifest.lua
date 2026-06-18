@@ -41,6 +41,11 @@ files {
 dependencies {
     'ox_target',
     'ox_lib'
+
+    'vorp_core',
+    'vorp_inventory',
+    'rsg-core',
+    'rsg-inventory'
 }
 
 escrow_ignore {
