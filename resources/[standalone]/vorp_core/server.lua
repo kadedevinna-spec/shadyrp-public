@@ -318,16 +318,33 @@ local function registerServerCallback(name, cb)
     if core and core.Functions and core.Functions.CreateCallback then
         callbackTrace("registerServer", name)
         return core.Functions.CreateCallback(name, function(source, reply, ...)
+            local replied = false
+            local function wrappedReply(...)
+                replied = true
+                return reply(...)
+            end
+
             callbackTrace("handleServer", name, ("source=%s args=%s"):format(tostring(source), tostring(select("#", ...))))
             if tostring(name or "") == "mosquito-mining:server:getEmployees" then
                 local employees = buildMosquitoEmployees(source, ...)
-                local employee = employees[1] and {
-                    Character = employees[1].Character
-                } or {}
-                callbackTrace("getEmployees-rsg-direct", name, ("source=%s count=%s direct=%s"):format(tostring(source), tostring(#employees), tostring(employee.Character ~= nil)))
-                return reply(employee)
+                callbackTrace("getEmployees-rsg", name, ("source=%s count=%s"):format(tostring(source), tostring(#employees)))
+                return wrappedReply(employees)
             end
-            return cb(source, reply, ...)
+
+            local ok, result = pcall(cb, source, wrappedReply, ...)
+            if not ok then
+                callbackTrace("handleServer-error", name, ("source=%s error=%s"):format(tostring(source), tostring(result)))
+                if not replied then
+                    wrappedReply(nil)
+                end
+                return nil
+            end
+
+            if not replied then
+                wrappedReply(result)
+            end
+
+            return result
         end)
     end
 
