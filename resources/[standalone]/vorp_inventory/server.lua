@@ -1,6 +1,23 @@
 print("^2[vorp_inventory bridge] server starting^0")
 
 local VorpInventoryAPI = {}
+
+-- EARLY EXPORT BOOTSTRAP (prevents startup race "No such export ...")
+exports("vorp_inventoryApi", function()
+    return VorpInventoryAPI
+end)
+
+exports("registerUsableItem", function(...)
+    local fn = VorpInventoryAPI.registerUsableItem or VorpInventoryAPI.RegisterUsableItem
+    if type(fn) == "function" then return fn(...) end
+    return false
+end)
+
+exports("RegisterUsableItem", function(...)
+    local fn = VorpInventoryAPI.RegisterUsableItem or VorpInventoryAPI.registerUsableItem
+    if type(fn) == "function" then return fn(...) end
+    return false
+end)
 local function callVorpInventoryApi(name, ...)
     local fn = VorpInventoryAPI[name]
     if type(fn) ~= "function" then
