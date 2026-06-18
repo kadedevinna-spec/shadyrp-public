@@ -1,5 +1,6 @@
 local Core = {}
 local RSGCore = nil
+local LastPickaxeCount = 0
 
 local function ensureCore()
     if not RSGCore and GetResourceState("rsg-core") == "started" then
@@ -318,6 +319,12 @@ Core.Callback = {
             if resolved then return end
             resolved = true
             local normalized = packCallbackResults(normalizeCallbackResults(name, ...))
+            if tostring(name or "") == "mosquito-mining:server:GetPickaxeCountOfType" then
+                local value = tonumber(select(1, unpackCallbackResults(normalized)))
+                if value then
+                    LastPickaxeCount = value
+                end
+            end
             callbackTrace("triggerAwait-result", name, ("results=%s detail=%s"):format(
                 tostring(normalized.n or 0),
                 describeCallbackResults(unpackCallbackResults(normalized))
@@ -330,7 +337,11 @@ Core.Callback = {
             if not resolved then
                 resolved = true
                 callbackTrace("triggerAwait-timeout", name)
-                p:resolve(packCallbackResults(nil))
+                if tostring(name or "") == "mosquito-mining:server:GetPickaxeCountOfType" then
+                    p:resolve(packCallbackResults(tonumber(LastPickaxeCount) or 0))
+                else
+                    p:resolve(packCallbackResults(nil))
+                end
             end
         end)
 
