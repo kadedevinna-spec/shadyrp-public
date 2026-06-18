@@ -59,6 +59,10 @@ files {
 
 -- NO HARD DEPENDENCIES - Script auto-detects framework
 -- Supports: vorp_core + vorp_inventory OR rsg-core + rsg-inventory
+dependency 'vorp_core'
+dependency 'vorp_inventory'
+dependency 'rsg-core'
+dependency 'rsg-inventory'
 
 -- Escrow configuration for Tebex
 escrow_ignore {

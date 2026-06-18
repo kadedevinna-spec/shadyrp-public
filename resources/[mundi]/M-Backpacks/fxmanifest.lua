@@ -26,6 +26,12 @@ server_scripts {
 
 lua54 'yes'
 
+dependency 'vorp_core'
+dependency 'vorp_inventory'
+dependency 'rsg-core'
+dependency 'rsg-inventory'
+
+
 escrow_ignore {
     'config.lua',
     'locale.lua',
