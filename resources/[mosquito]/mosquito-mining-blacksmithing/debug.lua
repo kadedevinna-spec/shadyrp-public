@@ -11,6 +11,17 @@ function NicheDebugPrint(...)
     -- end
 end
 
+local enableMosquitoDebugHooks = false
+if type(GetConvar) == "function" then
+    enableMosquitoDebugHooks = tostring(GetConvar("mosquito_blacksmith_debug_hooks", "0")) == "1"
+end
+
+if not enableMosquitoDebugHooks then
+    if not IsDuplicityVersion() then
+        print("[mosquito trace] debug hook layer disabled (set convar mosquito_blacksmith_debug_hooks 1 to enable)")
+    end
+    return
+end
 local function MosquitoTraceIsEnabled()
     if GetConvar and tostring(GetConvar("mosquito_blacksmith_trace", "0")) == "1" then
         return true
