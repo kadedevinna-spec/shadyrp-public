@@ -326,7 +326,7 @@ Core.Callback = {
         end, ...)
 
         CreateThread(function()
-            Wait(5000)
+            Wait(15000)
             if not resolved then
                 resolved = true
                 callbackTrace("triggerAwait-timeout", name)
