@@ -29,10 +29,17 @@ local ForgeItems = {
     },
 }
 
-local HotfixVersion = "20260616-inventoryseed"
+local HotfixVersion = "20260619-forge-condition-guard"
 local DbCompatReady = false
 local DbCompatStatus = "not checked"
 local ensureVorpCharacter
+
+local cbOk, cbMsg = registerSafeForgeConditionCallback()
+print(("[blacksmith_hotfix] version %s forge condition callback: %s (%s)"):format(
+    HotfixVersion,
+    cbOk and "ok" or "failed",
+    tostring(cbMsg)
+))
 
 local function say(source, message, messageType)
     print(("[blacksmith_hotfix] %s"):format(message))
@@ -55,6 +62,54 @@ local PlaceForgeBridgeRequestId = 0
 local PendingPlaceForgeRequests = {}
 local ForgeBridgeStatusRequestId = 0
 local PendingForgeBridgeStatus = {}
+
+local function getForgeItemNameByIndex(index)
+    local numericIndex = tonumber(index) or 1
+    if numericIndex == 2 then
+        return "blacksmith_forge_advanced"
+    end
+    return "blacksmith_forge"
+end
+
+local function getForgeItemCount(source, itemName)
+    local ok, count = pcall(function()
+        return exports["vorp_inventory"]:getItemCount(source, itemName)
+    end)
+    if ok then return tonumber(count) or 0 end
+
+    ok, count = pcall(function()
+        return exports["rsg-inventory"]:GetItemCount(source, itemName)
+    end)
+    if ok then return tonumber(count) or 0 end
+
+    ok, count = pcall(function()
+        return exports["v-inventory"]:GetItemCount(source, itemName)
+    end)
+    if ok then return tonumber(count) or 0 end
+
+    return 0
+end
+
+local function consumePlacedForgeItem(source, itemName, amount)
+    amount = tonumber(amount) or 1
+
+    local ok, removed = pcall(function()
+        return exports["vorp_inventory"]:subItem(source, itemName, amount, nil)
+    end)
+    if ok and removed ~= false then return true, "vorp_inventory" end
+
+    ok, removed = pcall(function()
+        return exports["rsg-inventory"]:RemoveItem(source, itemName, amount, nil)
+    end)
+    if ok and removed ~= false then return true, "rsg-inventory" end
+
+    ok, removed = pcall(function()
+        return exports["v-inventory"]:RemoveItem(source, itemName, amount, "player")
+    end)
+    if ok and removed ~= false then return true, "v-inventory" end
+
+    return false, removed
+end
 
 AddEventHandler("blacksmith_hotfix:mosquito:placeforgeResult", function(requestId, playerSource, ok, message)
     requestId = tostring(requestId or "")
@@ -106,6 +161,8 @@ local function forwardPlaceForgeCommand(source, args)
     PlaceForgeForwardedAt[source] = now
 
     local index = args and args[1] or "1"
+    local itemName = getForgeItemNameByIndex(index)
+    local beforeCount = getForgeItemCount(source, itemName)
     local dbOk, dbMsg = ensureVorpCharacter(source)
     if not dbOk then
         say(source, ("forge placement DB precheck failed: %s"):format(tostring(dbMsg)), "error")
@@ -114,10 +171,12 @@ local function forwardPlaceForgeCommand(source, args)
 
     PlaceForgeBridgeRequestId = PlaceForgeBridgeRequestId + 1
     local requestId = ("%s:%s"):format(tostring(source), tostring(PlaceForgeBridgeRequestId))
-    PendingPlaceForgeRequests[requestId] = {
-        source = source,
-        index = tostring(index or "1")
-    }
+        PendingPlaceForgeRequests[requestId] = {
+         source = source,
+            index = tostring(index or "1"),
+            itemName = itemName,
+            beforeCount = beforeCount,
+}
 
     TriggerEvent("blacksmith_hotfix:mosquito:placeforge", source, { tostring(index or "1") }, ("placeforge %s"):format(tostring(index or "1")), requestId)
     say(source, ("sent /placeforge %s to Mosquito server bridge; %s"):format(tostring(index or "1"), tostring(dbMsg)), "inform")
@@ -126,7 +185,34 @@ local function forwardPlaceForgeCommand(source, args)
         Wait(2000)
         if PendingPlaceForgeRequests[requestId] then
             PendingPlaceForgeRequests[requestId] = nil
-            say(source, ("Mosquito bridge did not report completion for /placeforge %s. Check /bsforgebridge."):format(tostring(index or "1")), "warning")
+            local consumeDetail = "not-required"
+if ok == true and pending.itemName then
+    local beforeCount = tonumber(pending.beforeCount) or 0
+    local afterCount = getForgeItemCount(pending.source, pending.itemName)
+
+    if afterCount >= beforeCount and afterCount > 0 then
+        local consumed, consumeSource = consumePlacedForgeItem(pending.source, pending.itemName, 1)
+        local finalCount = getForgeItemCount(pending.source, pending.itemName)
+        consumeDetail = ("consume=%s source=%s item=%s count %s->%s"):format(
+            tostring(consumed),
+            tostring(consumeSource),
+            tostring(pending.itemName),
+            tostring(afterCount),
+            tostring(finalCount)
+        )
+    else
+        consumeDetail = ("already-consumed item=%s count %s->%s"):format(
+            tostring(pending.itemName),
+            tostring(beforeCount),
+            tostring(afterCount)
+        )
+    end
+end
+            say(pending.source, ("Mosquito bridge result for /placeforge %s: ok=%s msg=%s"):format(
+    tostring(pending.index),
+    tostring(ok == true),
+    ("%s [%s]"):format(tostring(message), consumeDetail)
+), ok == true and "success" or "error")
         end
     end)
 end
@@ -829,6 +915,7 @@ CreateThread(function()
         seedForgeItems()
         ensureVorpCharactersTable()
         syncOnlineVorpCharacters()
+        registerSafeForgeConditionCallback()
         Wait(60000)
     end
 end)
